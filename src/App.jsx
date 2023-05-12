@@ -19,47 +19,96 @@ import CalendarSettings from './pages/CalendarSettings'
 import EventSettings from './pages/EventSettings'
 import ErrorPage from './pages/ErrorPage'
 
-const routes = [
-  {
-    path: "/",
-    element: <LandingPage />
-  },
-
-]
 
 function App() {
+  const routes = [
+    {
+      path: "/*",
+      element: <ErrorPage />
+    },
+    {
+      path: "/",
+      element: <LandingPage />
+    },
+    {
+      path: "/event/:eid",
+      element: <EventPage />
+    },
+    {
+      path: "/signin",
+      element: <SignIn />
+    },
+    {
+      path: "/signup",
+      element: <SignUp />
+    },
+    {
+      path: "/home",
+      element: <Home />
+    },
+    {
+      path: "/home/calendars",
+      element: <Calendars />
+    },
+    {
+      path: "/personal",
+      element: <Personal />
+    },
+    {
+      path: "/discover",
+      element: <DiscoverEvents />
+    },
+    {
+      path: "/personal",
+      element: <Personal />
+    },
+    {
+      path: "/discover",
+      element: <DiscoverEvents />
+    },
+    {
+      path: "/user/:uid/profile",
+      element: <UserProfile />
+    },
+    {
+      path: "/user/:uid/settings",
+      element: <Settings />
+    },
+    {
+      path: "/user/:uid/profile",
+      element: <UserProfile />
+    },
+    {
+      path: "/events-manager",
+      element: <EventsManager />
+    },
+    {
+      path: "/create-event",
+      element: <CreateEvent />
+    },
+    {
+      path: "/event-settings",
+      element: <EventSettings />
+    },
+    {
+      path: "/calendars-manager",
+      element: <CalendarsManager />
+    },
+    {
+      path: "/create-calendar",
+      element: <CreateCalendar />
+    },
+    {
+      path: "/calendar-settings",
+      element: <CalendarSettings />
+    }
+  ]
   return (
     <BrowserRouter>
       <Routes>
-        {/* Main Routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/event/:eid" element={<EventPage />} />
-        {/*Authentication*/}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-
-        {/* Routes for Home */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/home/calendars" element={<Calendars />} />
-        <Route path="/personal" element={<Personal />} />
-        <Route path="/discover" element={<DiscoverEvents />} />
-
-        {/* Routes for User */}
-        <Route path="/user/:uid/profile" element={<UserProfile />} />
-        <Route path="/user/:uid/settings" element={<Settings />} />
-
-        {/* Routes for Event Manager */}
-        <Route path="/events-manager" element={<EventsManager />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/event-settings" element={<EventSettings />} />
-
-        {/* Routes for Calendar Manager */}
-        <Route path="/calendars-manager" element={<CalendarsManager />} />
-        <Route path="/create-calendars" element={<CreateCalendar />} />
-        <Route path="/calendar-settings" element={<CalendarSettings />} />
-
-        {/* 404 */}
-        <Route path="/*" element={<ErrorPage />} />
+        {
+          routes.map((route) => <Route path={route.path} element={route.element} />)
+        }
       </Routes>
     </BrowserRouter>
   )

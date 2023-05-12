@@ -14,7 +14,6 @@ export const handleGoogleLogin = async (provider) => {
         const token = credential.accessToken;
         const user = result.user;
         const detail = getAdditionalUserInfo(result);
-        console.log(token);
         const { email, photoURL, uid } = user;
         setUser({
             email: email,
@@ -32,7 +31,6 @@ export const handleGoogleLogin = async (provider) => {
             }).then((data) => {
                 setProfileData(data[0]);
                 localStorage.setItem('data', JSON.stringify(data[0]));
-                console.log(data[0]);
             })
         }
     } catch (err) {
