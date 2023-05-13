@@ -1,4 +1,4 @@
-import './App.css'
+import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SignIn from './pages/SignIn'
@@ -18,6 +18,8 @@ import CalendarSettings from './pages/CalendarSettings'
 import EventSettings from './pages/EventSettings'
 import ErrorPage from './pages/ErrorPage'
 import AuthProvider from './context/AuthProvider'
+
+const LandingPage = React.lazy(() => import("./pages/LandingPage"))
 
 function App() {
   const routes = [

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "../Firebase/config";
+import { auth } from "../services/firebase/config";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const AuthContext = React.createContext();
