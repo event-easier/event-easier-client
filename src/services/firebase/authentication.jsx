@@ -21,7 +21,7 @@ export const handleGoogleLogin = async (provider) => {
             uid: uid
         })
         if (detail.isNewUser) {
-            navigate('/user-info');
+            navigate('/home');
         }
         else { // account existed
             getAccount('users', {
