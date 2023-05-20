@@ -1,7 +1,6 @@
-import './App.css'
+import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import LandingPage from './pages/LandingPage'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Home from './pages/Home'
@@ -18,7 +17,9 @@ import CreateCalendar from './pages/CreateCalendar'
 import CalendarSettings from './pages/CalendarSettings'
 import EventSettings from './pages/EventSettings'
 import ErrorPage from './pages/ErrorPage'
+import AuthProvider from './context/AuthProvider'
 
+const LandingPage = React.lazy(() => import("./pages/LandingPage"))
 
 function App() {
   const routes = [
@@ -105,11 +106,13 @@ function App() {
   ]
   return (
     <BrowserRouter>
-      <Routes>
-        {
-          routes.map((route) => <Route path={route.path} element={route.element} />)
-        }
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          {
+            routes.map((route) => <Route path={route.path} element={route.element} />)
+          }
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }
