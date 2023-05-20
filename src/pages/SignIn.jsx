@@ -2,18 +2,21 @@ import React, { useState } from 'react'
 import {
   Container, Heading, Tab, TabList, TabPanel, Tabs, TabPanels, Input, Link, Text, Button, Flex, Wrap, Box, WrapItem, FormControl,
   FormErrorMessage,
-  FormHelperText, FormLabel
+  FormHelperText, FormLabel,
+  useDisclosure
 } from '@chakra-ui/react'
 import { GoogleAuthProvider } from 'firebase/auth';
-import { handleGoogleLogin } from '../services/firebase/authentication';
+import { LoginByEmail, handleGoogleLogin } from '../services/firebase/authentication';
 import { useNavigate } from 'react-router-dom';
+import CodeAlertDialog from '../components/CodeAlertDialog';
 
 const googleProvider = new GoogleAuthProvider();
 
 export default function SignIn() {
   const navigate = useNavigate();
   const [input, setInput] = useState('')
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
   const phoneNumberRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
 
@@ -77,22 +80,25 @@ export default function SignIn() {
           <TabPanels>
             <TabPanel pl={0}>
               <div>
-                <FormControl isInvalid={isErrorEmail}>
+                <FormControl isInvalid={isErrorEmail && input}>
                   <FormLabel>Insert your Email</FormLabel>
                   <Input
                     id='input-email'
                     w="400px"
+                    mb="10px"
                     type='email'
                     value={input}
                     onChange={handleInputChange}
                     placeholder='abc@gmail.com'
                   />
                   {!isErrorEmail ? (
-                    <FormHelperText>
+                    <FormHelperText
+                      mb="10px"
+                    >
                       Enter the email you'd like to sign in
                     </FormHelperText>
                   ) : (
-                    <FormErrorMessage>Email is required.</FormErrorMessage>
+                    <FormErrorMessage mb="10px">Email is required.</FormErrorMessage>
                   )}
                 </FormControl>
               </div>
@@ -102,30 +108,33 @@ export default function SignIn() {
                 w={400}
                 isDisabled={isErrorEmail}
                 onClick={() => {
-                  console.log(input)
+                  LoginByEmail(input)
+                  onOpen()
                 }}
               > Continue
               </Button>
             </TabPanel>
-
             <TabPanel pl={0}>
               <div>
-                <FormControl isInvalid={isErrorPhoneNumber}>
+                <FormControl isInvalid={isErrorPhoneNumber && input}>
                   <FormLabel>Insert your phone number</FormLabel>
                   <Input
                     id='input-phone-number'
                     w="400px"
+                    mb="10px"
                     type='number'
                     value={input}
                     onChange={handleInputChange}
                     placeholder='2323232255'
                   />
                   {!isErrorPhoneNumber ? (
-                    <FormHelperText>
+                    <FormHelperText
+                      mb="10px"
+                    >
                       Enter the phone number you'd like to sign in
                     </FormHelperText>
                   ) : (
-                    <FormErrorMessage>Phone number is required.</FormErrorMessage>
+                    <FormErrorMessage mb="10px">Phone number is required.</FormErrorMessage>
                   )}
                 </FormControl>
               </div>
@@ -142,6 +151,13 @@ export default function SignIn() {
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <CodeAlertDialog
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+          cancelRef={cancelRef}
+          email={input}
+        />
         <Text mt="16px">New to Event Easier? <Link href='/signup' color="#7928CA">Sign up</Link> for free.</Text>
         <Container
           w={400}

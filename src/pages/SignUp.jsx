@@ -40,22 +40,27 @@ export default function SignUp() {
             margin: "16px 0px 0px"
           }}
         >
-          <FormControl isInvalid={isErrorEmail}>
+          <FormControl isInvalid={isErrorEmail && input}>
             <FormLabel>Insert your Email</FormLabel>
             <Input
               id='input-email'
               w="400px"
+              mb="10px"
               type='email'
               value={input}
               onChange={handleInputChange}
               placeholder='abc@gmail.com'
             />
             {!isErrorEmail ? (
-              <FormHelperText>
+              <FormHelperText
+                mb="10px"
+              >
                 Enter the email you'd like to sign in
               </FormHelperText>
             ) : (
-              <FormErrorMessage>Email is required.</FormErrorMessage>
+              <FormErrorMessage
+                mb="10px"
+              >Email is required.</FormErrorMessage>
             )}
           </FormControl>
         </div>
