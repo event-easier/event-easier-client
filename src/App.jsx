@@ -1,120 +1,123 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
-import Home from './pages/Home'
-import Calendars from './pages/Calendars'
-import CreateEvent from './pages/CreateEvent'
-import EventPage from './pages/EventPage'
-import EventsManager from './pages/EventsManager'
-import Personal from './pages/Personal'
-import Settings from './pages/Settings'
-import UserProfile from './pages/UserProfile'
-import DiscoverEvents from './pages/DiscoverEvents'
-import CalendarsManager from './pages/CalendarsManager'
-import CreateCalendar from './pages/CreateCalendar'
-import CalendarSettings from './pages/CalendarSettings'
-import EventSettings from './pages/EventSettings'
-import ErrorPage from './pages/ErrorPage'
-import AuthProvider from './context/AuthProvider'
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Home from "./pages/Home";
+import Calendars from "./pages/Calendars";
+import CreateEvent from "./pages/CreateEvent";
+import EventPage from "./pages/EventPage";
+import EventsManager from "./pages/EventsManager";
+import Personal from "./pages/Personal";
+import Settings from "./pages/Settings";
+import UserProfile from "./pages/UserProfile";
+import DiscoverEvents from "./pages/DiscoverEvents";
+import CalendarsManager from "./pages/CalendarsManager";
+import CreateCalendar from "./pages/CreateCalendar";
+import CalendarSettings from "./pages/CalendarSettings";
+import EventSettings from "./pages/EventSettings";
+import ErrorPage from "./pages/ErrorPage";
+import AuthProvider from "./context/AuthProvider";
 
-const LandingPage = React.lazy(() => import("./pages/LandingPage"))
+const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 
 function App() {
+  console.log("env", {
+    backEndUrl: import.meta.env.VITE_BASE_URL,
+  });
   const routes = [
     {
       path: "/*",
-      element: <ErrorPage />
+      element: <ErrorPage />,
     },
     {
       path: "/",
-      element: <LandingPage />
+      element: <LandingPage />,
     },
     {
       path: "/event/:eid",
-      element: <EventPage />
+      element: <EventPage />,
     },
     {
       path: "/signin",
-      element: <SignIn />
+      element: <SignIn />,
     },
     {
       path: "/signup",
-      element: <SignUp />
+      element: <SignUp />,
     },
     {
       path: "/home",
-      element: <Home />
+      element: <Home />,
     },
     {
       path: "/home/calendars",
-      element: <Calendars />
+      element: <Calendars />,
     },
     {
       path: "/personal",
-      element: <Personal />
+      element: <Personal />,
     },
     {
       path: "/discover",
-      element: <DiscoverEvents />
+      element: <DiscoverEvents />,
     },
     {
       path: "/personal",
-      element: <Personal />
+      element: <Personal />,
     },
     {
       path: "/discover",
-      element: <DiscoverEvents />
+      element: <DiscoverEvents />,
     },
     {
       path: "/user/:uid/profile",
-      element: <UserProfile />
+      element: <UserProfile />,
     },
     {
       path: "/user/:uid/settings",
-      element: <Settings />
+      element: <Settings />,
     },
     {
       path: "/user/:uid/profile",
-      element: <UserProfile />
+      element: <UserProfile />,
     },
     {
       path: "/events-manager",
-      element: <EventsManager />
+      element: <EventsManager />,
     },
     {
       path: "/create-event",
-      element: <CreateEvent />
+      element: <CreateEvent />,
     },
     {
       path: "/event-settings",
-      element: <EventSettings />
+      element: <EventSettings />,
     },
     {
       path: "/calendars-manager",
-      element: <CalendarsManager />
+      element: <CalendarsManager />,
     },
     {
       path: "/create-calendar",
-      element: <CreateCalendar />
+      element: <CreateCalendar />,
     },
     {
       path: "/calendar-settings",
-      element: <CalendarSettings />
-    }
-  ]
+      element: <CalendarSettings />,
+    },
+  ];
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {
-            routes.map((route) => <Route path={route.path} element={route.element} />)
-          }
+          {routes.map((route) => (
+            <Route path={route.path} element={route.element} />
+          ))}
         </Routes>
       </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
 
 export default App;
