@@ -111,9 +111,9 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {routes.map((route) => (
-            <Route path={route.path} element={route.element} />
-          ))}
+          {
+            routes.map((route) => <Route key={route.path} path={route.path} element={route.element} />)
+          }
         </Routes>
       </AuthProvider>
     </BrowserRouter>

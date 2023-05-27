@@ -21,7 +21,8 @@ export default function SignUp() {
       bgColor={"black"}
       justifyContent={"center"}
     >
-      <Box w='35%' h='100%' bgGradient='linear(to-l, #0652C5, #D4418E)'>
+      <Box w='35%' h='100%' bg="radial-gradient(circle at 10% 20%, rgb(90, 92, 106) 0%, rgb(32, 45, 58) 81.3%)"
+      >
       </Box>
       <Container
         w='65%'
@@ -30,7 +31,7 @@ export default function SignUp() {
         <Heading
           as="h3"
           mb={"64px"}
-          bgGradient='linear(to-l, #7928CA, #FF0080)'
+          bg="radial-gradient(circle at 10% 20%, rgb(90, 92, 106) 0%, rgb(32, 45, 58) 81.3%)"
           bgClip='text'
           fontSize='6xl'
           fontWeight='extrabold'
