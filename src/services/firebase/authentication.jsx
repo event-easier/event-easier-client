@@ -45,7 +45,7 @@ export const handleGoogleLogin = async (provider) => {
 
 export const GoogleSignOut = () => {
   signOut(auth)
-    .then(() => {
+    .then((res) => {
       console.log("sign out successful");
       navigate("/");
     })
