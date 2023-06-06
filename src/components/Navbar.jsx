@@ -49,10 +49,30 @@ export default function Navbar() {
       width="100%"
       pos="fixed"
       top={"0!important"}
-      zIndex={2}
+      zIndex={3}
       backdropFilter={"blur(5px)"}
     >
-      <Box opacity={0.85} py="0.75rem" px="1rem">
+      <div
+        class="jsx-2931876464 background animated mounted"
+        style={{
+          position: "fixed",
+          top: "0px",
+          width: "100%",
+          height: "200px",
+          zIndex: 1,
+          background:
+            "linear-gradient(rgba(22, 31, 243, 0.2) 0%, rgba(18, 139, 251, 0.1) 50%, rgba(0, 140, 115, 0) 100%)",
+        }}
+      />
+      <Box
+        opacity={0.85}
+        py="0.75rem"
+        px="1rem"
+        style={{
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}

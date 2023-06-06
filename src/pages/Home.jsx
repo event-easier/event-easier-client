@@ -76,18 +76,12 @@ export default function Home() {
       <Navbar />
       <div
         style={{
-          paddingTop: "96px",
-          background:
-            "linear-gradient(rgba(174, 47, 206, 0.2) 0%, rgba(232, 115, 55, 0.1) 52.58%, rgba(153, 93, 8, 0) 100%)",
-        }}
-      ></div>
-      <div
-        style={{
-          display: "block",
+          position: "relative",
+          zIndex: 2,
           maxWidth: "1000px",
           blockSize: "border-box",
           margin: "0px auto 0px auto",
-          padding: "48px 16px 0px",
+          padding: "150px 16px 0px",
         }}
       >
         <Heading pb={"20px"}>Events</Heading>

@@ -41,7 +41,7 @@ export default function EventCardDrawer({
         size={"lg"}
       >
         <DrawerOverlay />
-        <DrawerContent backgroundColor={"rgb(19,21,23)"}>
+        <DrawerContent backgroundColor={"rgba(33,35,37, .8)"}>
           <DrawerHeader
             py={"8px"}
             px={"12px"}
