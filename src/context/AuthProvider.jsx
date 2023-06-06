@@ -18,7 +18,7 @@ export default function AuthProvider({ children }) {
     const [profileData, setProfileData] = useState(null);
     useEffect(() => {
         const unsubscribed = auth.onAuthStateChanged((userInfo) => {
-            if (userInfo) {
+            if (userInfo || localStorage.getItem("profile-data")) {
                 if (unAuthPage.includes(location.pathname)) {
                     navigate("/home");
                 }

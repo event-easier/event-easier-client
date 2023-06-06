@@ -18,6 +18,9 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, CalendarIcon, StarIcon } from '@chakra-ui/icons';
 import { GoogleSignOut } from '../services/firebase/authentication';
+import { useNavigate } from 'react-router';
+import React, { useContext } from 'react';
+import AuthProvider from '../context/AuthProvider';
 
 const Links = [
   {
@@ -34,7 +37,7 @@ const Links = [
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const navigate = useNavigate();
   return (
     <Box width="100%" pos="fixed" top={"0!important"} zIndex={2} backdropFilter={"blur(5px)"}>
       <Box bg="#131517" px={4} opacity={0.85}>
@@ -112,7 +115,11 @@ export default function Navbar() {
                 <MenuItem bg="#131517">View Profile</MenuItem>
                 <MenuItem bg="#131517">Settings</MenuItem>
                 <MenuDivider />
-                <MenuItem onClick={GoogleSignOut}
+                <MenuItem onClick={async () => {
+                  await GoogleSignOut();
+                  localStorage.removeItem("profile-data");
+                  navigate("/")
+                }}
                   bg="#131517">Sign Out</MenuItem>
               </MenuList>
             </Menu>

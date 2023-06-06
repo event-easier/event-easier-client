@@ -1,21 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Box,
     chakra,
-    Link,
     Text,
     HStack,
     VStack,
     useColorModeValue,
     Image,
-    Button
+    Button,
+    useDisclosure
 } from '@chakra-ui/react';
+import EventCardDrawer from './EventCardDrawer';
 
 export default function EventCard({ title, categories, description, icon, date }) {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const eventRef = React.useRef()
     return (
         <HStack
             p={{ base: 3, sm: 6 }}
-            bg={useColorModeValue('gray.600', 'gray.800')}
+            bg={useColorModeValue('gray.800', 'gray.800')}
             spacing={5}
             rounded="lg"
             alignItems="center"
@@ -31,6 +34,8 @@ export default function EventCard({ title, categories, description, icon, date }
                 left: '-15px',
                 display: 'block'
             }}
+            ref={eventRef}
+            onClick={onOpen}
         >
             <Image boxSize={100} src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
             <Box>
@@ -56,13 +61,19 @@ export default function EventCard({ title, categories, description, icon, date }
                     </Text>
                 </VStack>
                 <Button
-                color="hsla(0,0%,100%,.64)"
-                p="7px 10px"
-                w={170}
-                m="2px"
-                bgColor={"#212325"}
-              >Manage Event</Button>
+                    color="hsla(0,0%,100%,.64)"
+                    p="7px 10px"
+                    w={170}
+                    m="2px"
+                    bgColor={"#212325"}
+                >Manage Event</Button>
             </Box>
+            <EventCardDrawer
+                isOpen={isOpen}
+                placement='left'
+                onClose={onClose}
+                finalFocusRef = {eventRef}
+            />
         </HStack>
     )
 }

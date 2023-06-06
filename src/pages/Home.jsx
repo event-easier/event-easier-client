@@ -110,7 +110,6 @@ export default function Home() {
                 color="hsla(0,0%,100%,.64)"
                 _selected={{ color: 'white', bg: 'blue.400' }}>Past</Tab>
             </div>
-
           </TabList>
           <TabPanels>
             <TabPanel>
