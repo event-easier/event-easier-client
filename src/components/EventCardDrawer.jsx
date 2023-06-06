@@ -15,140 +15,216 @@ import {
     Stack,
     Heading,
     Divider,
-    ButtonGroup,
     Text,
     CardHeader,
     StackDivider,
     Box,
     Flex,
     Avatar,
-    IconButton
 } from '@chakra-ui/react'
+import { CalendarIcon, InfoOutlineIcon } from '@chakra-ui/icons'
+import "../index.css"
 
 export default function EventCardDrawer({ isOpen, onOpen, onClose, finalFocusRef }) {
     return (
-        <Drawer
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
-            finalFocusRef={finalFocusRef}
-            size={"md"}
+        <Box
+            className="box-disable-overflow"
         >
-            <DrawerOverlay />
-            <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader
-                    pos="fixed" top={"0!important"} zIndex={2}
-                    backdropFilter={"blur(5px)"}
+            <Drawer
+                isOpen={isOpen}
+                placement='right'
+                onClose={onClose}
+                finalFocusRef={finalFocusRef}
+                size={"lg"}
+            >
+                <DrawerOverlay />
+                <DrawerContent
+                    backgroundColor={"rgb(19,21,23)"}
                 >
-                    <Button variant='outline' mr={3}>
-                        Copy link
-                    </Button>
-                    <Button variant={'outline'} mr={5}>
-                        Open Event Page
-                    </Button>
-                </DrawerHeader>
-                <DrawerBody>
-                    <Card maxW='sm'>
-                        <CardBody>
-                            <Image
-                                src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                                alt='Green double couch with wooden legs'
-                                borderRadius='lg'
-                            />
-                            <Stack mt='6' spacing='3'>
-                                <Heading size='md'>Living room Sofa</Heading>
-                                <Text>
-                                    This sofa is perfect for modern tropical spaces, baroque inspired
-                                    spaces, earthy toned spaces and for people who love a chic design with a
-                                    sprinkle of vintage design.
-                                </Text>
-                                <Text color='blue.600' fontSize='2xl'>
-                                    $450
-                                </Text>
-                            </Stack>
-                        </CardBody>
-                        <Divider />
-                        <CardFooter>
-                            <ButtonGroup spacing='2'>
-                                <Button variant='solid' colorScheme='blue'>
-                                    Buy now
-                                </Button>
-                                <Button variant='ghost' colorScheme='blue'>
-                                    Add to cart
-                                </Button>
-                            </ButtonGroup>
-                        </CardFooter>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <Heading size='md'>Client Report</Heading>
-                        </CardHeader>
-
-                        <CardBody>
-                            <Stack divider={<StackDivider />} spacing='4'>
-                                <Box>
-                                    <Heading size='xs' textTransform='uppercase'>
-                                        Summary
-                                    </Heading>
-                                    <Text pt='2' fontSize='sm'>
-                                        View a summary of all your clients over the last month.
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Heading size='xs' textTransform='uppercase'>
-                                        Overview
-                                    </Heading>
-                                    <Text pt='2' fontSize='sm'>
-                                        Check out the overview of your clients.
-                                    </Text>
-                                </Box>
-                                <Box>
-                                    <Heading size='xs' textTransform='uppercase'>
-                                        Analysis
-                                    </Heading>
-                                    <Text pt='2' fontSize='sm'>
-                                        See a detailed analysis of all your business clients.
-                                    </Text>
-                                </Box>
-                            </Stack>
-                        </CardBody>
-                    </Card>
-                    <Card maxW='md'>
-                        <CardHeader>
-                            <Flex spacing='4'>
-                                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                    <Avatar name='Segun Adebayo' src='https://bit.ly/sage-adebayo' />
-
-                                    <Box>
-                                        <Heading size='sm'>Segun Adebayo</Heading>
-                                        <Text>Creator, Chakra UI</Text>
-                                    </Box>
-                                </Flex>
-                                <IconButton
-                                    variant='ghost'
-                                    colorScheme='gray'
-                                    aria-label='See menu'
+                    <DrawerCloseButton />
+                    <DrawerHeader
+                        width={"100%"}
+                        pos="fixed" top={"0!important"} zIndex={2}
+                        backdropFilter={"blur(15px)"}
+                        color="white"
+                    >
+                        <Button variant='outline' mr={3}>
+                            Copy link
+                        </Button>
+                        <Button variant={'outline'} mr={5}>
+                            Open Event Page
+                        </Button>
+                    </DrawerHeader>
+                    <DrawerBody>
+                        <Card
+                            w='100%'
+                            backgroundColor={"#212325"}
+                            color="white"
+                            // margin="0.75rem"
+                            marginTop="4rem"
+                        >
+                            <CardBody>
+                                <Image
+                                    src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+                                    alt='Green double couch with wooden legs'
+                                    borderRadius='lg'
                                 />
-                            </Flex>
-                        </CardHeader>
-                        <CardBody>
-                            <Text>
-                                With Chakra UI, I wanted to sync the speed of development with the speed
-                                of design. I wanted the developer to be just as excited as the designer to
-                                create a screen.
-                            </Text>
-                        </CardBody>
-                        <Image
-                            objectFit='cover'
-                            src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                            alt='Chakra UI'
-                        />
-                    </Card>
-                </DrawerBody>
-                <DrawerFooter>
-                </DrawerFooter>
-            </DrawerContent>
-        </Drawer>
+                                <Stack mt='6' spacing='3'>
+                                    <Heading >Event Name</Heading>
+                                    <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                    >
+                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
+                                        <Text size='sm'> Hosted by Segun Adebayo</Text>
+                                    </Box>
+                                    <Box>
+                                        <Flex
+                                            direction={"row"}
+                                            alignContent={"center"}
+                                            alignItems={"center"}
+                                        >
+                                            <CalendarIcon
+                                                boxSize={6}
+                                                m="0.5rem" />
+                                            <Box
+                                                m="0.5rem"
+                                            >
+                                                <Text> Friday, May 12</Text>
+                                                <Text>12:30 PM to 1:30 PM</Text>
+                                            </Box>
+                                        </Flex>
+
+                                    </Box>
+                                    <Box>
+                                        <Flex
+                                            direction={"row"}
+                                            alignContent={"center"}
+                                            alignItems={"center"}
+                                        >
+                                            <InfoOutlineIcon
+                                                boxSize={6}
+                                                m="0.5rem" />
+                                            <Box
+                                                m="0.5rem"
+                                            >
+                                                <Text> Ho Chi Minh City</Text>
+                                                <Text>Ho Chi Minh City, Ho Chi Minh City</Text>
+                                            </Box>
+                                        </Flex>
+                                    </Box>
+                                </Stack>
+                            </CardBody>
+                            <Divider />
+                            <CardFooter>
+                                <Flex
+                                    direction={"row"}
+                                    alignContent={"center"}
+                                    alignItems={"center"}
+                                >
+                                    <Text m="0.5rem"> You are the manager of this event. </Text>
+                                    <Button
+                                        alignSelf={"flex-end"}
+                                        color="hsla(0,0%,100%,.64)"
+                                        p="7px 10px"
+                                        w={170}
+                                        m="0.5rem"
+                                        bgColor={"rgb(19,21,23)"}
+                                    >Manage Event</Button>
+                                </Flex>
+
+                            </CardFooter>
+                        </Card>
+                        <Card
+                            w='100%'
+                            backgroundColor={"#212325"}
+                            color="white"
+                            // margin="0.75rem"
+                            marginTop="1rem"
+                        >
+                            <CardHeader>
+                                <Heading size='lg'>Registration</Heading>
+                            </CardHeader>
+                            <Divider />
+                            <CardBody>
+                                <Stack divider={<StackDivider />} spacing='4'>
+                                    <Box>
+                                        <Heading size='md' textTransform='uppercase'>
+                                            <CalendarIcon mr="1rem" />
+                                            No Upcoming Session
+                                        </Heading>
+                                        <Text pt='2' fontSize='sm'>
+                                            This series has no upcoming sessions scheduled. Heard something is coming? Check back later!                                    </Text>
+                                    </Box>
+                                </Stack>
+                            </CardBody>
+                        </Card>
+                        <Card
+                            w='100%'
+                            backgroundColor={"#212325"}
+                            color="white"
+                            // margin="0.75rem"
+                            marginTop="1rem"
+                        >
+                            <CardHeader>
+                                <Heading size='lg'>Location</Heading>
+                            </CardHeader>
+                            <Divider />
+                            <CardBody>
+                                <Text>
+                                    With Chakra UI, I wanted to sync the speed of development with the speed
+                                    of design. I wanted the developer to be just as excited as the designer to
+                                    create a screen.
+                                </Text>
+                            </CardBody>
+                            <Image
+                                objectFit='cover'
+                                src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
+                                alt='Chakra UI'
+                            />
+                        </Card>
+                        <Card
+                            w='100%'
+                            backgroundColor={"#212325"}
+                            color="white"
+                            // margin="0.75rem"
+                            marginTop="1rem"
+                        >
+                            <CardHeader>
+                                <Heading size='lg'>Host</Heading>
+                            </CardHeader>
+                            <Divider />
+                            <CardBody>
+                                <Stack spacing='4'>
+                                    <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                    >
+                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
+                                        <Text size='sm'>Segun Adebayo</Text>
+                                    </Box>
+                                    <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                    >
+                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
+                                        <Text size='sm'>Segun Adebayo</Text>
+                                    </Box>
+                                    <Box
+                                        display={"flex"}
+                                        flexDirection={"row"}
+                                    >
+                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
+                                        <Text size='sm'>Segun Adebayo</Text>
+                                    </Box>
+                                </Stack>
+                            </CardBody>
+                        </Card>
+                    </DrawerBody>
+                    <DrawerFooter>
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
+        </Box>
     )
 }
