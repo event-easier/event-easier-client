@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SignIn from "./pages/SignIn";
@@ -18,13 +18,11 @@ import CalendarSettings from "./pages/CalendarSettings";
 import EventSettings from "./pages/EventSettings";
 import ErrorPage from "./pages/ErrorPage";
 import AuthProvider from "./context/AuthProvider";
+import ProfileSetup from "./pages/ProfileSetup";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 
 function App() {
-  console.log("env", {
-    backEndUrl: import.meta.env.VITE_BASE_URL,
-  });
   const routes = [
     {
       path: "/*",
@@ -32,7 +30,7 @@ function App() {
     },
     {
       path: "/",
-      element: <LandingPage />,
+      element: <Suspense fallback={<div>Loading...</div>} ><LandingPage /></Suspense>,
     },
     {
       path: "/event/:eid",
@@ -105,6 +103,10 @@ function App() {
     {
       path: "/calendar-settings",
       element: <CalendarSettings />,
+    },
+    {
+      path: "/profile-setup",
+      element: <ProfileSetup />,
     },
   ];
   return (

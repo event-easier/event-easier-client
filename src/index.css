@@ -1,0 +1,7 @@
+.box-disable-overflow {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.box-disable-overflow::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
