@@ -14,76 +14,98 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
-  Text
-} from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, CalendarIcon, StarIcon } from '@chakra-ui/icons';
-import { GoogleSignOut } from '../services/firebase/authentication';
-import { useNavigate } from 'react-router';
-import React, { useContext } from 'react';
-import AuthProvider from '../context/AuthProvider';
+  Text,
+} from "@chakra-ui/react";
+import { Link as ReactLink } from "react-router-dom";
+import {
+  HamburgerIcon,
+  CloseIcon,
+  CalendarIcon,
+  StarIcon,
+} from "@chakra-ui/icons";
+import { GoogleSignOut } from "../services/firebase/authentication";
+import { useNavigate } from "react-router";
+import React, { useContext } from "react";
+import AuthProvider from "../context/AuthProvider";
 
 const Links = [
   {
-    name: 'Events',
+    name: "Events",
     link: "/home",
-    icon: <StarIcon />
+    icon: <StarIcon />,
   },
   {
-    name: 'Calendars',
+    name: "Calendars",
     link: "/home/calendars",
-    icon: <CalendarIcon />
-  }
+    icon: <CalendarIcon />,
+  },
 ];
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   return (
-    <Box width="100%" pos="fixed" top={"0!important"} zIndex={2} backdropFilter={"blur(5px)"}>
-      <Box bg="#131517" px={4} opacity={0.85}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+    <Box
+      width="100%"
+      pos="fixed"
+      top={"0!important"}
+      zIndex={2}
+      backdropFilter={"blur(5px)"}
+    >
+      <Box opacity={0.85} py="0.75rem" px="1rem">
+        <Flex alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
-            size={'md'}
+            size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
-          <HStack spacing={8} alignItems={'center'}>
-            <Box color="blue.400">Event Easier</Box>
+          <HStack spacing={8} alignItems={"center"}>
+            {/* <Box color="blue.400">Event Easier</Box> */}
             <HStack
-              as={'nav'}
+              as={"nav"}
               spacing={4}
-              display={{ base: 'none', md: 'flex' }}>
-              {Links.map((link) => (
-                <div>
-                  <Link
-                    px={3}
-                    py={3}
-                    rounded={'md'}
-                    _hover={{
-                      textDecoration: 'none',
-                      bg: useColorModeValue('gray.200', 'gray.700'),
-                      color: "#131517"
-                    }}
-                    key={link.name} href={link.link}>
-                    {link.icon}
-                    &nbsp;&nbsp;
-                    {link.name}
-                  </Link>
+              display={{ base: "none", md: "flex" }}
+            >
+              {Links.map((link, idx) => (
+                <div key={idx}>
+                  <ReactLink to={link.link}>
+                    <Link
+                      rounded={"md"}
+                      display={"flex"}
+                      color={"hsla(0,0%,100%,.5)"}
+                      fontSize={14}
+                      fontWeight={500}
+                      alignItems={"center"}
+                      _hover={{
+                        color: "white",
+                      }}
+                    >
+                      {link.icon}
+                      &nbsp;&nbsp;
+                      {link.name}
+                    </Link>
+                  </ReactLink>
                 </div>
-
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={'center'}>
-            <div style={{
-              color: "grey.100"
-            }}>{Date().toString().slice(0, 16)}</div>
+          <Flex alignItems={"center"}>
+            <div
+              style={{
+                color: "hsla(0,0%,100%,.5)",
+                fontSize: "14px",
+                fontWeight: "500",
+              }}
+            >
+              {Date().toString().slice(0, 16)}
+            </div>
             <Button
-              variant={'solid'}
-              colorScheme={'transparent'}
-              size={'sm'}
+              variant={"solid"}
+              colorScheme={"transparent"}
+              color={"white"}
+              size={"sm"}
               mr={4}
             >
               Create Event
@@ -100,14 +122,15 @@ export default function Navbar() {
             <Menu>
               <MenuButton
                 as={Button}
-                rounded={'full'}
-                variant={'link'}
-                cursor={'pointer'}
-                minW={0}>
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
                 <Avatar
-                  size={'sm'}
+                  size={"sm"}
                   src={
-                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
                   }
                 />
               </MenuButton>
@@ -115,30 +138,38 @@ export default function Navbar() {
                 <MenuItem bg="#131517">View Profile</MenuItem>
                 <MenuItem bg="#131517">Settings</MenuItem>
                 <MenuDivider />
-                <MenuItem onClick={async () => {
-                  await GoogleSignOut();
-                  localStorage.removeItem("profile-data");
-                  navigate("/")
-                }}
-                  bg="#131517">Sign Out</MenuItem>
+                <MenuItem
+                  onClick={async () => {
+                    await GoogleSignOut();
+                    localStorage.removeItem("profile-data");
+                    navigate("/");
+                  }}
+                  bg="#131517"
+                >
+                  Sign Out
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>
         </Flex>
 
         {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
+          <Box pb={4} display={{ md: "none" }}>
+            <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
                 <Link
                   px={2}
                   py={1}
-                  rounded={'md'}
+                  rounded={"md"}
                   _hover={{
-                    textDecoration: 'none',
-                    bg: useColorModeValue('gray.200', 'gray.700'),
+                    textDecoration: "none",
+                    bg: useColorModeValue("gray.200", "gray.700"),
                   }}
-                  key={link.name} href={link.link}>{link.name}</Link>
+                  key={link.name}
+                  href={link.link}
+                >
+                  {link.name}
+                </Link>
               ))}
             </Stack>
           </Box>

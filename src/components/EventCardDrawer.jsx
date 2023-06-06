@@ -1,230 +1,317 @@
-import React from 'react'
+import React from "react";
 import {
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
-    Button,
-    Image,
-    Card,
-    CardBody,
-    CardFooter,
-    Stack,
-    Heading,
-    Divider,
-    Text,
-    CardHeader,
-    StackDivider,
-    Box,
-    Flex,
-    Avatar,
-} from '@chakra-ui/react'
-import { CalendarIcon, InfoOutlineIcon } from '@chakra-ui/icons'
-import "../index.css"
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Button,
+  Image,
+  Card,
+  CardBody,
+  CardFooter,
+  Stack,
+  Heading,
+  Divider,
+  Text,
+  CardHeader,
+  StackDivider,
+  Box,
+  Flex,
+  Avatar,
+} from "@chakra-ui/react";
+import { CalendarIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import "../index.css";
 
-export default function EventCardDrawer({ isOpen, onOpen, onClose, finalFocusRef }) {
-    return (
-        <Box
-            className="box-disable-overflow"
-        >
-            <Drawer
-                isOpen={isOpen}
-                placement='right'
-                onClose={onClose}
-                finalFocusRef={finalFocusRef}
-                size={"lg"}
+export default function EventCardDrawer({
+  isOpen,
+  onOpen,
+  onClose,
+  finalFocusRef,
+}) {
+  return (
+    <Box className="box-disable-overflow">
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={finalFocusRef}
+        size={"lg"}
+      >
+        <DrawerOverlay />
+        <DrawerContent backgroundColor={"rgb(19,21,23)"}>
+          <DrawerHeader
+            py={"8px"}
+            px={"12px"}
+            width={"100%"}
+            pos="fixed"
+            top={"0!important"}
+            zIndex={2}
+            backdropFilter={"blur(15px)"}
+            borderBottom={"1px solid hsla(0,0%,100%,.08)"}
+            color="white"
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
             >
-                <DrawerOverlay />
-                <DrawerContent
-                    backgroundColor={"rgb(19,21,23)"}
+              <Button
+                onClick={onClose}
+                p={"0.4375rem"}
+                maxHeight={"30px"}
+                bg="transparent"
+                color={"hsla(0,0%,100%,.64)"}
+                _hover={{
+                  bg: "hsla(0,0%,100%,.64)",
+                  color: "rgb(19,21,23)",
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  width={21}
+                  height={21}
                 >
-                    <DrawerCloseButton />
-                    <DrawerHeader
-                        width={"100%"}
-                        pos="fixed" top={"0!important"} zIndex={2}
-                        backdropFilter={"blur(15px)"}
-                        color="white"
+                  <path d="m13 17 5-5-5-5M6 17l5-5-5-5"></path>
+                </svg>
+              </Button>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <Button
+                  mr={3}
+                  bg={"hsla(0,0%,100%,.08)"}
+                  color={"hsla(0,0%,100%,.64)"}
+                  p={"7px 10px"}
+                  fontSize={14}
+                  display={"flex"}
+                  gap={"6px"}
+                  maxHeight={"30px"}
+                  _hover={{
+                    bg: "hsla(0,0%,100%,.64)",
+                    color: "rgb(19,21,23)",
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    width={14}
+                    height={14}
+                  >
+                    <rect
+                      width="13"
+                      height="13"
+                      x="9"
+                      y="9"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy link
+                </Button>
+                <Button
+                  color={"hsla(0,0%,100%,.64)"}
+                  bg={"hsla(0,0%,100%,.08)"}
+                  p={"7px 10px"}
+                  maxHeight={"30px"}
+                  fontSize={14}
+                  _hover={{
+                    bg: "hsla(0,0%,100%,.64)",
+                    color: "rgb(19,21,23)",
+                  }}
+                >
+                  Open Event Page
+                </Button>
+              </div>
+            </div>
+          </DrawerHeader>
+          <DrawerBody px={"12px"}>
+            <Card
+              w="100%"
+              backgroundColor={"#212325"}
+              color="white"
+              marginTop="4rem"
+            >
+              <CardBody>
+                <Image
+                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading>Event Name</Heading>
+                  <Box display={"flex"} flexDirection={"row"}>
+                    <Avatar
+                      size={"sm"}
+                      name="Segun Adebayo"
+                      src="https://bit.ly/sage-adebayo"
+                      mr={".5rem"}
+                    />
+                    <Text size="sm"> Hosted by Segun Adebayo</Text>
+                  </Box>
+                  <Box>
+                    <Flex
+                      direction={"row"}
+                      alignContent={"center"}
+                      alignItems={"center"}
                     >
-                        <Button variant='outline' mr={3}>
-                            Copy link
-                        </Button>
-                        <Button variant={'outline'} mr={5}>
-                            Open Event Page
-                        </Button>
-                    </DrawerHeader>
-                    <DrawerBody>
-                        <Card
-                            w='100%'
-                            backgroundColor={"#212325"}
-                            color="white"
-                            // margin="0.75rem"
-                            marginTop="4rem"
-                        >
-                            <CardBody>
-                                <Image
-                                    src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                                    alt='Green double couch with wooden legs'
-                                    borderRadius='lg'
-                                />
-                                <Stack mt='6' spacing='3'>
-                                    <Heading >Event Name</Heading>
-                                    <Box
-                                        display={"flex"}
-                                        flexDirection={"row"}
-                                    >
-                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
-                                        <Text size='sm'> Hosted by Segun Adebayo</Text>
-                                    </Box>
-                                    <Box>
-                                        <Flex
-                                            direction={"row"}
-                                            alignContent={"center"}
-                                            alignItems={"center"}
-                                        >
-                                            <CalendarIcon
-                                                boxSize={6}
-                                                m="0.5rem" />
-                                            <Box
-                                                m="0.5rem"
-                                            >
-                                                <Text> Friday, May 12</Text>
-                                                <Text>12:30 PM to 1:30 PM</Text>
-                                            </Box>
-                                        </Flex>
-
-                                    </Box>
-                                    <Box>
-                                        <Flex
-                                            direction={"row"}
-                                            alignContent={"center"}
-                                            alignItems={"center"}
-                                        >
-                                            <InfoOutlineIcon
-                                                boxSize={6}
-                                                m="0.5rem" />
-                                            <Box
-                                                m="0.5rem"
-                                            >
-                                                <Text> Ho Chi Minh City</Text>
-                                                <Text>Ho Chi Minh City, Ho Chi Minh City</Text>
-                                            </Box>
-                                        </Flex>
-                                    </Box>
-                                </Stack>
-                            </CardBody>
-                            <Divider />
-                            <CardFooter>
-                                <Flex
-                                    direction={"row"}
-                                    alignContent={"center"}
-                                    alignItems={"center"}
-                                >
-                                    <Text m="0.5rem"> You are the manager of this event. </Text>
-                                    <Button
-                                        alignSelf={"flex-end"}
-                                        color="hsla(0,0%,100%,.64)"
-                                        p="7px 10px"
-                                        w={170}
-                                        m="0.5rem"
-                                        bgColor={"rgb(19,21,23)"}
-                                    >Manage Event</Button>
-                                </Flex>
-
-                            </CardFooter>
-                        </Card>
-                        <Card
-                            w='100%'
-                            backgroundColor={"#212325"}
-                            color="white"
-                            // margin="0.75rem"
-                            marginTop="1rem"
-                        >
-                            <CardHeader>
-                                <Heading size='lg'>Registration</Heading>
-                            </CardHeader>
-                            <Divider />
-                            <CardBody>
-                                <Stack divider={<StackDivider />} spacing='4'>
-                                    <Box>
-                                        <Heading size='md' textTransform='uppercase'>
-                                            <CalendarIcon mr="1rem" />
-                                            No Upcoming Session
-                                        </Heading>
-                                        <Text pt='2' fontSize='sm'>
-                                            This series has no upcoming sessions scheduled. Heard something is coming? Check back later!                                    </Text>
-                                    </Box>
-                                </Stack>
-                            </CardBody>
-                        </Card>
-                        <Card
-                            w='100%'
-                            backgroundColor={"#212325"}
-                            color="white"
-                            // margin="0.75rem"
-                            marginTop="1rem"
-                        >
-                            <CardHeader>
-                                <Heading size='lg'>Location</Heading>
-                            </CardHeader>
-                            <Divider />
-                            <CardBody>
-                                <Text>
-                                    With Chakra UI, I wanted to sync the speed of development with the speed
-                                    of design. I wanted the developer to be just as excited as the designer to
-                                    create a screen.
-                                </Text>
-                            </CardBody>
-                            <Image
-                                objectFit='cover'
-                                src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80'
-                                alt='Chakra UI'
-                            />
-                        </Card>
-                        <Card
-                            w='100%'
-                            backgroundColor={"#212325"}
-                            color="white"
-                            // margin="0.75rem"
-                            marginTop="1rem"
-                        >
-                            <CardHeader>
-                                <Heading size='lg'>Host</Heading>
-                            </CardHeader>
-                            <Divider />
-                            <CardBody>
-                                <Stack spacing='4'>
-                                    <Box
-                                        display={"flex"}
-                                        flexDirection={"row"}
-                                    >
-                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
-                                        <Text size='sm'>Segun Adebayo</Text>
-                                    </Box>
-                                    <Box
-                                        display={"flex"}
-                                        flexDirection={"row"}
-                                    >
-                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
-                                        <Text size='sm'>Segun Adebayo</Text>
-                                    </Box>
-                                    <Box
-                                        display={"flex"}
-                                        flexDirection={"row"}
-                                    >
-                                        <Avatar size={"sm"} name='Segun Adebayo' src='https://bit.ly/sage-adebayo' mr={".5rem"} />
-                                        <Text size='sm'>Segun Adebayo</Text>
-                                    </Box>
-                                </Stack>
-                            </CardBody>
-                        </Card>
-                    </DrawerBody>
-                    <DrawerFooter>
-                    </DrawerFooter>
-                </DrawerContent>
-            </Drawer>
-        </Box>
-    )
+                      <CalendarIcon boxSize={6} m="0.5rem" />
+                      <Box m="0.5rem">
+                        <Text> Friday, May 12</Text>
+                        <Text>12:30 PM to 1:30 PM</Text>
+                      </Box>
+                    </Flex>
+                  </Box>
+                  <Box>
+                    <Flex
+                      direction={"row"}
+                      alignContent={"center"}
+                      alignItems={"center"}
+                    >
+                      <InfoOutlineIcon boxSize={6} m="0.5rem" />
+                      <Box m="0.5rem">
+                        <Text> Ho Chi Minh City</Text>
+                        <Text>Ho Chi Minh City, Ho Chi Minh City</Text>
+                      </Box>
+                    </Flex>
+                  </Box>
+                </Stack>
+              </CardBody>
+              <Divider />
+              <CardFooter>
+                <Flex
+                  direction={"row"}
+                  alignContent={"center"}
+                  alignItems={"center"}
+                >
+                  <Text m="0.5rem"> You are the manager of this event. </Text>
+                  <Button
+                    alignSelf={"flex-end"}
+                    color="hsla(0,0%,100%,.64)"
+                    p="7px 10px"
+                    w={170}
+                    m="0.5rem"
+                    bgColor={"rgb(19,21,23)"}
+                  >
+                    Manage Event
+                  </Button>
+                </Flex>
+              </CardFooter>
+            </Card>
+            <Card
+              w="100%"
+              backgroundColor={"#212325"}
+              color="white"
+              // margin="0.75rem"
+              marginTop="1rem"
+            >
+              <CardHeader>
+                <Heading size="lg">Registration</Heading>
+              </CardHeader>
+              <Divider />
+              <CardBody>
+                <Stack divider={<StackDivider />} spacing="4">
+                  <Box>
+                    <Heading size="md" textTransform="uppercase">
+                      <CalendarIcon mr="1rem" />
+                      No Upcoming Session
+                    </Heading>
+                    <Text pt="2" fontSize="sm">
+                      This series has no upcoming sessions scheduled. Heard
+                      something is coming? Check back later!{" "}
+                    </Text>
+                  </Box>
+                </Stack>
+              </CardBody>
+            </Card>
+            <Card
+              w="100%"
+              backgroundColor={"#212325"}
+              color="white"
+              // margin="0.75rem"
+              marginTop="1rem"
+            >
+              <CardHeader>
+                <Heading size="lg">Location</Heading>
+              </CardHeader>
+              <Divider />
+              <CardBody>
+                <Text>
+                  With Chakra UI, I wanted to sync the speed of development with
+                  the speed of design. I wanted the developer to be just as
+                  excited as the designer to create a screen.
+                </Text>
+              </CardBody>
+              <Image
+                objectFit="cover"
+                src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+                alt="Chakra UI"
+              />
+            </Card>
+            <Card
+              w="100%"
+              backgroundColor={"#212325"}
+              color="white"
+              // margin="0.75rem"
+              marginTop="1rem"
+            >
+              <CardHeader>
+                <Heading size="lg">Host</Heading>
+              </CardHeader>
+              <Divider />
+              <CardBody>
+                <Stack spacing="4">
+                  <Box display={"flex"} flexDirection={"row"}>
+                    <Avatar
+                      size={"sm"}
+                      name="Segun Adebayo"
+                      src="https://bit.ly/sage-adebayo"
+                      mr={".5rem"}
+                    />
+                    <Text size="sm">Segun Adebayo</Text>
+                  </Box>
+                  <Box display={"flex"} flexDirection={"row"}>
+                    <Avatar
+                      size={"sm"}
+                      name="Segun Adebayo"
+                      src="https://bit.ly/sage-adebayo"
+                      mr={".5rem"}
+                    />
+                    <Text size="sm">Segun Adebayo</Text>
+                  </Box>
+                  <Box display={"flex"} flexDirection={"row"}>
+                    <Avatar
+                      size={"sm"}
+                      name="Segun Adebayo"
+                      src="https://bit.ly/sage-adebayo"
+                      mr={".5rem"}
+                    />
+                    <Text size="sm">Segun Adebayo</Text>
+                  </Box>
+                </Stack>
+              </CardBody>
+            </Card>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Box>
+  );
 }
