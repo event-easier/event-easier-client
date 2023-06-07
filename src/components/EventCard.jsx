@@ -18,7 +18,7 @@ export default function EventCard({ title, categories, description, icon, date }
     return (
         <HStack
             p={{ base: 3, sm: 6 }}
-            bg={useColorModeValue('gray.800', 'gray.800')}
+            bg={useColorModeValue('#192123', '#212325')}
             spacing={5}
             rounded="lg"
             alignItems="center"
