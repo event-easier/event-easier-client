@@ -53,7 +53,7 @@ export default function Navbar() {
       backdropFilter={"blur(5px)"}
     >
       <div
-        class="jsx-2931876464 background animated mounted"
+        className="jsx-2931876464 background animated mounted"
         style={{
           position: "fixed",
           top: "0px",
@@ -155,7 +155,7 @@ export default function Navbar() {
                 />
               </MenuButton>
               <MenuList bg="#131517">
-                <MenuItem bg="#131517">View Profile</MenuItem>
+                <MenuItem bg="#131517" onClick={() => {navigate("/user/:uid/profile")}}>View Profile</MenuItem>
                 <MenuItem bg="#131517">Settings</MenuItem>
                 <MenuDivider />
                 <MenuItem

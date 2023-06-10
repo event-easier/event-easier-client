@@ -9,8 +9,6 @@ import {
   TabPanel,
   Button,
   Text,
-  Image,
-  Box,
 } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "../components/Navbar";
