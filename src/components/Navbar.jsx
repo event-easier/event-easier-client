@@ -53,7 +53,7 @@ export default function Navbar() {
       backdropFilter={"blur(5px)"}
     >
       <div
-        class="jsx-2931876464 background animated mounted"
+        className="jsx-2931876464 background animated mounted"
         style={{
           position: "fixed",
           top: "0px",
@@ -80,6 +80,8 @@ export default function Navbar() {
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
+            color={"black"}
+            opacity={"75%"}
           />
           <HStack spacing={8} alignItems={"center"}>
             {/* <Box color="blue.400">Event Easier</Box> */}
@@ -149,13 +151,11 @@ export default function Navbar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  src={JSON.parse(localStorage.getItem('profile-data')).data.data.avatar}
                 />
               </MenuButton>
               <MenuList bg="#131517">
-                <MenuItem bg="#131517">View Profile</MenuItem>
+                <MenuItem bg="#131517" onClick={() => {navigate("/user/:uid/profile")}}>View Profile</MenuItem>
                 <MenuItem bg="#131517">Settings</MenuItem>
                 <MenuDivider />
                 <MenuItem

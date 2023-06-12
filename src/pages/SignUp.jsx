@@ -14,10 +14,13 @@ import {
   Wrap,
   Box,
   WrapItem,
+  useDisclosure
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import ProfileSetupModal from "../components/ProfileSetupModal";
 
 export default function SignUp() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [input, setInput] = useState("");
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const isErrorEmail = !emailRegex.test(input);
@@ -75,13 +78,11 @@ export default function SignUp() {
           p={"12px 18px"}
           w={400}
           isDisabled={isErrorEmail}
-          onClick={() => {
-            console.log(input);
-          }}
+          onClick={onOpen}
         >
           Continue
         </Button>
-
+        <ProfileSetupModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
         <Text mt="16px">
           Already a user?{" "}
           <Link to="/signin">

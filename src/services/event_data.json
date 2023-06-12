@@ -1,0 +1,39 @@
+{
+    "_id": {
+        "$oid": "646cc164bee633392912a363"
+    },
+    "name": "Event Happy Hour",
+    "type": {
+        "event_type": "IN_PERSON",
+        "location": "San Francisco, CA"
+    },
+    "cover": "https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=85,width=960,height=480/event-defaults/b3.jpg",
+    "start_time": {
+        "$numberLong": "1684848515723"
+    },
+    "end_time": {
+        "$numberLong": "1684848514123"
+    },
+    "require_approve": false,
+    "hosts": [
+        {
+            "user_id": "645f9bb8ce69934817055c6c",
+            "gmail": "nt3112000@gmail.com",
+            "name": "John Doe",
+            "avatar": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=85,width=40,height=40/avatars/fl/b0bf5590-b242-4c88-ae4d-a6987373989e"
+        }
+    ],
+    "guests": [
+        {
+            "avatar": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            "name": "trung",
+            "user_id": "6465c29e46c8b5c6a71b0fec",
+            "gmail": "bin.trung0@gmail.com",
+            "status": "APPROVED",
+            "_id": {
+                "$oid": "647f1b842d4084f7eec388e5"
+            }
+        }
+    ],
+    "__v": 12
+}

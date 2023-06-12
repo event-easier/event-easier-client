@@ -30,6 +30,7 @@ export default function EventCardDrawer({
   onOpen,
   onClose,
   finalFocusRef,
+  event
 }) {
   return (
     <Box className="box-disable-overflow">
@@ -152,20 +153,20 @@ export default function EventCardDrawer({
             >
               <CardBody>
                 <Image
-                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                  alt="Green double couch with wooden legs"
+                  src={event.cover}
+                  alt={event.name}
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
-                  <Heading>Event Name</Heading>
+                  <Heading>{event.name}</Heading>
                   <Box display={"flex"} flexDirection={"row"}>
                     <Avatar
                       size={"sm"}
                       name="Segun Adebayo"
-                      src="https://bit.ly/sage-adebayo"
+                      src={event.hosts[0].avatar}
                       mr={".5rem"}
                     />
-                    <Text size="sm"> Hosted by Segun Adebayo</Text>
+                    <Text size="sm"> Hosted by {event.hosts[0].name}</Text>
                   </Box>
                   <Box>
                     <Flex
@@ -175,8 +176,16 @@ export default function EventCardDrawer({
                     >
                       <CalendarIcon boxSize={6} m="0.5rem" />
                       <Box m="0.5rem">
-                        <Text> Friday, May 12</Text>
-                        <Text>12:30 PM to 1:30 PM</Text>
+                        <Text>
+                          {new Date(event.start_time).toLocaleDateString('en-GB')}
+                          {" "} to {" "}
+                          {new Date(event.end_time).toLocaleDateString('en-GB')}
+                        </Text>
+                        <Text>
+                          {new Date(event.start_time).toLocaleTimeString('en-US')}
+                          {" "} to {" "}
+                          {new Date(event.end_time).toLocaleTimeString('en-US')}
+                        </Text>
                       </Box>
                     </Flex>
                   </Box>
@@ -188,8 +197,7 @@ export default function EventCardDrawer({
                     >
                       <InfoOutlineIcon boxSize={6} m="0.5rem" />
                       <Box m="0.5rem">
-                        <Text> Ho Chi Minh City</Text>
-                        <Text>Ho Chi Minh City, Ho Chi Minh City</Text>
+                        <Text>{event.type.location}</Text>
                       </Box>
                     </Flex>
                   </Box>
@@ -216,7 +224,7 @@ export default function EventCardDrawer({
                 </Flex>
               </CardFooter>
             </Card>
-            <Card
+            {/* <Card
               w="100%"
               backgroundColor={"#212325"}
               color="white"
@@ -241,7 +249,7 @@ export default function EventCardDrawer({
                   </Box>
                 </Stack>
               </CardBody>
-            </Card>
+            </Card> */}
             <Card
               w="100%"
               backgroundColor={"#212325"}
@@ -254,11 +262,11 @@ export default function EventCardDrawer({
               </CardHeader>
               <Divider />
               <CardBody>
-                <Text>
+                {/* <Text>
                   With Chakra UI, I wanted to sync the speed of development with
                   the speed of design. I wanted the developer to be just as
                   excited as the designer to create a screen.
-                </Text>
+                </Text> */}
               </CardBody>
               <Image
                 objectFit="cover"
@@ -279,33 +287,20 @@ export default function EventCardDrawer({
               <Divider />
               <CardBody>
                 <Stack spacing="4">
-                  <Box display={"flex"} flexDirection={"row"}>
-                    <Avatar
-                      size={"sm"}
-                      name="Segun Adebayo"
-                      src="https://bit.ly/sage-adebayo"
-                      mr={".5rem"}
-                    />
-                    <Text size="sm">Segun Adebayo</Text>
-                  </Box>
-                  <Box display={"flex"} flexDirection={"row"}>
-                    <Avatar
-                      size={"sm"}
-                      name="Segun Adebayo"
-                      src="https://bit.ly/sage-adebayo"
-                      mr={".5rem"}
-                    />
-                    <Text size="sm">Segun Adebayo</Text>
-                  </Box>
-                  <Box display={"flex"} flexDirection={"row"}>
-                    <Avatar
-                      size={"sm"}
-                      name="Segun Adebayo"
-                      src="https://bit.ly/sage-adebayo"
-                      mr={".5rem"}
-                    />
-                    <Text size="sm">Segun Adebayo</Text>
-                  </Box>
+                  {event.hosts.map((host, index) => {
+                    return (
+                      <Box display={"flex"} flexDirection={"row"} key={index}>
+                        <Avatar
+                          size={"sm"}
+                          name={host.name}
+                          src={host.avatar}
+                          mr={".5rem"}
+                        />
+                        <Text size="sm">{host.name}</Text>
+                      </Box>
+                    )
+                  })}
+
                 </Stack>
               </CardBody>
             </Card>

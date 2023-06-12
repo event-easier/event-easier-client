@@ -6,16 +6,12 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthProvider";
 
 const client = axios.create({
     baseURL: `https://event-easier-staging.onrender.com/api/v1/user`,
 });
 export const handleGoogleLogin = async (provider) => {
     const result = await signInWithPopup(auth, provider);
-    const navigate = useNavigate();
     try {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;

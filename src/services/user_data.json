@@ -1,0 +1,9 @@
+{
+    "_id": {
+        "$oid": "645f894fb1ed905a3fb28f3b"
+    },
+    "name": "test1",
+    "type": "vip",
+    "email": "j2team.tranminhquang@gmail.com",
+    "avatar": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+}

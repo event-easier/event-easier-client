@@ -9,62 +9,21 @@ import {
   TabPanel,
   Button,
   Text,
-  Image,
-  Box,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import EventCard from "../components/EventCard";
 import LineWithDot from "../components/LineWithDot";
+import { createEvent, getAllEvents, findOne, updateById } from "../services/events";
+import TestAPIButtons from "../components/TestAPIButtons";
+import { useEffect } from "react";
+import { AppContext } from "../context/AppProvider";
 
-const upcoming_events = undefined;
-
-const past_events = [
-  {
-    id: 1,
-    categories: ["Article"],
-    title: "Title A",
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. `,
-    date: "March 30, 2022",
-  },
-  {
-    id: 2,
-    categories: ["Web Dev", "OSS"],
-    title: "Title B",
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    date: "July 30, 2022",
-  },
-  {
-    id: 3,
-    categories: ["Web Dev", "OSS"],
-    title: "Title B",
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    date: "January 30, 2022",
-  },
-  {
-    id: 4,
-    categories: ["Web Dev", "OSS"],
-    title: "Title B",
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    date: "July 30, 2022",
-  },
-  {
-    id: 5,
-    categories: ["Web Dev", "OSS"],
-    title: "Title B",
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    date: "July 30, 2022",
-  },
-  {
-    id: 6,
-    categories: ["Web Dev", "OSS"],
-    title: "Title B",
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-    date: "July 30, 2022",
-  },
-];
+//* EVENT SCHEMA - check event_data.json in /services
 
 export default function Home() {
+  const {events, upcomingEvents, pastEvents} = useContext(AppContext)
+
   return (
     <div
       style={{
@@ -130,7 +89,7 @@ export default function Home() {
           <TabPanels>
             <TabPanel>
               <Container maxWidth="4xl" p={{ base: 2, sm: 10 }}>
-                {!upcoming_events ? (
+                {(upcomingEvents == []) ? (
                   <div>
                     <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
                       No Upcoming Events
@@ -153,10 +112,13 @@ export default function Home() {
                     </Button>
                   </div>
                 ) : (
-                  upcoming_events?.map((event, index) => (
-                    <Flex key={index} mb="10px">
+                  upcomingEvents?.map((event, index) => (
+                    <Flex key={index} mb="20px">
+                      <div>
+                        <Text w="100px"> {new Date(event.start_time).toLocaleDateString('en-GB')}</Text>
+                      </div>
                       <LineWithDot />
-                      <EventCard {...event} />
+                      <EventCard event={event} />
                     </Flex>
                   ))
                 )}
@@ -164,7 +126,7 @@ export default function Home() {
             </TabPanel>
             <TabPanel>
               <Container maxWidth="4xl" p={{ base: 2, sm: 10 }}>
-                {!past_events ? (
+                {(pastEvents == []) ? (
                   <div>
                     <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
                       No Past Events
@@ -187,14 +149,14 @@ export default function Home() {
                     </Button>
                   </div>
                 ) : (
-                  past_events.map((event, index) => (
-                    <Flex key={index} mb="10px">
+                  pastEvents.map((event, index) => (
+                    <Flex key={index} mb="20px">
                       <div>
-                        <Text w="100px"> {event.date}</Text>
+                        <Text w="100px"> {new Date(event.start_time).toLocaleDateString('en-GB')}</Text>
                       </div>
                       <Flex>
                         <LineWithDot />
-                        <EventCard {...event} />
+                        <EventCard event={event} />
                       </Flex>
                     </Flex>
                   ))
@@ -210,6 +172,12 @@ export default function Home() {
           padding: "32px 16px 16px",
         }}
       ></div>
+      {/* TEST API CONTROL */}
+      <TestAPIButtons
+        events={events}
+        upcoming_events={upcomingEvents}
+        past_events={pastEvents}
+      />
     </div>
   );
 }
