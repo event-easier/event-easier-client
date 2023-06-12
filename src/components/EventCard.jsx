@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import EventCardDrawer from './EventCardDrawer';
 
-export default function EventCard({ title, categories, description, icon, date }) {
+export default function EventCard({ event }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const eventRef = React.useRef()
     return (
@@ -22,6 +22,7 @@ export default function EventCard({ title, categories, description, icon, date }
             spacing={5}
             rounded="lg"
             alignItems="center"
+            w="640px"
             pos="relative"
             _before={{
                 content: `""`,
@@ -37,27 +38,22 @@ export default function EventCard({ title, categories, description, icon, date }
             ref={eventRef}
             onClick={onOpen}
         >
-            <Image boxSize={100} src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
+            <Image boxSize={100} src={event.cover} alt={event.name} />
             <Box>
-                <Text fontSize="sm">{date}</Text>
-                <HStack spacing={2} mb={1}>
-                    {categories.map((cat) => (
-                        <Text color={"green.200"} fontSize="sm" key={cat}>
-                            {cat}
-                        </Text>
-                    ))}
-                </HStack>
-                <VStack spacing={2} mb={3} textAlign="left">
+                <Text fontSize="sm" color="#DFAC00">
+                    {new Date(event.start_time).toLocaleDateString('en-GB')} - {new Date(event.end_time).toLocaleDateString('en-GB')}
+                </Text>
+                <VStack w="100%" spacing={2} mb={3} textAlign="left">
                     <chakra.h1
                         fontSize="2xl"
                         lineHeight={1.2}
                         fontWeight="bold"
                         w="100%"
                     >
-                        {title}
+                        {event.name}
                     </chakra.h1>
-                    <Text fontSize="md" noOfLines={2}>
-                        {description}
+                    <Text w="100%" fontSize="md" noOfLines={2} >
+                        {event.type.event_type}
                     </Text>
                 </VStack>
                 <Button
@@ -72,7 +68,8 @@ export default function EventCard({ title, categories, description, icon, date }
                 isOpen={isOpen}
                 placement='left'
                 onClose={onClose}
-                finalFocusRef = {eventRef}
+                finalFocusRef={eventRef}
+                event={event}
             />
         </HStack>
     )

@@ -3,11 +3,18 @@ import Navbar from '../components/Navbar'
 import { Avatar, Box, Button, Heading, Text } from '@chakra-ui/react'
 import ProfileEventCard from '../components/ProfileEventCard'
 import { useState } from 'react'
-
+import { AppContext } from '../context/AppProvider'
+import { useContext } from 'react'
+import { useParams } from 'react-router-dom'
 export default function UserProfile() {
+  let { uid } = useParams;
+  const { user, events, upcomingEvents, pastEvents } = useContext(AppContext)
   const [openPast, setOpenPast] = useState(false)
-  return (
+  console.log(upcomingEvents)
+  // const EditBioModal = () => {
 
+  // }
+  return (
     <div
       style={{
         color: "white",
@@ -30,15 +37,20 @@ export default function UserProfile() {
         >
           <Avatar
             size={"xxl"}
-            src={
-              "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-            }
+            src={user.avatar}
           />
-          <Heading m="16px 0px">Nguyen Kieu Bao Khanh</Heading>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Sed vitae facilisis tellus. Proin ut lorem tellus.
+          <Heading m="16px 0px">{user.name}</Heading>
+          <Text mb="0.5rem">
+            {user.bio}
           </Text>
+          <Button
+            color="hsla(0,0%,100%,.64)"
+            p="7px 10px"
+            w={170}
+            m="2px"
+            bgColor={"#212325"}
+            _hover={{ bgColor: "#1234" }}
+          >Edit Bio</Button>
         </Box>
       </Box>
       <div
@@ -74,10 +86,13 @@ export default function UserProfile() {
             >Create Event</Button>
           </div>
         </Box>
+        {/* <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
         <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
         <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
+        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} /> */}
+        {upcomingEvents.map((event, index) => {
+          return <ProfileEventCard key={index} event={event} />
+        })}
         {openPast ? <div>
           <Button
             variant="ghost"
@@ -88,10 +103,9 @@ export default function UserProfile() {
               setOpenPast(false)
             }}
           >View less</Button>
-          <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-          <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-          <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-          <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
+          {pastEvents?.map((event, index) => {
+            return <ProfileEventCard key={index} event={event} />
+          })}
         </div>
           :
           <div>

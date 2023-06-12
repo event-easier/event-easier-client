@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, CardHeader, CardBody, CardFooter, Heading, Text, Image, Stack, Button, Icon, Divider, Box } from '@chakra-ui/react';
 
-export default function ProfileEventCard({ title, icon, date }) {
+export default function ProfileEventCard({ event }) {
     return (
         <Card
             position={"relative"}
@@ -24,15 +24,15 @@ export default function ProfileEventCard({ title, icon, date }) {
                 m={"1rem 2rem"}
                 
             >
-                June
+                {new Date(event.start_time).toString().slice(3, 7)}
                 <Divider orientation='horizontal' />
-                23rd
+                {new Date(event.start_time).toString().slice(8, 10)}
             </Box>
             <Image
                 objectFit='cover'
                 w="160px"
                 h="80px"
-                src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
+                src={event.cover}
                 alt='Caffe Latte'
                 borderRadius={"0.25rem"}
             />
@@ -42,9 +42,11 @@ export default function ProfileEventCard({ title, icon, date }) {
                 pl="1rem"
             >
                 <CardBody>
-                    <Heading size='md'>{title}</Heading>
-                    <Text>
-                        {date}
+                    <Heading size='md'>{event.name}</Heading>
+                    <Text
+                        color="hsla(0,0%,100%,.64)"
+                    >
+                        {new Date(event.start_time).toLocaleDateString("en-GB")}
                     </Text>
                 </CardBody>
                 <CardFooter>
