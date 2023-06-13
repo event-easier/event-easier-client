@@ -12,10 +12,10 @@ import {
     Input,
     Button,
 } from '@chakra-ui/react'
-import { AppContext } from '../context/AppProvider'
+import { AuthContext } from '../context/AuthProvider'
 
-export default function ProfileSetup({isOpen, onOpen, onClose}) {
-    const {user, setUser} = useContext(AppContext)
+export default function ProfileSetup({ isOpen, onOpen, onClose }) {
+    const { user, setUser } = useContext(AuthContext)
     const initialRef = React.useRef(null)
     const finalRef = React.useRef(null)
 

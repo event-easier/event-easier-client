@@ -6,9 +6,11 @@ import { useState } from 'react'
 import { AppContext } from '../context/AppProvider'
 import { useContext } from 'react'
 import { useParams } from 'react-router-dom'
+import { AuthContext } from '../context/AuthProvider'
 export default function UserProfile() {
   let { uid } = useParams;
-  const { user, events, upcomingEvents, pastEvents } = useContext(AppContext)
+  const { events, upcomingEvents, pastEvents } = useContext(AppContext)
+  const {user, setUser} = useContext(AuthContext)
   const [openPast, setOpenPast] = useState(false)
   console.log(upcomingEvents)
   // const EditBioModal = () => {

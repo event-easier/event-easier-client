@@ -27,20 +27,14 @@ export function useWindowDimensions() {
     return windowDimensions;
 }
 
-export const AppContext = React.createContext();
+export const AppContext = React.createContext("");
 
 export default function AppProvider({ children }) {
     const navigate = useNavigate();
     const { width, height } = useWindowDimensions();
     const commonBreakPoint = [320, 480, 768, 1024, 1025, 1200];
-    const [user, setUser] = useState({
-        "id": JSON.parse(localStorage.getItem("profile-data")).data.data._id,
-        "name": JSON.parse(localStorage.getItem("profile-data")).data.data.name,
-        "type": JSON.parse(localStorage.getItem("profile-data")).data.data.type,
-        "email": JSON.parse(localStorage.getItem("profile-data")).data.data.email,
-        "avatar": JSON.parse(localStorage.getItem("profile-data")).data.data.avatar,
-        "bio": "You can edit this!"
-    })
+    // const profile_data = JSON.parse(localStorage.getItem("profile-data")).data.data;
+
     const [events, setEvents] = useState([])
     const [upcomingEvents, setUpComingEvents] = useState([])
     const [pastEvents, setPastEvents] = useState([])
@@ -57,7 +51,7 @@ export default function AppProvider({ children }) {
     }
 
     const fetchEventsData = async () => {
-        const id = JSON.parse(localStorage.getItem('profile-data')).data.data._id
+        const id = JSON.parse(localStorage.getItem('profile-data'))?.data?.data._id
         const events_update = await getAllEvents(
             {
                 user_id: id
@@ -77,7 +71,6 @@ export default function AppProvider({ children }) {
     return (
         <AppContext.Provider
             value={{
-                user, setUser,
                 width,
                 height,
                 commonBreakPoint,
