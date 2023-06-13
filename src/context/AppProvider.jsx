@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  createEvent,
-  getAllEvents,
-  findOne,
-  updateById,
+    createEvent,
+    getAllEvents,
+    findOne,
+    updateById,
 } from "../services/events";
 
 function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+        width,
+        height,
+    };
 }
 
 export function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+    const [windowDimensions, setWindowDimensions] = useState(
+        getWindowDimensions()
+    );
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
+    useEffect(() => {
+        function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+        }
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
-  return windowDimensions;
+    return windowDimensions;
 }
 
 export const AppContext = React.createContext("");
@@ -52,7 +52,7 @@ export default function AppProvider({ children }) {
     })
 
     const fetchEventsData = async () => {
-        const id = JSON.parse(localStorage.getItem('profile-data'))?.data?.data._id
+        const id = JSON.parse(localStorage.getItem('profile-data'))._id
         const events_update = await getAllEvents(
             {
                 user_id: id
