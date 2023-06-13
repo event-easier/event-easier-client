@@ -27,7 +27,7 @@ export const createEvent = async (input) => {
 export const getAllEvents = async (input) => {
   try {
     const result = await client
-      .post("/user", {
+      .get("/user", {
         headers: {
           Authorization:
             "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
