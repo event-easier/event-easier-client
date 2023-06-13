@@ -441,7 +441,7 @@ export default function Calendars() {
                   color: "#131517",
                 }}
               >
-                View Calendar ->
+                View Calendar
               </Button>
             </Box>
             <Box h={"137px"}>
