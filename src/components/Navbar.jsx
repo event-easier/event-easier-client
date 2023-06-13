@@ -150,11 +150,18 @@ export default function Navbar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={JSON.parse(localStorage.getItem('profile-data'))?.data?.data?.avatar}
+                  src={JSON.parse(localStorage.getItem("profile-data")).avatar}
                 />
               </MenuButton>
               <MenuList bg="#131517">
-                <MenuItem bg="#131517" onClick={() => {navigate("/user/:uid/profile")}}>View Profile</MenuItem>
+                <MenuItem
+                  bg="#131517"
+                  onClick={() => {
+                    navigate("/user/:uid/profile");
+                  }}
+                >
+                  View Profile
+                </MenuItem>
                 <MenuItem bg="#131517">Settings</MenuItem>
                 <MenuDivider />
                 <MenuItem

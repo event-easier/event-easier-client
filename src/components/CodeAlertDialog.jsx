@@ -70,13 +70,20 @@ export default function CodeAlertDialog({
               onClick={async () => {
                 console.log("verify code:", verifyCode);
                 const res = await VerifyUserByCode(email, verifyCode);
-                !res
-                  ?
-                  console.log("Something is wrong.")
-                  :
-                  setProfileData(res);
-                localStorage.setItem("profile-data", JSON.stringify(res));
-                navigate("/home")
+                if (!res) {
+                  console.log("Something is wrong.");
+                  return;
+                }
+
+                setProfileData(res.data.data);
+                localStorage.setItem(
+                  "profile-data",
+                  JSON.stringify({
+                    ...res.data.data,
+                    token: res.data.token,
+                  })
+                );
+                navigate("/home");
               }}
             >
               Verify
