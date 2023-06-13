@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../services/firebase/config";
 import { useNavigate, useLocation } from "react-router-dom";
-
 export const AuthContext = React.createContext();
 
 const unAuthPage = [
@@ -12,9 +11,17 @@ const unAuthPage = [
 ];
 
 export default function AuthProvider({ children }) {
+    const [user, setUser] = useState({
+        id: "",
+        name: "",
+        type: "",
+        email: "",
+        avatar: "",
+        bio: "You can edit this!"
+    })
     const navigate = useNavigate();
     const location = useLocation();
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
     const [profileData, setProfileData] = useState(null);
     useEffect(() => {
         const unsubscribed = auth.onAuthStateChanged((userInfo) => {
@@ -28,7 +35,6 @@ export default function AuthProvider({ children }) {
                 navigate("/");
             }
         });
-
         return () => {
             unsubscribed();
         };
@@ -36,8 +42,7 @@ export default function AuthProvider({ children }) {
     return (
         <AuthContext.Provider
             value={{
-                user,
-                setUser,
+                user, setUser,
                 profileData,
                 setProfileData
             }}

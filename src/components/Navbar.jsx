@@ -25,8 +25,7 @@ import {
 } from "@chakra-ui/icons";
 import { GoogleSignOut } from "../services/firebase/authentication";
 import { useNavigate } from "react-router";
-import React, { useContext } from "react";
-import AuthProvider from "../context/AuthProvider";
+import React from "react";
 
 const Links = [
   {
@@ -151,7 +150,7 @@ export default function Navbar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={JSON.parse(localStorage.getItem('profile-data')).data.data.avatar}
+                  src={JSON.parse(localStorage.getItem('profile-data'))?.data?.data?.avatar}
                 />
               </MenuButton>
               <MenuList bg="#131517">
@@ -159,9 +158,8 @@ export default function Navbar() {
                 <MenuItem bg="#131517">Settings</MenuItem>
                 <MenuDivider />
                 <MenuItem
-                  onClick={async () => {
-                    await GoogleSignOut();
-                    localStorage.removeItem("profile-data");
+                  onClick={() => {
+                    GoogleSignOut();
                     navigate("/");
                   }}
                   bg="#131517"

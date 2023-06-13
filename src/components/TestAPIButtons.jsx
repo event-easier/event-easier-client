@@ -7,7 +7,7 @@ export default function TestAPIButtons({ events, checkEventTime, upcoming_events
     return (
         <div>
             <Button color={"black"} onClick={() => {
-                const id = JSON.parse(localStorage.getItem('profile-data')).data.data._id
+                const id = JSON.parse(localStorage.getItem('profile-data'))?.data?.data?._id
                 console.log(id)
                 getAllEvents({
                     user_id: id
@@ -15,7 +15,7 @@ export default function TestAPIButtons({ events, checkEventTime, upcoming_events
             }}> Call API getAllEvents</Button>
 
             <Button color={"black"} onClick={() => {
-                const user_profile = JSON.parse(localStorage.getItem('profile-data')).data.data
+                const user_profile = JSON.parse(localStorage.getItem('profile-data'))?.data?.data
                 console.log(user_profile)
                 const creator_host = {
                     user_id: user_profile._id,
@@ -42,7 +42,7 @@ export default function TestAPIButtons({ events, checkEventTime, upcoming_events
                 })
             }}> Call API createEvent </Button>
             <Button color={"black"} onClick={() => {
-                const user_profile = JSON.parse(localStorage.getItem('profile-data')).data.data
+                const user_profile = JSON.parse(localStorage.getItem('profile-data'))?.data?.data
                 console.log(user_profile)
                 const creator_host = {
                     user_id: user_profile._id,
@@ -56,7 +56,7 @@ export default function TestAPIButtons({ events, checkEventTime, upcoming_events
                     })
             }}> Call API findOne </Button>
             <Button color={"black"} onClick={() => {
-                const user_profile = JSON.parse(localStorage.getItem('profile-data')).data.data
+                const user_profile = JSON.parse(localStorage.getItem('profile-data'))?.data?.data
                 console.log(user_profile)
                 const creator_host = {
                     user_id: user_profile._id,
