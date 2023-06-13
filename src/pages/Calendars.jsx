@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
   Container,
   Heading,
@@ -14,8 +14,11 @@ import {
   Box,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function Calendars() {
+  const { profileData } = useContext(AuthContext);
+
   // const [events, setEvents] = useState([]);
   let a = JSON.parse(localStorage.getItem("data_user"));
   // const client = axios.create({
@@ -38,10 +41,10 @@ export default function Calendars() {
   //   }
   // }, []);
   // const myEvent = events.filter((data) =>
-  //   data.hosts.some((hosts) => hosts.user_id === a.data._id)
+  //   data.hosts.some((hosts) => hosts.user_id === profileData._id)
   // );
   // const mySubscribed = events.filter((data) =>
-  //   data.guests.some((guests) => guests.user_id === a.data._id)
+  //   data.guests.some((guests) => guests.user_id === profileData._id)
   // );
 
   return (
@@ -111,8 +114,8 @@ export default function Calendars() {
             <Image
               boxSize="48px"
               objectFit="cover"
-              src={a.data.avatar}
-              alt={a.data.avatar}
+              src={profileData.avatar}
+              alt={profileData.avatar}
               borderRadius={"50%"}
             />
             <Heading
@@ -121,7 +124,7 @@ export default function Calendars() {
               mb={"4px"}
               mt={"12px"}
             >
-              {a.data.name}
+              {profileData.name}
             </Heading>
             <Text color={"#828384"}>2 Subscribers</Text>
             <Text
@@ -169,8 +172,8 @@ export default function Calendars() {
                 <Image
                   boxSize="16px"
                   objectFit="cover"
-                  src={a.data.avatar}
-                  alt={a.data.avatar}
+                  src={profileData.avatar}
+                  alt={profileData.avatar}
                   borderRadius={"50%"}
                 />
               </Center>
