@@ -150,7 +150,7 @@ export default function Navbar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={JSON.parse(localStorage.getItem("profile-data")).avatar}
+                  src={JSON.parse(localStorage.getItem("profile-data"))?.avatar}
                 />
               </MenuButton>
               <MenuList bg="#131517">
