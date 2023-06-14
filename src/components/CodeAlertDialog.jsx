@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -13,6 +13,8 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { VerifyUserByCode } from "../services/firebase/authentication";
+import { useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthProvider";
 
 export default function CodeAlertDialog({
   isOpen,
@@ -21,7 +23,10 @@ export default function CodeAlertDialog({
   cancelRef,
   email,
 }) {
+  const { setProfileData } = useContext(AuthContext);
   const [verifyCode, setVerifyCode] = useState(null);
+
+  const navigate = useNavigate();
   return (
     <div>
       <AlertDialog
@@ -62,9 +67,23 @@ export default function CodeAlertDialog({
             <Button
               colorScheme="green"
               ml={3}
-              onClick={() => {
+              onClick={async () => {
                 console.log("verify code:", verifyCode);
-                VerifyUserByCode(email, verifyCode);
+                const res = await VerifyUserByCode(email, verifyCode);
+                if (!res) {
+                  console.log("Something is wrong.");
+                  return;
+                }
+
+                setProfileData(res.data.data);
+                localStorage.setItem(
+                  "profile-data",
+                  JSON.stringify({
+                    ...res.data.data,
+                    token: res.data.token,
+                  })
+                );
+                navigate("/home");
               }}
             >
               Verify
