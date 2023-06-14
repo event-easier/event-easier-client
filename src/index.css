@@ -574,3 +574,11 @@ h4.jsx-3228315364{font-size:1rem;margin-bottom:0;}
 .page-wrapper.no-bottom-padding.jsx-2566509379{padding-bottom:0;}
 @-webkit-keyframes feature-carousel-jsx-4002731451{0%{-webkit-transform:none;-ms-transform:none;transform:none;}100%{-webkit-transform:translateY(-2000px);-ms-transform:translateY(-2000px);transform:translateY(-2000px);}}
 @keyframes feature-carousel-jsx-4002731451{0%{-webkit-transform:none;-ms-transform:none;transform:none;}100%{-webkit-transform:translateY(-2000px);-ms-transform:translateY(-2000px);transform:translateY(-2000px);}}
+
+.box-disable-overflow {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.box-disable-overflow::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}

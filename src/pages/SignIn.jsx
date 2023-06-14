@@ -123,9 +123,12 @@ export default function SignIn() {
                 p={"12px 18px"}
                 w={400}
                 isDisabled={isErrorEmail}
-                onClick={() => {
-                  LoginByEmail(input);
-                  onOpen();
+                onClick={async () => {
+                  const res = await LoginByEmail(input);
+                  !res ? 
+                  <div>
+                    There's something wrong.
+                  </div> : onOpen();
                 }}
               >
                 {" "}

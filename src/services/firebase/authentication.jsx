@@ -6,14 +6,12 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const client = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/user`,
+  baseURL: `https://event-easier-staging.onrender.com/api/v1/user`,
 });
 export const handleGoogleLogin = async (provider) => {
   const result = await signInWithPopup(auth, provider);
-  const navigate = useNavigate();
   try {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
@@ -26,7 +24,7 @@ export const handleGoogleLogin = async (provider) => {
       uid: uid,
     });
     if (detail.isNewUser) {
-      navigate("/home");
+      console.log("it is new user!");
     } else {
       // account existed
       getAccount("users", {
@@ -34,7 +32,6 @@ export const handleGoogleLogin = async (provider) => {
         operator: "==",
         compareValue: uid,
       }).then((data) => {
-        setProfileData(data[0]);
         localStorage.setItem("data", JSON.stringify(data[0]));
       });
     }
@@ -47,7 +44,8 @@ export const GoogleSignOut = () => {
   signOut(auth)
     .then((res) => {
       console.log("sign out successful");
-      navigate("/");
+      localStorage.removeItem("profile-data");
+      return "this is a placeholder so that I can log out peacefully without any bugs";
     })
     .catch((error) => {
       console.log("error: \n", error);
@@ -73,13 +71,16 @@ export const RegisterByEmail = async (input) => {
 
 export const LoginByEmail = async (input) => {
   try {
-    await client
+    const result = await client
       .post("/login", {
         email: input,
       })
       .then((response) => {
         console.log(response);
+
+        return response;
       });
+    return result;
   } catch (error) {
     console.log("error: \n", error);
   }
@@ -87,15 +88,16 @@ export const LoginByEmail = async (input) => {
 
 export const VerifyUserByCode = async (email, verifyCode) => {
   try {
-    await client
+    const result = await client
       .post("/login/verify", {
         email: email,
         code: verifyCode,
       })
       .then((response) => {
         console.log(response);
-        navigate("/home");
+        return response;
       });
+    return result;
   } catch (error) {
     console.log("error: \n", error);
   }
