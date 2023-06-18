@@ -17,6 +17,8 @@ export default function UserProfile() {
   // const EditBioModal = () => {
 
   // }
+
+
   return (
     <div
       style={{

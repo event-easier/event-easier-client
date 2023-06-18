@@ -39,6 +39,13 @@ export default function AuthProvider({ children }) {
       unsubscribed();
     };
   }, [navigate, location.pathname]);
+
+  useEffect(() => {
+    const profileData = JSON.parse(localStorage.getItem("profile-data"));
+    if (profileData) {
+      setProfileData(profileData);
+    }
+  }, []);
   return (
     <AuthContext.Provider
       value={{

@@ -11,8 +11,7 @@ export const createEvent = async (input) => {
       .post("/create", input, {
         headers: {
           authorization:
-            "Bearer " +
-            JSON.parse(localStorage.getItem("profile-data")).data.token,
+            "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
         },
       })
       .then((response) => {
@@ -61,8 +60,7 @@ export const updateById = async (input) => {
       .post(`/update/${input._id}`, input, {
         headers: {
           authorization:
-            "Bearer " +
-            JSON.parse(localStorage.getItem("profile-data")).data.token,
+            "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
         },
       })
       .then((response) => {
