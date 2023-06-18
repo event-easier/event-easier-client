@@ -57,7 +57,7 @@ export default function Navbar() {
           position: "fixed",
           top: "0px",
           width: "100%",
-          height: "200px",
+          height: "100px",
           zIndex: 1,
           background:
             "linear-gradient(rgba(22, 31, 243, 0.2) 0%, rgba(18, 139, 251, 0.1) 50%, rgba(0, 140, 115, 0) 100%)",
@@ -128,6 +128,9 @@ export default function Navbar() {
               color={"white"}
               size={"sm"}
               mr={4}
+              onClick={() => {
+                navigate("/create-event")
+              }}
             >
               Create Event
             </Button>
