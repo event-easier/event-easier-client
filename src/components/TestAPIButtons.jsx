@@ -9,7 +9,6 @@ import {
 
 export default function TestAPIButtons({
   events,
-  checkEventTime,
   upcoming_events,
   past_events,
 }) {
