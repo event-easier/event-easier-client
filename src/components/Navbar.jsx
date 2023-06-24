@@ -57,7 +57,7 @@ export default function Navbar() {
           position: "fixed",
           top: "0px",
           width: "100%",
-          height: "200px",
+          height: "60px",
           zIndex: 1,
           background:
             "linear-gradient(rgba(22, 31, 243, 0.2) 0%, rgba(18, 139, 251, 0.1) 50%, rgba(0, 140, 115, 0) 100%)",
@@ -91,22 +91,20 @@ export default function Navbar() {
             >
               {Links.map((link, idx) => (
                 <div key={idx}>
-                  <ReactLink to={link.link}>
-                    <Link
-                      rounded={"md"}
-                      display={"flex"}
-                      color={"hsla(0,0%,100%,.5)"}
-                      fontSize={14}
-                      fontWeight={500}
-                      alignItems={"center"}
-                      _hover={{
-                        color: "white",
-                      }}
-                    >
-                      {link.icon}
-                      &nbsp;&nbsp;
-                      {link.name}
-                    </Link>
+                  <ReactLink to={link.link}
+                    rounded={"md"}
+                    display={"flex"}
+                    color={"hsla(0,0%,100%,.5)"}
+                    fontSize={14}
+                    fontWeight={500}
+                    alignItems={"center"}
+                    _hover={{
+                      color: "white",
+                    }}
+                  >
+                    {link.icon}
+                    &nbsp;&nbsp;
+                    {link.name}
                   </ReactLink>
                 </div>
               ))}
@@ -128,6 +126,9 @@ export default function Navbar() {
               color={"white"}
               size={"sm"}
               mr={4}
+              onClick={() => {
+                navigate("/create-event")
+              }}
             >
               Create Event
             </Button>

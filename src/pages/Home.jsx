@@ -22,7 +22,7 @@ import { AppContext } from "../context/AppProvider";
 //* EVENT SCHEMA - check event_data.json in /services
 
 export default function Home() {
-  const {events, upcomingEvents, pastEvents} = useContext(AppContext)
+  const { upcomingEvents, pastEvents} = useContext(AppContext)
 
   return (
     <div
@@ -173,11 +173,11 @@ export default function Home() {
         }}
       ></div>
       {/* TEST API CONTROL */}
-      <TestAPIButtons
+      {/* <TestAPIButtons
         events={events}
         upcoming_events={upcomingEvents}
         past_events={pastEvents}
-      />
+      /> */}
     </div>
   );
 }
