@@ -30,14 +30,14 @@ function App() {
     },
     {
       path: "/",
-      element: <Suspense fallback={<div>Loading...</div>} ><LandingPage /></Suspense>,
+      element: (
+        <Suspense fallback={<div>Loading...</div>}>
+          <LandingPage />
+        </Suspense>
+      ),
     },
-    // {
-    //   path: "/event/:eid",
-    //   element: <EventPage />,
-    // },
     {
-      path: "/event",
+      path: "/event/:eid",
       element: <EventPage />,
     },
     {
@@ -114,9 +114,13 @@ function App() {
       <AuthProvider>
         <AppProvider>
           <Routes>
-            {
-              routes.map((route) => <Route key={route.path} path={route.path} element={route.element} />)
-            }
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            ))}
           </Routes>
         </AppProvider>
       </AuthProvider>

@@ -165,15 +165,13 @@ export default function EventCard({ event }) {
           borderRadius="0.5rem"
         />
       </HStack>
-      {isOpen && (
-        <EventCardDrawer
-          isOpen={isOpen}
-          placement="left"
-          onClose={onClose}
-          finalFocusRef={eventRef}
-          event={event}
-        />
-      )}
+      <EventCardDrawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        finalFocusRef={eventRef}
+        event={event}
+      />
     </>
   );
 }
