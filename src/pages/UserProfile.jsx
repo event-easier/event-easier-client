@@ -66,7 +66,7 @@ export default function UserProfile() {
           minHeight: "100vh",
           flexDirection: "column",
           margin: "0px auto 0px auto",
-          alignItems: "center",
+          // alignItems: "center",
           blockSize: "border-box",
           alignContent: "center",
         }}
@@ -96,10 +96,6 @@ export default function UserProfile() {
             </Button>
           </div>
         </Box>
-        {/* <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} /> */}
         {upcomingEvents.map((event, index) => {
           return <ProfileEventCard key={index} event={event} />;
         })}
