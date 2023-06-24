@@ -32,8 +32,12 @@ function App() {
       path: "/",
       element: <Suspense fallback={<div>Loading...</div>} ><LandingPage /></Suspense>,
     },
+    // {
+    //   path: "/event/:eid",
+    //   element: <EventPage />,
+    // },
     {
-      path: "/event/:eid",
+      path: "/event",
       element: <EventPage />,
     },
     {
