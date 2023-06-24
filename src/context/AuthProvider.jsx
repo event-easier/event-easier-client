@@ -7,6 +7,7 @@ const unAuthPage = [
   "/",
   "/signin",
   "/signup",
+  "/event",
   // "/user-info",
 ];
 
