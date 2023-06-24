@@ -21,6 +21,7 @@ import {
   Box,
   Flex,
   Avatar,
+  Link,
 } from "@chakra-ui/react";
 import { CalendarIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import "../index.css";
@@ -30,7 +31,7 @@ export default function EventCardDrawer({
   onOpen,
   onClose,
   finalFocusRef,
-  event
+  event,
 }) {
   return (
     <Box className="box-disable-overflow">
@@ -139,7 +140,13 @@ export default function EventCardDrawer({
                     color: "rgb(19,21,23)",
                   }}
                 >
-                  Open Event Page
+                  <Link
+                    href={`/event/${event._id}`}
+                    target="_blank"
+                    textDecoration="none"
+                  >
+                    Open Event Page
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -152,11 +159,7 @@ export default function EventCardDrawer({
               marginTop="4rem"
             >
               <CardBody>
-                <Image
-                  src={event.cover}
-                  alt={event.name}
-                  borderRadius="lg"
-                />
+                <Image src={event.cover} alt={event.name} borderRadius="lg" />
                 <Stack mt="6" spacing="3">
                   <Heading>{event.name}</Heading>
                   <Box display={"flex"} flexDirection={"row"}>
@@ -177,14 +180,18 @@ export default function EventCardDrawer({
                       <CalendarIcon boxSize={6} m="0.5rem" />
                       <Box m="0.5rem">
                         <Text>
-                          {new Date(event.start_time).toLocaleDateString('en-GB')}
-                          {" "} to {" "}
-                          {new Date(event.end_time).toLocaleDateString('en-GB')}
+                          {new Date(event.start_time).toLocaleDateString(
+                            "en-GB"
+                          )}{" "}
+                          to{" "}
+                          {new Date(event.end_time).toLocaleDateString("en-GB")}
                         </Text>
                         <Text>
-                          {new Date(event.start_time).toLocaleTimeString('en-US')}
-                          {" "} to {" "}
-                          {new Date(event.end_time).toLocaleTimeString('en-US')}
+                          {new Date(event.start_time).toLocaleTimeString(
+                            "en-US"
+                          )}{" "}
+                          to{" "}
+                          {new Date(event.end_time).toLocaleTimeString("en-US")}
                         </Text>
                       </Box>
                     </Flex>
@@ -298,9 +305,8 @@ export default function EventCardDrawer({
                         />
                         <Text size="sm">{host.name}</Text>
                       </Box>
-                    )
+                    );
                   })}
-
                 </Stack>
               </CardBody>
             </Card>
