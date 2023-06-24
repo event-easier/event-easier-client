@@ -44,11 +44,15 @@ export default function AppProvider({ children }) {
   const upcomingEvents = events.filter((event) => {
     const end_time = event.end_time;
     return new Date().valueOf() < new Date(end_time).valueOf();
+  }).sort((a, b) => {
+    return new Date(a.start_time) - new Date(b.start_time)
   });
 
   const pastEvents = events.filter((event) => {
     const end_time = event.end_time;
     return new Date().valueOf() > new Date(end_time).valueOf();
+  }).sort((a, b) => {
+    return new Date(b.end_time) - new Date(a.end_time)
   });
 
   const fetchEventsData = async () => {

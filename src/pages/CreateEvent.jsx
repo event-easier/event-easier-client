@@ -1,28 +1,52 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { Image } from '@chakra-ui/image'
 import { Button } from '@chakra-ui/button'
-import { Text, Input, Heading, InputGroup, InputLeftElement, Checkbox, InputRightElement, FormLabel, FormHelperText, FormControl } from '@chakra-ui/react'
+import { Text, Input, Heading, InputGroup, InputLeftElement, Checkbox, InputRightElement, FormLabel, FormHelperText, FormControl, FormErrorMessage } from '@chakra-ui/react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import { CalendarIcon, CheckIcon, ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons'
+import { CalendarIcon, ExternalLinkIcon, SearchIcon } from '@chakra-ui/icons'
+import { AuthContext } from '../context/AuthProvider'
+import { createEvent } from '../services/events'
+import EventBackgroundDrawer from '../components/EventBackgroundDrawer'
+import { useDisclosure } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 
 export default function CreateEvent() {
+  const { profileData } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false)
+  const handleShowPassword = () => setShowPassword(!showPassword)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const eventRef = React.useRef();
+  const navigate = useNavigate();
   const [eventCreated, setEventCreated] = useState(
     {
       name: "",
       type: {
-        event_type: "IN_PERSON",
-        location: "Ho Chi Minh, Vietnam",
+        event_type: "",
+        location: "",
       },
       cover:
         "https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=85,width=960,height=480/event-defaults/b3.jpg",
       start_time: 0,
       end_time: 0,
       require_approve: false,
-      hosts: [],
+      hosts: [
+        {
+          user_id: profileData._id,
+          name: profileData.name,
+          avatar: profileData.avatar
+        }
+      ],
       guests: [],
     }
   );
+
+  // const url_regex = /^(?:[a-z](?:[-a-z0-9\+\.])*:(?:\/\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:])*@)?(?:\[(?:(?:(?:[0-9a-f]{1,4}:){6}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|::(?:[0-9a-f]{1,4}:){5}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|v[0-9a-f]+\.[-a-z0-9\._~!\$&'\(\)\*\+,;=:]+)\]|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}|(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=])*)(?::[0-9]*)?(?:\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))*)*|\/(?:(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))+)(?:\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))*)*)?|(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))+)(?:\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))*)*|(?!(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@])))(?:\?(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@])|[\x{E000}-\x{F8FF}\x{F0000}-\x{FFFFD}\x{100000}-\x{10FFFD}\/\?])*)?(?:\#(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@])|[\/\?])*)?|(?:\/\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:])*@)?(?:\[(?:(?:(?:[0-9a-f]{1,4}:){6}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|::(?:[0-9a-f]{1,4}:){5}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){4}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,1}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){3}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,2}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:){2}(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,3}[0-9a-f]{1,4})?::[0-9a-f]{1,4}:(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,4}[0-9a-f]{1,4})?::(?:[0-9a-f]{1,4}:[0-9a-f]{1,4}|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3})|(?:(?:[0-9a-f]{1,4}:){0,5}[0-9a-f]{1,4})?::[0-9a-f]{1,4}|(?:(?:[0-9a-f]{1,4}:){0,6}[0-9a-f]{1,4})?::)|v[0-9a-f]+\.[-a-z0-9\._~!\$&'\(\)\*\+,;=:]+)\]|(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(?:\.(?:[0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}|(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=])*)(?::[0-9]*)?(?:\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))*)*|\/(?:(?:(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))+)(?:\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))*)*)?|(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=@])+)(?:\/(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@]))*)*|(?!(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@])))(?:\?(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@])|[\x{E000}-\x{F8FF}\x{F0000}-\x{FFFFD}\x{100000}-\x{10FFFD}\/\?])*)?(?:\#(?:(?:%[0-9a-f][0-9a-f]|[-a-z0-9\._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!\$&'\(\)\*\+,;=:@])|[\/\?])*)?)$/i
+  const url_regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+
+  const checkErrorRegex = (regex, input) => {
+    return !regex.test(input)
+  }
 
   const handleNameChange = (e) => {
     setEventCreated({
@@ -38,10 +62,10 @@ export default function CreateEvent() {
     })
   }
 
-  const handleCoverChange = (e) => {
+  const handleCoverChange = (cover) => {
     setEventCreated({
       ...eventCreated,
-      cover: e.target.value,
+      cover: cover,
     })
   }
 
@@ -82,7 +106,13 @@ export default function CreateEvent() {
       }}
     >
       <Navbar />
-      <FormControl isRequired>
+      <FormControl isRequired
+      // isInvalid={
+      //   (checkErrorRegex(url_regex, eventCreated.type.zoom_url)
+      //   || checkErrorRegex(url_regex, eventCreated.type.event_url))
+      //   && !eventCreated
+      // }
+      >
         <div
           style={{
             position: "relative",
@@ -93,12 +123,23 @@ export default function CreateEvent() {
             padding: "100px 16px 0px",
           }}
         >
-          <Image src="https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=85,width=960,height=480/event-defaults/b3.jpg"
-            maxW="820px"
-            maxH="410px"
-
+          <Image
+            src={eventCreated.cover}
+            maxWidth="820px"
+            maxHeight="410px"
           />
-          <Button> Change Cover Photo </Button>
+          <Button m="16px auto 0px auto" color={"black"}
+            onClick={onOpen}
+          > Change Cover Photo </Button>
+          {isOpen && (
+            <EventBackgroundDrawer
+              isOpen={isOpen}
+              placement="left"
+              onClose={onClose}
+              finalFocusRef={eventRef}
+              handleCoverChange={handleCoverChange}
+            />
+          )}
           <div
             className="create-event-container"
           >
@@ -117,12 +158,14 @@ export default function CreateEvent() {
                   padding: "0 0 16px"
                 }}
               >
-                <Text
+                <Heading
                   as="b"
+                  size={"1.2rem"}
                   color={"#3787ff"}
                   fontSize={"14px"}
-                  fontStyle={"bold"}> Event Name </Text>
+                  fontStyle={"bold"}> Event Name </Heading>
                 <Input
+                  id="input-name"
                   height={"57px!important"}
                   p="8px 0"
                   variant='flushed' placeholder='My Cooking Show'
@@ -169,7 +212,7 @@ export default function CreateEvent() {
                         backgroundColor={"hsla(0,0%,100%,.08)"}
                         color="#535557"
                         padding="0.25rem"
-                        maxW="380px"
+                        maxWidth="380px"
                       >
                         <Tab
                           style={{
@@ -238,11 +281,17 @@ export default function CreateEvent() {
                               >
                                 <SearchIcon />
                               </InputLeftElement>
-                              <Input placeholder="What's the address?" maxW="500px"
+                              <Input
+                                id="input-address"
+                                placeholder="What's the address?" maxWidth="500px"
                                 onChange={(e) =>
                                   handleTypePropsChange({
                                     event_type: "IN_PERSON",
-                                    location: e.target.value
+                                    location: e.target.value,
+                                    zoom_id: "",
+                                    zoom_password: "",
+                                    zoom_url: "",
+                                    event_url: ""
                                   })
                                 }
                               />
@@ -250,7 +299,7 @@ export default function CreateEvent() {
                           </div>
                         </TabPanel>
                         <TabPanel>
-                          <div maxW="1000px">
+                          <div maxWidth="1000px">
                             <Text
                               m="0 0 16px"
                             >
@@ -272,35 +321,60 @@ export default function CreateEvent() {
                               <Text>Or you can enter the meeting information: </Text>
                             </div>
                             <div>
-                              <FormLabel
-                                mt="16px"
-                              >Zoom Meeting URL</FormLabel>
-                              <Input
-                                maxW={"320px"}
-                                placeholder="https://zoom.us/j/555555555"
-                                padding={"10px 14px"}
-                                onChange={(e) =>
-                                  handleTypePropsChange({
-                                    ...eventCreated.type,
-                                    event_type: "ZOOM",
-                                    zoom_url: e.target.value
-                                  })
+                              <FormControl
+                                isRequired
+                                isInvalid={
+                                  checkErrorRegex(url_regex, eventCreated.type.zoom_url)
+                                  && eventCreated.type.zoom_url
                                 }
-                              />
-                              <FormHelperText>
-                                The URL for guests to join the Zoom.
-                              </FormHelperText>
+                              >
+                                <FormLabel
+                                  mt="16px"
+                                >Zoom Meeting URL</FormLabel>
+                                <Input
+                                  id="input-meeting-url"
+                                  maxWidth={"320px"}
+                                  placeholder="https://zoom.us/j/555555555"
+                                  padding={"10px 14px"}
+                                  onChange={(e) =>
+                                    handleTypePropsChange({
+                                      ...eventCreated.type,
+                                      event_type: "ZOOM",
+                                      location: "",
+                                      zoom_url: e.target.value
+                                    })
+                                  }
+                                />
+                                {
+                                  !checkErrorRegex(url_regex, eventCreated.type.zoom_url) ?
+                                    (
+                                      <FormHelperText>
+                                        The URL for guests to join the Zoom.
+                                      </FormHelperText>
+                                    )
+                                    :
+                                    (
+                                      <FormErrorMessage>
+                                        Invalid input.
+                                      </FormErrorMessage>
+                                    )
+                                }
+
+                              </FormControl>
                               <FormLabel
                                 mt="16px"
                               >Zoom meeting ID</FormLabel>
                               <Input
-                                maxW={"320px"}
+                                id="input-meeting-id"
+                                type="number"
+                                maxWidth={"320px"}
                                 placeholder="123456789"
                                 padding={"10px 14px"}
                                 onChange={(e) =>
                                   handleTypePropsChange({
                                     ...eventCreated.type,
                                     event_type: "ZOOM",
+                                    location: "",
                                     zoom_id: e.target.value
                                   })
                                 }
@@ -311,18 +385,29 @@ export default function CreateEvent() {
                               <FormLabel
                                 mt="16px"
                               >Zoom Meeting Password</FormLabel>
-                              <Input
-                                maxW={"320px"}
-                                placeholder="0000000"
-                                padding={"10px 14px"}
-                                onChange={(e) =>
-                                  handleTypePropsChange({
-                                    ...eventCreated.type,
-                                    event_type: "ZOOM",
-                                    zoom_password: e.target.value
-                                  })
-                                }
-                              />
+                              <InputGroup
+                                maxWidth={"320px"}
+                                size={"md"}>
+                                <Input
+                                  id="input-meeting-password"
+                                  type={showPassword ? 'text' : 'password'}
+                                  placeholder="0000000"
+                                  padding={"10px 14px"}
+                                  onChange={(e) =>
+                                    handleTypePropsChange({
+                                      ...eventCreated.type,
+                                      event_type: "ZOOM",
+                                      location: "",
+                                      zoom_password: e.target.value
+                                    })
+                                  }
+                                />
+                                <InputRightElement width='4.5rem' color={"black"}>
+                                  <Button h='1.75rem' size='sm' onClick={handleShowPassword}>
+                                    {showPassword ? 'Hide' : 'Show'}
+                                  </Button>
+                                </InputRightElement>
+                              </InputGroup>
                               <FormHelperText>
                                 If your meeting has an password, enter it here.
                               </FormHelperText>
@@ -331,28 +416,36 @@ export default function CreateEvent() {
                         </TabPanel>
                         <TabPanel>
                           <div>
-                            <FormLabel> Event URL </FormLabel>
-                            <InputGroup>
-                              <InputLeftElement
-                                pointerEvents='none'
-                                color='gray.300'
-                                fontSize='1.2em'
-                              >
-                                <ExternalLinkIcon />
-                              </InputLeftElement>
-                              <Input
-                                placeholder="Where is the event taking place?"
-                                maxW="500px"
-                                onChange={(e) =>
-                                  handleTypePropsChange({
-                                    ...eventCreated.type,
-                                    event_type: "VIRTUAL",
-                                    event_url: e.target.value
-                                  })
-                                }
-                              />
-                            </InputGroup>
-                            <FormHelperText>Google Meet, Twitch, Youtube, Discord, wherever it is.</FormHelperText>
+                            <FormControl>
+                              <FormLabel> Event URL </FormLabel>
+                              <InputGroup>
+                                <InputLeftElement
+                                  pointerEvents='none'
+                                  color='gray.300'
+                                  fontSize='1.2em'
+                                >
+                                  <ExternalLinkIcon />
+                                </InputLeftElement>
+                                <Input
+                                  id="input-event-url"
+                                  placeholder="Where is the event taking place?"
+                                  maxWidth="500px"
+                                  onChange={(e) =>
+                                    handleTypePropsChange({
+                                      ...eventCreated.type,
+                                      event_type: "VIRTUAL",
+                                      event_url: e.target.value,
+                                      location: "",
+                                      zoom_id: "",
+                                      zoom_password: "",
+                                      zoom_url: ""
+                                    })
+                                  }
+                                />
+                              </InputGroup>
+                              <FormHelperText>Google Meet, Twitch, Youtube, Discord, wherever it is.</FormHelperText>
+                            </FormControl>
+
                           </div>
                         </TabPanel>
                       </TabPanels>
@@ -385,7 +478,7 @@ export default function CreateEvent() {
                         backgroundColor={"hsla(0,0%,100%,.08)"}
                         color="#535557"
                         padding="0.25rem"
-                        maxW="380px"
+                        maxWidth="380px"
                       >
                         <Tab
                           style={{
@@ -436,7 +529,7 @@ export default function CreateEvent() {
                               >
                                 <CalendarIcon />
                               </InputLeftElement>
-                              <Input type='datetime-local' maxW="500px"
+                              <Input type='datetime-local' maxWidth="500px"
                                 onChange={handleStartTimeChange}
                               />
                             </InputGroup>
@@ -450,7 +543,7 @@ export default function CreateEvent() {
                               >
                                 <CalendarIcon />
                               </InputLeftElement>
-                              <Input size="md" type='datetime-local' maxW="500px"
+                              <Input size="md" type='datetime-local' maxWidth="500px"
                                 color="white"
                                 onChange={handleEndTimeChange}
                               />
@@ -458,8 +551,8 @@ export default function CreateEvent() {
                           </div>
                         </TabPanel>
                         <TabPanel>
-                          <div maxW="1000px">
-
+                          <div maxWidth="1000px">
+                            Event Series is under development, please wait for us!
                           </div>
                         </TabPanel>
                       </TabPanels>
@@ -500,10 +593,40 @@ export default function CreateEvent() {
                     paddingTop: "1.5rem !important",
                     paddingBottom: "1.5rem !important"
                   }}>
-                  <Button color="black" maxW={"200px"} mt="1.5rem"
-                    onClick={() => {
+                  <Button color="black" maxWidth={"200px"} mt="1.5rem"
+                    onClick={async () => {
+                      console.log("Event successfully created ")
                       console.log(eventCreated)
+                      await createEvent({
+                        name: eventCreated.name,
+                        type: eventCreated.type,
+                        cover: eventCreated.cover,
+                        start_time: eventCreated.start_time,
+                        end_time: eventCreated.end_time,
+                        require_approve: eventCreated.require_approve,
+                        hosts: eventCreated.hosts,
+                        guests: [],
+                      }).then(() => {
+                        navigate("/home")
+                      })
                     }}
+                    isDisabled={
+                      (eventCreated.name == '')
+                      ||
+                      (eventCreated.type.event_type == "IN_PERSON" && eventCreated.type.location == "")
+                      ||
+                      (eventCreated.type.event_type == "ZOOM"
+                        && eventCreated.type.zoom_password == ""
+                        && eventCreated.type.zoom_id == ""
+                        && eventCreated.type.zoom_url == ""
+                      )
+                      ||
+                      (eventCreated.type.event_type == "VIRTUAL" && eventCreated.type.event_url == "")
+                      ||
+                      (eventCreated.start_time == 0)
+                      ||
+                      (eventCreated.end_time == 0)
+                    }
                   >
                     Create Event
                   </Button>
