@@ -2,7 +2,8 @@ import axios from "axios";
 
 const client = axios.create({
   // baseURL: `https://event-easier-staging.onrender.com/api/v1/event`,
-  baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/event`,
+  // baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/event`,
+  baseURL: `http://localhost:8081/api/v1/event`,
 });
 
 export const createEvent = async (input) => {
@@ -25,6 +26,7 @@ export const createEvent = async (input) => {
 
 export const getAllEvents = async (input) => {
   try {
+    console.log(localStorage.getItem("profile-data"));
     const result = await client
       .get("/user", {
         headers: {
@@ -36,7 +38,6 @@ export const getAllEvents = async (input) => {
         console.log("get all events successfully");
         return response.data;
       });
-    console.log(result);
     return result;
   } catch (error) {
     console.log("error in getAllEvents: \n", error);
@@ -44,9 +45,11 @@ export const getAllEvents = async (input) => {
 };
 
 export const findOne = async (input) => {
+  
   try {
     const result = await client.get(`/${input._id}`).then((response) => {
       console.log(response);
+      return response;
     });
     return result;
   } catch (error) {

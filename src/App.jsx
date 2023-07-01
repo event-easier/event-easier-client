@@ -41,6 +41,10 @@ function App() {
       element: <EventPage />,
     },
     {
+      path: "/event/manage/:eid",
+      element: <EventPage />,
+    },
+    {
       path: "/signin",
       element: <SignIn />,
     },
