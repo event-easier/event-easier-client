@@ -56,6 +56,7 @@ export default function AppProvider({ children }) {
   });
 
   const fetchEventsData = async () => {
+    // console.log(localStorage.getItem("profile-dataaaa"));
     const id = JSON.parse(localStorage.getItem("profile-data"))?._id;
     const events_update = await getAllEvents({
       user_id: id,
@@ -64,9 +65,9 @@ export default function AppProvider({ children }) {
   };
 
   useEffect(() => {
-    setInitRenderFlag(true);
+    // setInitRenderFlag(true);
     fetchEventsData();
-    setInitRenderFlag(false);
+    // setInitRenderFlag(false);
   }, []); //Get events state
   return (
     <AppContext.Provider
