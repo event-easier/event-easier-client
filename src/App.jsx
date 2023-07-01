@@ -17,6 +17,8 @@ import EventSettings from "./pages/EventSettings";
 import ErrorPage from "./pages/ErrorPage";
 import AuthProvider from "./context/AuthProvider";
 import AppProvider from "./context/AppProvider";
+import CalendarProvider from "./context/CalendarProvider";
+import CalendarsDetail from "./pages/CalendarsDetail";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
 const EventPage = React.lazy(() => import("./pages/EventPage"));
@@ -101,7 +103,7 @@ function App() {
       element: <EventSettings />,
     },
     {
-      path: "/calendars-manager",
+      path: "/calendars-manager/:id",
       element: <CalendarsManager />,
     },
     {
@@ -112,20 +114,26 @@ function App() {
       path: "/calendar-settings",
       element: <CalendarSettings />,
     },
+    {
+      path: "/calendars/:id",
+      element: <CalendarsDetail />,
+    },
   ];
   return (
     <BrowserRouter>
       <AuthProvider>
         <AppProvider>
-          <Routes>
-            {routes.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
-          </Routes>
+          <CalendarProvider>
+            <Routes>
+              {routes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={route.element}
+                />
+              ))}
+            </Routes>
+          </CalendarProvider>
         </AppProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -13,40 +13,39 @@ import {
   Center,
   Box,
 } from "@chakra-ui/react";
+import { Link as ReactLink } from "react-router-dom";
+
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
 
 export default function Calendars() {
-  const { profileData } = useContext(AuthContext);
+  const [calendars, setCalendars] = useState([]);
+  let a = JSON.parse(localStorage.getItem("profile-data"));
+  const client = axios.create({
+    baseURL: `http://localhost:8081/api/v1/calendar/`,
+  });
 
-  // const [events, setEvents] = useState([]);
-  let a = JSON.parse(localStorage.getItem("data_user"));
-  // const client = axios.create({
-  //   baseURL: `http://localhost:8081/api/v1/event/`,
-  // });
+  client.interceptors.request.use((config) => {
+    config.headers.Authorization = `bearer ${a.token}`;
+    return config;
+  });
 
-  // client.interceptors.request.use((config) => {
-  //   config.headers.Authorization = `bearer ${a.token}`;
-  //   return config;
-  // });
-
-  // useEffect(() => {
-  //   try {
-  //     client.post("/user").then((response) => {
-  //       console.log(response.data);
-  //       setEvents(response.data);
-  //     });
-  //   } catch (error) {
-  //     console.log("error in getAllEvents: \n", error);
-  //   }
-  // }, []);
-  // const myEvent = events.filter((data) =>
-  //   data.hosts.some((hosts) => hosts.user_id === profileData._id)
-  // );
-  // const mySubscribed = events.filter((data) =>
-  //   data.guests.some((guests) => guests.user_id === profileData._id)
-  // );
-
+  useEffect(() => {
+    try {
+      client.post("/").then((response) => {
+        setCalendars(response.data.data);
+      });
+    } catch (error) {
+      console.log("error in callendar: \n", error);
+    }
+  }, []);
+  const myCalendars = calendars.filter(
+    (item) => !item.people.some((p) => p.user_id === a._id)
+  );
+  const subCalendars = calendars.filter((item) =>
+    item.people.some((p) => p.user_id === a._id)
+  );
+  const calendarManager = () => {};
   return (
     <div
       style={{
@@ -56,6 +55,7 @@ export default function Calendars() {
         paddingBottom: "64px",
       }}
     >
+      {console.log(subCalendars)}
       <Navbar />
       <div
         style={{
@@ -80,25 +80,28 @@ export default function Calendars() {
           <Heading as="h2" size="md" pb={"15px"} display={"inline"}>
             My Calendars
           </Heading>
-          <Button
-            size="sm"
-            color="#ffffffa3"
-            p="7px 10px"
-            w={87}
-            m="2px"
-            bgColor={"#ffffff14"}
-            style={{ float: "right" }}
-            _hover={{
-              background: "#ffffffa3",
-              color: "#131517",
-            }}
-          >
-            + Create
-          </Button>
+          <ReactLink to={"/create-calendar"}>
+            <Button
+              size="sm"
+              color="#ffffffa3"
+              p="7px 10px"
+              w={87}
+              m="2px"
+              bgColor={"#ffffff14"}
+              style={{ float: "right" }}
+              _hover={{
+                background: "#ffffffa3",
+                color: "#131517",
+              }}
+            >
+              + Create
+            </Button>
+          </ReactLink>
         </div>
 
         <Grid templateColumns="repeat(3, 1fr)" gap={5} mb={"30px"}>
           <Box
+            cursor={"pointer"}
             p={"16px 16px 14px"}
             maxW="sm"
             borderWidth="1px"
@@ -114,8 +117,8 @@ export default function Calendars() {
             <Image
               boxSize="48px"
               objectFit="cover"
-              src={profileData.avatar}
-              alt={profileData.avatar}
+              src={a.avatar}
+              alt={a.avatar}
               borderRadius={"50%"}
             />
             <Heading
@@ -124,7 +127,7 @@ export default function Calendars() {
               mb={"4px"}
               mt={"12px"}
             >
-              {profileData.name}
+              {a.name}
             </Heading>
             <Text color={"#828384"}>2 Subscribers</Text>
             <Text
@@ -136,57 +139,71 @@ export default function Calendars() {
             </Text>
           </Box>
           {/* Đoạn này sau là để calendars */}
-          <Box
-            p={"16px 16px 14px"}
-            maxW="sm"
-            borderWidth="1px"
-            border={"1px solid #252729"}
-            _hover={{
-              border: "1px solid #ffffff29",
-            }}
-            background={"#1C1E20"}
-            borderRadius="lg"
-            overflow="hidden"
-            pb={"20px"}
-          >
-            <Image
-              boxSize="48px"
-              objectFit="cover"
-              src={
-                "https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=80,width=48,height=48/avatars-default/community_avatar_11.png"
-              }
-              alt={"cover"}
-              borderRadius={"14%"}
-            />
-            <Heading
-              as="h2"
-              style={{ fontSize: "18px" }}
-              mb={"4px"}
-              mt={"12px"}
+
+          {myCalendars.map((calendar) => (
+            <ReactLink
+              to={`/calendars-manager/${
+                calendar.url ? calendar.url : calendar._id
+              }`}
+              // to={"/calendars-manager"}
             >
-              Calendar
-            </Heading>
-            <Text color={"#828384"}>No Subscribers</Text>
-            <Flex color="white" mt={"16px"}>
-              <Center>
+              <Box
+                onClick={() => calendarManager(calendar)}
+                cursor={"pointer"}
+                p={"16px 16px 14px"}
+                maxW="sm"
+                borderWidth="1px"
+                border={"1px solid #252729"}
+                _hover={{
+                  border: "1px solid #ffffff29",
+                }}
+                background={"#1C1E20"}
+                borderRadius="lg"
+                overflow="hidden"
+                pb={"20px"}
+              >
                 <Image
-                  boxSize="16px"
+                  boxSize="48px"
                   objectFit="cover"
-                  src={profileData.avatar}
-                  alt={profileData.avatar}
-                  borderRadius={"50%"}
+                  src={calendar.avatar}
+                  alt={"cover"}
+                  borderRadius={"14%"}
                 />
-              </Center>
-              <Center>
-                <Text
-                  color={"#828384"}
-                  style={{ textTransform: "lowercase", fontSize: "14px" }}
+                <Heading
+                  as="h2"
+                  style={{ fontSize: "18px" }}
+                  mb={"4px"}
+                  mt={"12px"}
                 >
-                  1 Admin
+                  {calendar.calendarName}
+                </Heading>
+                <Text color={"#828384"}>
+                  {calendar.people.length < 1
+                    ? "No Subscribers"
+                    : calendar.people.length + " Subscribers"}
                 </Text>
-              </Center>
-            </Flex>
-          </Box>
+                <Flex color="white" mt={"16px"}>
+                  <Center>
+                    <Image
+                      boxSize="16px"
+                      objectFit="cover"
+                      src={a.avatar}
+                      alt={a.avatar}
+                      borderRadius={"50%"}
+                    />
+                  </Center>
+                  <Center>
+                    <Text
+                      color={"#828384"}
+                      style={{ textTransform: "lowercase", fontSize: "14px" }}
+                    >
+                      Admin
+                    </Text>
+                  </Center>
+                </Flex>
+              </Box>
+            </ReactLink>
+          ))}
           {/* HẾT */}
         </Grid>
 
@@ -335,137 +352,149 @@ export default function Calendars() {
           Subscribed Calendars
         </Heading>
         {/* nếu không có ai  Subscribed*/}
-        <Grid templateColumns="repeat(3, 1fr)" gap={5} pb={"30px"} mt={"30px"}>
-          <Box
-            p={"15px"}
-            maxW="sm"
-            borderWidth="1px"
-            border={"1px solid #252729"}
-            background={"#1C1E20"}
-            borderRadius="lg"
-            overflow="hidden"
-            pb={"20px"}
+        {subCalendars.length < 1 ? (
+          <Grid
+            templateColumns="repeat(3, 1fr)"
+            gap={5}
+            pb={"30px"}
+            mt={"30px"}
           >
-            {" "}
-            <div
-              style={{
-                textAlign: "center",
-                width: "41px",
-                height: "41px",
-                backgroundImage: "linear-gradient(180deg, #363636, #4B4B4B)",
-                border: "1px solid #5B5B5B",
-                borderRadius: "8px",
-                position: "relative",
-              }}
+            <Box
+              p={"15px"}
+              maxW="sm"
+              borderWidth="1px"
+              border={"1px solid #252729"}
+              background={"#1C1E20"}
+              borderRadius="lg"
+              overflow="hidden"
+              pb={"20px"}
             >
+              {" "}
               <div
                 style={{
-                  width: "5px",
-                  height: "14px",
-                  backgroundImage: "linear-gradient(180deg, #595959, #4A4A4A)",
+                  textAlign: "center",
+                  width: "41px",
+                  height: "41px",
+                  backgroundImage: "linear-gradient(180deg, #363636, #4B4B4B)",
+                  border: "1px solid #5B5B5B",
                   borderRadius: "8px",
-                  position: "absolute",
-                  top: "-7px",
-                  left: "6px",
+                  position: "relative",
                 }}
-              />
-              <div
-                style={{
-                  width: "5px",
-                  height: "14px",
-                  backgroundImage: "linear-gradient(180deg, #595959, #4A4A4A)",
-                  borderRadius: "8px",
-                  position: "absolute",
-                  top: "-7px",
-                  right: "6px",
-                }}
-              />
-              <Text
-                fontSize="3xl"
-                as="b"
-                color={"#171717"}
-                position={"relative"}
-                top={"-2px"}
               >
-                0
+                <div
+                  style={{
+                    width: "5px",
+                    height: "14px",
+                    backgroundImage:
+                      "linear-gradient(180deg, #595959, #4A4A4A)",
+                    borderRadius: "8px",
+                    position: "absolute",
+                    top: "-7px",
+                    left: "6px",
+                  }}
+                />
+                <div
+                  style={{
+                    width: "5px",
+                    height: "14px",
+                    backgroundImage:
+                      "linear-gradient(180deg, #595959, #4A4A4A)",
+                    borderRadius: "8px",
+                    position: "absolute",
+                    top: "-7px",
+                    right: "6px",
+                  }}
+                />
+                <Text
+                  fontSize="3xl"
+                  as="b"
+                  color={"#171717"}
+                  position={"relative"}
+                  top={"-2px"}
+                >
+                  0
+                </Text>
+              </div>
+              <Heading
+                as="h2"
+                style={{ fontSize: "18px" }}
+                mb={"4px"}
+                mt={"12px"}
+                color={"#C6C6C7"}
+              >
+                no Subscriptions
+              </Heading>
+              <Text color={"#828384"}>
+                You have not subscribed to any calendars.
               </Text>
-            </div>
-            <Heading
-              as="h2"
-              style={{ fontSize: "18px" }}
-              mb={"4px"}
-              mt={"12px"}
-              color={"#C6C6C7"}
+            </Box>
+          </Grid>
+        ) : (
+          subCalendars.map((calendar) => (
+            <Box
+              w={"100%"}
+              h={"170px"}
+              backgroundColor={"#1C1E20"}
+              borderRadius={"10px"}
+              p={"16px"}
             >
-              no Subscriptions
-            </Heading>
-            <Text color={"#828384"}>
-              You have not subscribed to any calendars.
-            </Text>
-          </Box>
-        </Grid>
+              <HStack spacing="24px">
+                <Box w={"190px"}>
+                  <Image
+                    boxSize="48px"
+                    objectFit="cover"
+                    src={calendar.avatar}
+                    borderRadius={"5px"}
+                  />
+                  <Heading
+                    mt={"16px"}
+                    style={{
+                      textTransform: "capitalize",
+                      fontSize: "18px",
+                    }}
+                    color={"#FFFFFF"}
+                    as="h2"
+                  >
+                    {" "}
+                    {calendar.calendarName}
+                  </Heading>
+                  <Button
+                    mt={"16px"}
+                    size="sm"
+                    color="#ffffffa3"
+                    p="7px 10px"
+                    bgColor={"#ffffff14"}
+                    _hover={{
+                      background: "#ffffffa3",
+                      color: "#131517",
+                    }}
+                  >
+                    View Calendar
+                  </Button>
+                </Box>
+                <Box h={"137px"}>
+                  <Text color={"#828384"}>Upcoming Events</Text>
+                  <Heading
+                    mt={"16px"}
+                    style={{
+                      textTransform: "capitalize",
+                      fontSize: "16px",
+                    }}
+                    color={"#FFFFFF"}
+                    as="h2"
+                    _hover={{ color: "#e6658a", transitionDuration: "0.5s" }}
+                  >
+                    {" "}
+                    Friday
+                  </Heading>
+                  <Text color={"#828384"}>19:30 Th 3, 13 thg 6</Text>
+                </Box>
+              </HStack>
+            </Box>
+          ))
+        )}
+
         {/* hết Subscribed*/}
-        <Box
-          w={"100%"}
-          h={"170px"}
-          backgroundColor={"#1C1E20"}
-          borderRadius={"10px"}
-          p={"16px"}
-        >
-          <HStack spacing="24px">
-            <Box w={"190px"}>
-              <Image
-                boxSize="48px"
-                objectFit="cover"
-                src="https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=80,width=48,height=48/avatars-default/community_avatar_11.png"
-                alt="Dan Abramov"
-                borderRadius={"5px"}
-              />
-              <Heading
-                mt={"16px"}
-                style={{
-                  textTransform: "capitalize",
-                  fontSize: "18px",
-                }}
-                color={"#FFFFFF"}
-                as="h2"
-              >
-                {" "}
-                Calendar
-              </Heading>
-              <Button
-                mt={"16px"}
-                size="sm"
-                color="#ffffffa3"
-                p="7px 10px"
-                bgColor={"#ffffff14"}
-                _hover={{
-                  background: "#ffffffa3",
-                  color: "#131517",
-                }}
-              >
-                View Calendar
-              </Button>
-            </Box>
-            <Box h={"137px"}>
-              <Text color={"#828384"}>Upcoming Events</Text>
-              <Heading
-                mt={"16px"}
-                style={{
-                  textTransform: "capitalize",
-                  fontSize: "16px",
-                }}
-                color={"#FFFFFF"}
-                as="h2"
-                _hover={{ color: "#e6658a", transitionDuration: "0.5s" }}
-              >
-                {" "}
-                Friday
-              </Heading>
-              <Text color={"#828384"}>19:30 Th 3, 13 thg 6</Text>
-            </Box>
-          </HStack>
-        </Box>
       </div>
     </div>
   );

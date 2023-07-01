@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import ProfileSetupModal from "../components/ProfileSetupModal";
 
 export default function SignUp() {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState("");
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const isErrorEmail = !emailRegex.test(email);
@@ -81,7 +81,12 @@ export default function SignUp() {
         >
           Continue
         </Button>
-        <ProfileSetupModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} email={email} />
+        <ProfileSetupModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onOpen={onOpen}
+          email={email}
+        />
         <Text mt="16px">
           Already a user?{" "}
           <Link to="/signin">
