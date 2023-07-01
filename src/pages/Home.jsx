@@ -14,7 +14,12 @@ import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import EventCard from "../components/EventCard";
 import LineWithDot from "../components/LineWithDot";
-import { createEvent, getAllEvents, findOne, updateById } from "../services/events";
+import {
+  createEvent,
+  getAllEvents,
+  findOne,
+  updateById,
+} from "../services/events";
 import TestAPIButtons from "../components/TestAPIButtons";
 import { useEffect } from "react";
 import { AppContext } from "../context/AppProvider";
@@ -22,7 +27,7 @@ import { AppContext } from "../context/AppProvider";
 //* EVENT SCHEMA - check event_data.json in /services
 
 export default function Home() {
-  const { upcomingEvents, pastEvents} = useContext(AppContext)
+  const { events, upcomingEvents, pastEvents } = useContext(AppContext);
 
   return (
     <div
@@ -89,7 +94,7 @@ export default function Home() {
           <TabPanels>
             <TabPanel>
               <Container maxWidth="4xl" p={{ base: 2, sm: 10 }}>
-                {(upcomingEvents == []) ? (
+                {upcomingEvents == [] ? (
                   <div>
                     <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
                       No Upcoming Events
@@ -115,7 +120,12 @@ export default function Home() {
                   upcomingEvents?.map((event, index) => (
                     <Flex key={index} mb="20px">
                       <div>
-                        <Text w="100px"> {new Date(event.start_time).toLocaleDateString('en-GB')}</Text>
+                        <Text w="100px">
+                          {" "}
+                          {new Date(event.start_time).toLocaleDateString(
+                            "en-GB"
+                          )}
+                        </Text>
                       </div>
                       <LineWithDot />
                       <EventCard event={event} />
@@ -126,7 +136,7 @@ export default function Home() {
             </TabPanel>
             <TabPanel>
               <Container maxWidth="4xl" p={{ base: 2, sm: 10 }}>
-                {(pastEvents == []) ? (
+                {pastEvents == [] ? (
                   <div>
                     <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
                       No Past Events
@@ -152,7 +162,12 @@ export default function Home() {
                   pastEvents.map((event, index) => (
                     <Flex key={index} mb="20px">
                       <div>
-                        <Text w="100px"> {new Date(event.start_time).toLocaleDateString('en-GB')}</Text>
+                        <Text w="100px">
+                          {" "}
+                          {new Date(event.start_time).toLocaleDateString(
+                            "en-GB"
+                          )}
+                        </Text>
                       </div>
                       <Flex>
                         <LineWithDot />
