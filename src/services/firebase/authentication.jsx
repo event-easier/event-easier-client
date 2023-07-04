@@ -17,10 +17,12 @@ export const handleGoogleLogin = async (provider) => {
     const token = credential.accessToken;
     const user = result.user;
     const detail = getAdditionalUserInfo(result);
-    const { email, photoURL, uid } = user;
+    const { email, photoURL, uid, name } = user;
     setUser({
       email: email,
-      photoURL: photoURL,
+      name: name,
+      avatar: photoURL,
+      type: "",
       uid: uid,
     });
     if (detail.isNewUser) {
@@ -36,7 +38,7 @@ export const handleGoogleLogin = async (provider) => {
       });
     }
   } catch (err) {
-    openNotification();
+    console.log("Error in Google: ", err);
   }
 };
 
@@ -56,7 +58,7 @@ export const SignOut = async () => {
 
 export const RegisterByEmail = async (input) => {
   try {
-    await client
+    const result = await client
       .post("/register", {
         email: input.email,
         name: input.name,
@@ -65,7 +67,9 @@ export const RegisterByEmail = async (input) => {
       })
       .then((response) => {
         console.log(response);
+        return response;
       });
+    return result;
   } catch (error) {
     console.log("error: \n", error);
   }
