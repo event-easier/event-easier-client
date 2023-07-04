@@ -64,11 +64,10 @@ export default function AppProvider({ children }) {
     else console.log("Can't get Events Data since user id is not exist")
   };
 
-  useEffect(() => {
-    // setInitRenderFlag(true);
-    fetchEventsData();
-    // setInitRenderFlag(false);
-  }, []); //Get events state
+  // useEffect(() => {
+  //   fetchEventsData()
+  // }, [])
+
   return (
     <AppContext.Provider
       value={{

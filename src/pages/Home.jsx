@@ -23,7 +23,9 @@ export default function Home() {
   let loading = false;
   useEffect(() => {
     fetchEventsData()
-  }, [events, upcomingEvents, pastEvents])
+  }, [])
+  // console.log(events)
+  console.log(upcomingEvents)
 
   return (
       <div
@@ -90,7 +92,7 @@ export default function Home() {
             <TabPanels>
               <TabPanel>
                 <Container maxWidth="4xl" p={{ base: 2, sm: 10 }}>
-                  {(upcomingEvents == []) ? (
+                  {(upcomingEvents.length == 0) ? (
                     <div>
                       <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
                         No Upcoming Events

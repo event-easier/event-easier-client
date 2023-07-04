@@ -44,10 +44,9 @@ export const getAllEvents = async (input) => {
   }
 };
 
-export const findOne = async (input) => {
-  
+export const findOne = async ({_id}) => {
   try {
-    const result = await client.get(`/user/${input}`, {
+    const result = await client.get(`/detail/${_id}`, {
       headers: {
         Authorization:
           "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
