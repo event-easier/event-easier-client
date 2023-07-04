@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  createEvent,
   getAllEvents,
-  findOne,
-  updateById,
 } from "../services/events";
 
 function getWindowDimensions() {
@@ -58,10 +55,13 @@ export default function AppProvider({ children }) {
   const fetchEventsData = async () => {
     // console.log(localStorage.getItem("profile-dataaaa"));
     const id = JSON.parse(localStorage.getItem("profile-data"))?._id;
-    const events_update = await getAllEvents({
-      user_id: id,
-    });
-    setEvents(events_update.data);
+    if (id != null) {
+      const events_update = await getAllEvents({
+        user_id: id,
+      });
+      setEvents(events_update.data);
+    }
+    else console.log("Can't get Events Data since user id is not exist")
   };
 
   useEffect(() => {
@@ -82,6 +82,7 @@ export default function AppProvider({ children }) {
         pastEvents,
         initRenderFlag,
         setInitRenderFlag,
+        fetchEventsData
       }}
     >
       {children}

@@ -2,8 +2,8 @@ import axios from "axios";
 
 const client = axios.create({
   // baseURL: `https://event-easier-staging.onrender.com/api/v1/event`,
-  // baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/event`,
-  baseURL: `http://localhost:8081/api/v1/event`,
+  baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/event`,
+  // baseURL: `http://localhost:8081/api/v1/event`,
 });
 
 export const createEvent = async (input) => {
@@ -26,11 +26,11 @@ export const createEvent = async (input) => {
 
 export const getAllEvents = async (input) => {
   try {
-    console.log(localStorage.getItem("profile-data"));
+    // console.log("Token: ",JSON.parse(localStorage.getItem("profile-data")).token);
     const result = await client
       .get("/user", {
         headers: {
-          Authorization:
+          authorization:
             "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
         },
       })
@@ -47,10 +47,16 @@ export const getAllEvents = async (input) => {
 export const findOne = async (input) => {
   
   try {
-    const result = await client.get(`/${input._id}`).then((response) => {
-      console.log(response);
-      return response;
+    const result = await client.get(`/user/${input}`, {
+      headers: {
+        Authorization:
+          "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
+      },
+    }).then((response) => {
+      console.log("Get One Event successfully");
+      return response.data.data;
     });
+    console.log(result);
     return result;
   } catch (error) {
     console.log("error in findOne \n", error);

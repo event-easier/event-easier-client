@@ -28,9 +28,7 @@ export default function Content1() {
           </div>
           <a
             className="jsx-3325839890 jsx-4002731451 btn cta-btn"
-            onClick={() => {
-              navigate("/signin");
-            }}
+            href="/signin"
 
           >
             Get Started

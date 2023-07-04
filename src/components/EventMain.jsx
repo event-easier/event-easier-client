@@ -28,40 +28,31 @@ export default function EventMain({ event }) {
         <>
             <div
                 className="jsx-2566509379 page-content"
-
             >
                 <div
                     className="jsx-754593503 tint-root"
-
                 >
                     <meta
                         name="theme-color"
                         content="#f4f5f6"
-
                     />
                     <div
                         className="jsx-2720613182 event-theme legacy"
-
                     >
                         <div
                             className="jsx-2720613182 background full-page"
-
                         />
                         <div
                             className="jsx-2720613182 page-container"
-
                         >
                             <div
                                 className="jsx-85398371 flex-column"
-
                             >
                                 <div
                                     className="jsx-85398371 zm-container relative main"
-
                                 >
                                     <div
                                         className="jsx-914326852 top-card"
-
                                     >
                                         <div
                                             className="jsx-4068354093 img-aspect-ratio cover-image"
@@ -86,41 +77,32 @@ export default function EventMain({ event }) {
                                         </div>
                                         <div
                                             className="jsx-2825744342 top-card-content"
-
                                         >
                                             <div
                                                 className="jsx-2825744342 mb-3 flex-start spread gap-2"
-
                                             >
                                                 <div
                                                     className="jsx-2825744342 min-width-0"
-
                                                 >
                                                     <h1
                                                         className="jsx-2825744342 title text-primary mb-0"
-
                                                     >
                                                         {event?.name}
                                                     </h1>
                                                     <div
                                                         className="hosts"
-
                                                     >
                                                         <div
                                                             className="flex-center gap-2 text-tinted"
-
                                                         >
                                                             <div
                                                                 className="jsx-2626524769 heads flex-center"
-
                                                             >
                                                                 <div
                                                                     className="jsx-2626524769 head flex-start"
-
                                                                 >
                                                                     <div
                                                                         className="jsx-4070717398 avatar-wrapper small"
-
                                                                     >
                                                                         <div
                                                                             className="jsx-4070717398 avatar"
@@ -139,7 +121,6 @@ export default function EventMain({ event }) {
                                                                         >
                                                                             <div
                                                                                 className="jsx-2994073556 online-indicator-wrapper animated"
-
                                                                             >
                                                                                 <div
                                                                                     className="jsx-2994073556 online-indicator"
@@ -156,7 +137,9 @@ export default function EventMain({ event }) {
                                                             </div>
                                                             <div
                                                                 className="jsx-1290421626 text-ellipses"
-
+                                                                style={{
+                                                                    padding: "20px"
+                                                                }}
                                                             >
                                                                 Hosted by {event?.hosts[0].name}
                                                             </div>
@@ -292,7 +275,6 @@ export default function EventMain({ event }) {
                                                         >
                                                             <div
                                                                 className="jsx-3672980428 title text-ellipses"
-
                                                             >
                                                                 Register to See Address
                                                             </div>

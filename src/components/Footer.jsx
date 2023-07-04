@@ -15,7 +15,7 @@ export default function Footer() {
                 </h2>
                 <a
                     className="jsx-3325839890 jsx-4002731451 btn cta-btn"
-                    href="https://lu.ma/signin"
+                    href="/signin"
 
                 >
                     Get Started For Free
@@ -43,7 +43,7 @@ export default function Footer() {
                                         href="https://lu.ma/"
 
                                     >
-                                        <svg
+                                        {/* <svg
                                             viewBox="0 0 724 264"
                                             xmlns="http://www.w3.org/2000/svg"
 
@@ -57,34 +57,30 @@ export default function Footer() {
 
                                                 />
                                             </g>
-                                        </svg>
+                                        </svg> */}
                                     </a>
                                     <div
                                         className="jsx-715640837 links"
 
                                     >
                                         <a
-                                            href="https://lu.ma/events"
-
                                         >
                                             Events
                                         </a>
                                         <a
-                                            href="https://lu.ma/crypto"
-
                                         >
                                             Crypto
                                         </a>
                                         <a
-                                            href="https://lu.ma/pricing"
+                                            // href="https://lu.ma/pricing"
 
                                         >
                                             Pricing
                                         </a>
                                         <a
-                                            className="jsx-715640837"
-                                            href="https://help.lu.ma/"
-                                            target="_blank"
+                                            // className="jsx-715640837"
+                                            // href="https://help.lu.ma/"
+                                            // target="_blank"
 
                                         >
                                             Help
@@ -98,7 +94,8 @@ export default function Footer() {
                                     <a
                                         className="jsx-4254674824 flex-center"
                                         aria-label="Contact Us"
-                                        href="mailto:support@lu.ma"
+                                        href="mailto:
+                                        event.easier.911@gmail.com"
                                         target="_blank"
 
                                     >
@@ -115,7 +112,7 @@ export default function Footer() {
                                             />
                                         </svg>
                                     </a>
-                                    <a
+                                    {/* <a
                                         className="jsx-4254674824 flex-center"
                                         aria-label="Twitter"
                                         href="https://twitter.com/LumaHQ"
@@ -133,7 +130,7 @@ export default function Footer() {
 
                                             />
                                         </svg>
-                                    </a>
+                                    </a> */}
                                 </div>
                             </div>
                             <div
@@ -141,19 +138,19 @@ export default function Footer() {
 
                             >
                                 <a
-                                    href="https://lu.ma/terms"
+                                    // href="https://lu.ma/terms"
 
                                 >
                                     Terms
                                 </a>
                                 <a
-                                    href="https://lu.ma/privacy-policy"
+                                    // href="https://lu.ma/privacy-policy"
 
                                 >
                                     Privacy Policy
                                 </a>
                                 <a
-                                    href="https://lu.ma/security"
+                                    // href="https://lu.ma/security"
 
                                 >
                                     Security

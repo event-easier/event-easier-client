@@ -23,9 +23,11 @@ import {
   CalendarIcon,
   StarIcon,
 } from "@chakra-ui/icons";
-import { GoogleSignOut } from "../services/firebase/authentication";
+import { SignOut } from "../services/firebase/authentication";
 import { useNavigate } from "react-router";
 import React from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 const Links = [
   {
@@ -42,6 +44,7 @@ const Links = [
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {profileData} = useContext(AuthContext)
   const navigate = useNavigate();
   return (
     <Box
@@ -132,15 +135,6 @@ export default function Navbar() {
             >
               Create Event
             </Button>
-            {/* <Button
-              variant={'solid'}
-              colorScheme={'blue'}
-              size={'sm'}
-              mr={4}
-              onClick={GoogleSignOut}
-            >
-              Sign Out
-            </Button> */}
             <Menu>
               <MenuButton
                 as={Button}
@@ -151,14 +145,14 @@ export default function Navbar() {
               >
                 <Avatar
                   size={"sm"}
-                  src={JSON.parse(localStorage.getItem("profile-data"))?.avatar}
+                  src={profileData?.avatar}
                 />
               </MenuButton>
               <MenuList bg="#131517">
                 <MenuItem
                   bg="#131517"
                   onClick={() => {
-                    navigate("/user/:uid/profile");
+                    navigate(`/user/${profileData._id}`);
                   }}
                 >
                   View Profile
@@ -167,8 +161,9 @@ export default function Navbar() {
                 <MenuDivider />
                 <MenuItem
                   onClick={() => {
-                    GoogleSignOut();
-                    navigate("/");
+                    SignOut().then((res) => {
+                      if (res) navigate("/")
+                    })
                   }}
                   bg="#131517"
                 >
@@ -178,7 +173,6 @@ export default function Navbar() {
             </Menu>
           </Flex>
         </Flex>
-
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
