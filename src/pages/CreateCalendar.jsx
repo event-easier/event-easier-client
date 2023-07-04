@@ -28,6 +28,10 @@ import {
   useDisclosure,
   FormHelperText,
   FormErrorMessage,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { color } from "framer-motion";
 import { BlockPicker, ChromePicker } from "react-color";
@@ -44,7 +48,7 @@ export default function CreateCalendar() {
     radioOptions,
     selectedColor,
     setSelectedColor,
-
+    error,
     showColorPicker,
     setShowColorPicker,
     valueColor,
@@ -78,6 +82,25 @@ export default function CreateCalendar() {
         paddingBottom: "64px",
       }}
     >
+      {error ? (
+        <Alert
+          status="error"
+          bg={"red"}
+          w={"400px"}
+          position={"fixed"}
+          zIndex={12}
+          right={"0px"}
+          top={"70px"}
+          bgGradient="linear(to-r, #ACCCC5, #FF3030)"
+          opacity={error ? 1 : 0}
+          borderRadius={"10px 0px 0px 10px"}
+        >
+          <AlertIcon />
+          Please enter your information
+        </Alert>
+      ) : (
+        ""
+      )}
       <Navbar style={{ zIndex: 1 }} />
 
       <div
@@ -398,6 +421,9 @@ export default function CreateCalendar() {
                     bg={"black"}
                     padding={"10px"}
                     borderRadius={"12px"}
+                    bgImage="url('https://cdn.worlddata.info/pics/map-world.png')"
+                    bgSize={"cover"}
+                    filter={"brightness(50%)"}
                   >
                     <Tabs variant="soft-rounded">
                       <TabList>
@@ -423,12 +449,13 @@ export default function CreateCalendar() {
                         </Box>
                       </TabList>
                       <TabPanels>
-                        <TabPanel>
+                        <TabPanel mt={"20px"}>
                           <Box
                             w={"20px"}
                             position={"relative"}
                             bottom={"-30px"}
                             left={"5px"}
+                            zIndex={12}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -447,7 +474,13 @@ export default function CreateCalendar() {
                               </g>
                             </svg>
                           </Box>
-                          <Input type="text" pl={"30px"}></Input>
+
+                          <Input
+                            type="text"
+                            pl={"30px"}
+                            bg={"#131517"}
+                            placeholder="enter your country"
+                          ></Input>
                         </TabPanel>
                         <TabPanel></TabPanel>
                       </TabPanels>
@@ -456,7 +489,13 @@ export default function CreateCalendar() {
                 </Box>
               </Grid>
             </div>
-            <Button mt={4} bg={"#FFFFFF"} color={"#131517"} type="submit">
+            <Button
+              mt={4}
+              bg={"#FFFFFF"}
+              color={"#131517"}
+              isDisabled={isInvalid}
+              type="submit"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

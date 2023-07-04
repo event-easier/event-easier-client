@@ -28,18 +28,20 @@ import {
   FormHelperText,
   FormErrorMessage,
   TabIndicator,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
 } from "@chakra-ui/react";
 import CalendarCardDrawer from "../components/CalendarCardDrawer";
 import { useContext } from "react";
 import { BlockPicker, ChromePicker } from "react-color";
 import { useState } from "react";
-import { Link as ReactLink } from "react-router-dom";
+import { Navigate, Link as ReactLink, useParams } from "react-router-dom";
+import CalendarNoUpComing from "../components/CalendarNoUpComing";
 export default function CalendarsManager() {
-  const [selectedButton, setSelectedButton] = useState(null);
-
-  const handleButtonClick = (buttonId) => {
-    setSelectedButton(buttonId);
-  };
+  const { id } = useParams();
 
   return (
     <div
@@ -71,14 +73,12 @@ export default function CalendarsManager() {
           />
         </Box>
         <Box mt={"10px"}>
-          <Tabs variant={"unstyled"}>
+          <Tabs variant={"unstyled"} borderBottom={"1px soild red"}>
             <TabList>
-              <ReactLink to={"/calendars-manager"}>
-                {" "}
-                <Tab>One</Tab>
-              </ReactLink>
-              <Tab>Two</Tab>
-              <Tab>Three</Tab>
+              <Tab>Events</Tab>
+
+              <Tab borderBottom={"1px soild red"}>People</Tab>
+              <Tab>Settings</Tab>
             </TabList>
             <TabIndicator
               mt="-1.5px"
@@ -86,11 +86,63 @@ export default function CalendarsManager() {
               bg="blue.500"
               borderRadius="1px"
             />
-            <hr style={{ border: " 1px solid #252729" }} />
+            <hr
+              style={{ border: " 1px solid #252729", position: "relative" }}
+            />
             <TabPanels>
               {" "}
               <TabPanel>
-                <p>one!</p>
+                <Heading as={"h3"} fontSize={"24px"} display={"inline"}>
+                  Events
+                </Heading>
+                <Button
+                  size="xs"
+                  borderRadius={"50%"}
+                  color="#ffffffa3"
+                  display={"inline-block"}
+                  bgColor={"#ffffff14"}
+                  ml={"10px"}
+                  fontSize={"14px"}
+                  mb={"5px"}
+                  _hover={{
+                    background: "#ffffffa3",
+                    color: "#131517",
+                  }}
+                >
+                  +
+                </Button>
+                <Tabs variant="soft-rounded" float={"right"}>
+                  <TabList>
+                    <Box
+                      bg={"#313131"}
+                      p={"3px"}
+                      borderRadius={"7px"}
+                      w={"220px"}
+                    >
+                      <Tab
+                        w={"50%"}
+                        fontSize={"14px"}
+                        borderRadius={"7px"}
+                        color={"#969696"}
+                        _selected={{ bg: "#4E4E4E", color: "#F6F6F6" }}
+                        display={"inline-block"}
+                      >
+                        Upcoming
+                      </Tab>
+                      <Tab
+                        w={"50%"}
+                        fontSize={"14px"}
+                        borderRadius={"7px"}
+                        color={"#969696"}
+                        _selected={{ bg: "#4E4E4E", color: "#F6F6F6" }}
+                        display={"inline-block"}
+                      >
+                        Past
+                      </Tab>
+                    </Box>
+                  </TabList>
+                </Tabs>
+                <CalendarNoUpComing></CalendarNoUpComing>
               </TabPanel>
               <TabPanel>
                 <p>two!</p>
@@ -102,21 +154,39 @@ export default function CalendarsManager() {
           </Tabs>
         </Box>
       </div>
-      <Button
-        opacity={"60%"}
-        bg={"#4E4F4F"}
-        color={"#BFBFBF"}
-        position={"absolute"}
-        top={"150px"}
-        right={"200px"}
-        _hover={{ bg: "#BCBCBC", color: "#131517" }}
-        textAlign={"right"}
-        display={"inline-block"}
-        zIndex={13}
-        float={"right"}
-      >
-        Calendar Page
-      </Button>
+      <ReactLink to={`/calendars/${id}`}>
+        <Button
+          opacity={"60%"}
+          bg={"#ffffff23"}
+          color={"#A5AFAF"}
+          position={"absolute"}
+          top={"150px"}
+          right={"18%"}
+          _hover={{ bg: "#BCBCBC", color: "#131517" }}
+          textAlign={"right"}
+          display={"inline-block"}
+          zIndex={13}
+          size="sm"
+          float={"right"}
+          pr={"30px"}
+        >
+          {" "}
+          Calendar Page
+          <Box w={"17px"} position={"absolute"} right={"7px"} top={"9px"}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M7 17 17 7M7 7h10v10"></path>
+            </svg>
+          </Box>
+        </Button>
+      </ReactLink>
     </div>
   );
 }

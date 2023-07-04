@@ -1,9 +1,82 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { Box, Button, Grid, GridItem, Heading, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  Heading,
+  Image,
+  TabPanels,
+  Input,
+  TabPanel,
+  TabList,
+  Tabs,
+  Tab,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { color } from "framer-motion";
-
+import CalendarNoUpComing from "../components/CalendarNoUpComing";
+import Calendar from "../components/Calendar";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
+import { useContext } from "react";
+import { CalendarContext } from "../context/CalendarProvider";
+import { useRef } from "react";
+import { Link as ReactLink } from "react-router-dom";
+import AddEventToCarlendarDrawer from "../components/AddEventToCarlendarDrawer";
 export default function CalendarsDetail() {
+  window.scrollTo(0, 0);
+  const { imgBackground } = useContext(CalendarContext);
+  const roleRef = useRef({ role: "GUEST", subscribed: false });
+  const { id } = useParams();
+  let a = JSON.parse(localStorage.getItem("profile-data"));
+  const userCalendar = a.calendars;
+  const [calendars, setCalendars] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const addCarlendarRef = React.useRef();
+  const client = axios.create({
+    // baseURL: `http://localhost:8081/api/v1/`,
+    baseURL: "https://event-easier-staging.onrender.com/api/v1",
+  });
+
+  client.interceptors.request.use((config) => {
+    config.headers.Authorization = `bearer ${a.token}`;
+    return config;
+  });
+  useEffect(() => {
+    try {
+      client.post(`/calendar/${id}`).then((response) => {
+        setCalendars(response.data);
+      });
+    } catch (error) {
+      console.log("error in callendar: \n", error);
+    }
+  }, []);
+
+  if (calendars && calendars.people) {
+    if (
+      calendars.people.some(
+        (obj) => obj.user_id === a._id && obj.subscribed === true
+      )
+    ) {
+      roleRef.current = { role: "GUEST", subscribed: true };
+    }
+  }
+
+  const isInArray = imgBackground.includes(calendars.cover);
+  useEffect(() => {
+    const role = userCalendar.some(
+      (obj) => obj.id === id && obj.role === "ADMIN"
+    );
+    if (role) {
+      roleRef.current = { role: "ADMIN", subscribed: false };
+    }
+  }, [userCalendar, id]);
+
+  console.log(roleRef.current);
+  console.log(calendars);
   return (
     <Box
       style={{
@@ -14,19 +87,34 @@ export default function CalendarsDetail() {
       }}
     >
       <Navbar></Navbar>
-      <div
-        style={{
-          height: "300px",
-          zIndex: 3,
-          backgroundColor: "red",
-          WebkitMaskImage:
-            "url(https://images.lumacdn.com/cdn-cgi/image/fit=cover,dpr=2,quality=80,width=716.8/calendar-defaults/patterns/diamonds-100.png)",
-        }}
-      ></div>
+
+      {isInArray ? (
+        <div
+          style={{
+            height: "300px",
+            zIndex: 3,
+            backgroundColor: calendars.color,
+            WebkitMaskImage: "url(" + calendars.cover + ")",
+            //   backgroundImage: calendars.cover,
+          }}
+        ></div>
+      ) : (
+        <div
+          style={{
+            height: "300px",
+            zIndex: 3,
+            backgroundColor: calendars.color,
+            //   WebkitMaskImage: "url(" + calendars.cover + ")",
+            backgroundImage: "url(" + calendars.cover + ")",
+            backgroundSize: "cover",
+          }}
+        ></div>
+      )}
       <Box>
         <Box
-          bgGradient="linear(to-b, red, rgb(19,21,23))"
-          opacity={0.1}
+          //   bgGradient="linear(to - b,red, rgb(19, 21, 23))"
+          bgGradient={`linear(to-b, ${calendars.color}, rgb(19, 21, 23))`}
+          opacity={"15%"}
           w={"100%"}
           h={"180px"}
           display={"inline-block"}
@@ -48,19 +136,56 @@ export default function CalendarsDetail() {
               border={"2px solid black"}
               w={"94px"}
               h={"94px"}
+              bgSize={"cover"}
               borderRadius={"10px"}
-              bgImg={
-                "https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=80,width=47,height=47/avatars-default/community_avatar_5.png"
-              }
+              bgImg={calendars.avatar}
             ></Box>
-            <Button
-              colorScheme="red"
-              variant="outline"
-              float={"right"}
-              _hover={{ bg: "red", color: "white", border: "0px " }}
-            >
-              Button
-            </Button>
+            {roleRef.current.role === "ADMIN" ? (
+              <ReactLink to={`/calendars-manager/${id}`}>
+                <Button
+                  border={`2px solid ${calendars.color}`}
+                  color={calendars.color}
+                  variant="outline"
+                  float={"right"}
+                  _hover={{
+                    bg: calendars.color,
+                    color: "white",
+                    border: `2px solid ${calendars.color}`,
+                  }}
+                >
+                  Manage
+                </Button>
+              </ReactLink>
+            ) : roleRef.current.role === "GUEST" &&
+              roleRef.current.subscribed === false ? (
+              <Button
+                border={`2px solid ${calendars.color}`}
+                color={calendars.color}
+                variant="outline"
+                float={"right"}
+                _hover={{
+                  bg: calendars.color,
+                  color: "white",
+                  border: `2px solid ${calendars.color}`,
+                }}
+              >
+                Subscribed
+              </Button>
+            ) : (
+              <Button
+                border={`2px solid ${calendars.color}`}
+                color={calendars.color}
+                variant="outline"
+                float={"right"}
+                _hover={{
+                  bg: calendars.color,
+                  color: "white",
+                  border: `2px solid ${calendars.color}`,
+                }}
+              >
+                Un subscribed
+              </Button>
+            )}
           </Box>
           <Heading
             as="h2"
@@ -69,7 +194,7 @@ export default function CalendarsDetail() {
             mt={"0px"}
             position={"relative"}
           >
-            2312
+            {calendars.calendarName}
           </Heading>
           <Heading
             position={"relative"}
@@ -78,7 +203,7 @@ export default function CalendarsDetail() {
             mb={"0px"}
             mt={"10px"}
           >
-            2312
+            {calendars.description}
           </Heading>
         </Box>
         <hr style={{ border: " 1px solid #252729", marginTop: "20px" }} />
@@ -144,8 +269,11 @@ export default function CalendarsDetail() {
                   />
                 </svg>
               </Button>
+
               <Button
                 color="#ffffffa3"
+                ref={addCarlendarRef}
+                onClick={onOpen}
                 p="0px"
                 w={"110px"}
                 m="0px"
@@ -194,11 +322,19 @@ export default function CalendarsDetail() {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  Add Event
+                  {roleRef.current.role === "ADMIN"
+                    ? "Add Event"
+                    : "Submit Event"}
                 </div>
               </Button>
+              <CalendarNoUpComing />
             </GridItem>
-
+            <AddEventToCarlendarDrawer
+              isOpen={isOpen}
+              placement="left"
+              onClose={onClose}
+              finalFocusRef={addCarlendarRef}
+            />
             <GridItem w="100%" colSpan={2}>
               <Box
                 border={"1px solid #252729"}
@@ -233,6 +369,45 @@ export default function CalendarsDetail() {
                   />
                 </svg>
                 Events times in GMT+7.
+              </Box>
+              <Box
+                border={"1px solid #252729"}
+                borderRadius={"10px"}
+                color={"#C0C0C0"}
+                mt={"10px"}
+              >
+                <Calendar></Calendar>
+                <Tabs variant="soft-rounded">
+                  <TabList>
+                    <Box
+                      bg={"#313131"}
+                      p={"3px"}
+                      borderRadius={"7px"}
+                      w={"100%"}
+                    >
+                      <Tab
+                        w={"50%"}
+                        fontSize={"10px"}
+                        borderRadius={"7px"}
+                        color={"#969696"}
+                        _selected={{ bg: "#4E4E4E", color: "#F6F6F6" }}
+                        display={"inline-block"}
+                      >
+                        Upcoming
+                      </Tab>
+                      <Tab
+                        w={"50%"}
+                        fontSize={"10px"}
+                        borderRadius={"7px"}
+                        color={"#969696"}
+                        _selected={{ bg: "#4E4E4E", color: "#F6F6F6" }}
+                        display={"inline-block"}
+                      >
+                        Past
+                      </Tab>
+                    </Box>
+                  </TabList>
+                </Tabs>
               </Box>
             </GridItem>
           </Grid>
