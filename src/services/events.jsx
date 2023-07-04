@@ -79,3 +79,22 @@ export const updateById = async (input) => {
     console.log("error in updateById \n", error);
   }
 };
+
+export const newRegistration = async (input) => {
+  try {
+    
+    const result = await client
+      .post(`/registration/${input._id}`, input, {
+        headers: {
+          authorization:
+            "Bearer " + JSON.parse(localStorage.getItem("profile-data")).token,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      });
+    return result;
+  } catch (error) {
+    console.log("error in registration \n", error);
+  }
+};
