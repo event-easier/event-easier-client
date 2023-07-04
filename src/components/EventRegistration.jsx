@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {
+    newRegistration,
+} from "../services/events";
 
-export default function EventRegistration({event}) {
+export default function EventRegistration({ event }) {
     const d = new Date(event?.start_time);
     const d1 = new Date();
+    const [eventRegData, setEventRegData] = useState({});
+    const isPastEvent = () => {
+        return d < d1;
+    };
+    const dayPast = () => {
+        return Math.abs(d1 - d) / (1000 * 3600 * 24);
+    };
 
-    const isPastEvent =() => {
-        return d<d1;
+    const handelnewRegistration = async () => {
+        const userId = JSON.parse(localStorage.getItem("profile-data"))._id
+        const _newReg = await newRegistration({
+            _id: event?._id,
+            userId: userId,
+        });
+        setEventRegData(_newReg);
+
     };
-    const dayPast = () =>{
-        return Math.abs(d1 - d)/(1000 * 3600 * 24);
-    };
+    console.log("eventRegData",eventRegData);
     return (
         <>
             <div
@@ -68,59 +82,59 @@ export default function EventRegistration({event}) {
 
                         >
                             {isPastEvent() ? (
-                            <div
-                                className="jsx-3792584099 info-rows flex-column"
-
-                            >
-                                
                                 <div
-                                    className="jsx-4058773777 flex-center info-row"
+                                    className="jsx-3792584099 info-rows flex-column"
 
                                 >
+
                                     <div
-                                        className="jsx-4058773777 icon flex-center-center rounded"
+                                        className="jsx-4058773777 flex-center info-row"
 
                                     >
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            style={{
-                                                boxSizing: "border-box",
-                                                verticalAlign: "middle",
-                                                display: "block",
-                                                width: "1.125rem",
-                                                height: "1.125rem",
-                                            }}
-                                        >
-                                            <path
-                                                d="M6 .5a1 1 0 0 1 1 1v1.065C8.098 2.5 9.398 2.5 10.933 2.5H13.067c1.535 0 2.835 0 3.933.065V1.5a1 1 0 1 1 2 0v1.314c.918.2 1.71.538 2.397 1.124.239.204.461.426.665.665.779.912 1.12 2.012 1.281 3.343.157 1.293.157 2.929.157 4.987v.134c0 2.058 0 3.694-.157 4.987-.162 1.33-.502 2.431-1.28 3.343a5.995 5.995 0 0 1-.666.665c-.912.779-2.012 1.12-3.343 1.281-1.293.157-2.929.157-4.987.157H10.933c-2.058 0-3.694 0-4.987-.157-1.33-.162-2.431-.502-3.343-1.28a5.997 5.997 0 0 1-.665-.666c-.779-.912-1.12-2.012-1.281-3.343C.5 16.761.5 15.125.5 13.067v-.134c0-2.058 0-3.694.157-4.987.162-1.33.502-2.431 1.28-3.343a6 6 0 0 1 .666-.665C3.29 3.352 4.083 3.014 5 2.814V1.5a1 1 0 0 1 1-1Zm.187 4.142c-1.135.138-1.794.397-2.285.816a4 4 0 0 0-.444.444c-.42.491-.678 1.15-.816 2.285a12.54 12.54 0 0 0-.033.313h18.783c-.01-.107-.022-.212-.034-.313-.138-1.135-.397-1.794-.816-2.285a4.004 4.004 0 0 0-.444-.444c-.491-.42-1.15-.678-2.285-.816C16.655 4.502 15.14 4.5 13 4.5h-2c-2.14 0-3.655.002-4.813.142ZM2.5 13c0-.948 0-1.774.013-2.5h18.974c.013.726.013 1.552.013 2.5 0 2.14-.002 3.655-.142 4.813-.138 1.135-.397 1.794-.816 2.285-.136.16-.285.308-.444.444-.491.42-1.15.678-2.285.816-1.158.14-2.673.142-4.813.142h-2c-2.14 0-3.655-.002-4.813-.142-1.135-.138-1.794-.397-2.285-.816a4.004 4.004 0 0 1-.444-.444c-.42-.491-.678-1.15-.816-2.285C2.502 16.655 2.5 15.14 2.5 13Z"
-                                                fill="currentColor"
-                                                fillRule="evenodd"
+                                        <div
+                                            className="jsx-4058773777 icon flex-center-center rounded"
 
-                                            />
-                                        </svg>
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                style={{
+                                                    boxSizing: "border-box",
+                                                    verticalAlign: "middle",
+                                                    display: "block",
+                                                    width: "1.125rem",
+                                                    height: "1.125rem",
+                                                }}
+                                            >
+                                                <path
+                                                    d="M6 .5a1 1 0 0 1 1 1v1.065C8.098 2.5 9.398 2.5 10.933 2.5H13.067c1.535 0 2.835 0 3.933.065V1.5a1 1 0 1 1 2 0v1.314c.918.2 1.71.538 2.397 1.124.239.204.461.426.665.665.779.912 1.12 2.012 1.281 3.343.157 1.293.157 2.929.157 4.987v.134c0 2.058 0 3.694-.157 4.987-.162 1.33-.502 2.431-1.28 3.343a5.995 5.995 0 0 1-.666.665c-.912.779-2.012 1.12-3.343 1.281-1.293.157-2.929.157-4.987.157H10.933c-2.058 0-3.694 0-4.987-.157-1.33-.162-2.431-.502-3.343-1.28a5.997 5.997 0 0 1-.665-.666c-.779-.912-1.12-2.012-1.281-3.343C.5 16.761.5 15.125.5 13.067v-.134c0-2.058 0-3.694.157-4.987.162-1.33.502-2.431 1.28-3.343a6 6 0 0 1 .666-.665C3.29 3.352 4.083 3.014 5 2.814V1.5a1 1 0 0 1 1-1Zm.187 4.142c-1.135.138-1.794.397-2.285.816a4 4 0 0 0-.444.444c-.42.491-.678 1.15-.816 2.285a12.54 12.54 0 0 0-.033.313h18.783c-.01-.107-.022-.212-.034-.313-.138-1.135-.397-1.794-.816-2.285a4.004 4.004 0 0 0-.444-.444c-.491-.42-1.15-.678-2.285-.816C16.655 4.502 15.14 4.5 13 4.5h-2c-2.14 0-3.655.002-4.813.142ZM2.5 13c0-.948 0-1.774.013-2.5h18.974c.013.726.013 1.552.013 2.5 0 2.14-.002 3.655-.142 4.813-.138 1.135-.397 1.794-.816 2.285-.136.16-.285.308-.444.444-.491.42-1.15.678-2.285.816-1.158.14-2.673.142-4.813.142h-2c-2.14 0-3.655-.002-4.813-.142-1.135-.138-1.794-.397-2.285-.816a4.004 4.004 0 0 1-.444-.444c-.42-.491-.678-1.15-.816-2.285C2.502 16.655 2.5 15.14 2.5 13Z"
+                                                    fill="currentColor"
+                                                    fillRule="evenodd"
+
+                                                />
+                                            </svg>
+                                        </div>
+
+                                        <div
+                                            className="jsx-4058773777"
+
+                                        >
+                                            <div
+                                                className="jsx-4058773777 title fw-medium"
+
+                                            >
+                                                Past Event
+                                            </div>
+                                            <div
+                                                className="jsx-4058773777 desc text-tinted"
+
+                                            >
+                                                This event ended {dayPast()} ngày trước.
+                                            </div>
+                                        </div>
                                     </div>
-                                    
-                                        <div
-                                        className="jsx-4058773777"
-
-                                    >
-                                        <div
-                                            className="jsx-4058773777 title fw-medium"
-
-                                        >
-                                            Past Event
-                                        </div>
-                                        <div
-                                            className="jsx-4058773777 desc text-tinted"
-
-                                        >
-                                            This event ended {dayPast()} ngày trước.
-                                        </div>
-                                    </div>                                   
-                                </div>                           
-                            </div>
-                             ):(<></>)}
+                                </div>
+                            ) : (<></>)}
                             <div style={{ boxSizing: "border-box" }}>
                                 Hello! To join the event, please register below.
                             </div>
@@ -212,7 +226,9 @@ export default function EventRegistration({event}) {
                                         <button
                                             className="btn luma-button flex-center medium primary solid full-width no-icon"
                                             type="button"
-
+                                            onClick={() => {
+                                                handelnewRegistration();
+                                            }}
                                         >
                                             <div
                                                 className="label"
