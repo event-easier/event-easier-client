@@ -3,10 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Home from "./pages/Home";
 import Calendars from "./pages/Calendars";
 import CreateEvent from "./pages/CreateEvent";
-import EventPage from "./pages/EventPage";
 import EventsManager from "./pages/EventsManager";
 import Personal from "./pages/Personal";
 import Settings from "./pages/Settings";
@@ -21,6 +19,8 @@ import AuthProvider from "./context/AuthProvider";
 import AppProvider from "./context/AppProvider";
 
 const LandingPage = React.lazy(() => import("./pages/LandingPage"));
+const EventPage = React.lazy(() => import("./pages/EventPage"));
+const Home = React.lazy(() => import("./pages/Home"))
 
 function App() {
   const routes = [
@@ -38,7 +38,9 @@ function App() {
     },
     {
       path: "/event/:eid",
-      element: <EventPage />,
+      element: <Suspense fallback={<div>Loading...</div>}>
+        <EventPage />
+      </Suspense>,
     },
     {
       path: "/event/manage/:eid",
@@ -54,7 +56,9 @@ function App() {
     },
     {
       path: "/home",
-      element: <Home />,
+      element: <Suspense fallback={<div>Loading...</div>}>
+        <Home />
+      </Suspense>,
     },
     {
       path: "/home/calendars",
@@ -77,16 +81,12 @@ function App() {
       element: <DiscoverEvents />,
     },
     {
-      path: "/user/:uid/profile",
+      path: "/user/:id",
       element: <UserProfile />,
     },
     {
       path: "/user/:uid/settings",
       element: <Settings />,
-    },
-    {
-      path: "/user/:uid/profile",
-      element: <UserProfile />,
     },
     {
       path: "/events-manager",

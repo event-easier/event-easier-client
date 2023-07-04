@@ -40,16 +40,18 @@ export const handleGoogleLogin = async (provider) => {
   }
 };
 
-export const GoogleSignOut = () => {
-  signOut(auth)
-    .then((res) => {
-      console.log("sign out successful");
-      localStorage.removeItem("profile-data");
-      return "this is a placeholder so that I can log out peacefully without any bugs";
-    })
-    .catch((error) => {
-      console.log("error: \n", error);
-    });
+export const SignOut = async () => {
+  try {
+    const result = await signOut(auth)
+      .then((res) => {
+        console.log("sign out successful");
+        localStorage.removeItem("profile-data");
+        return true;
+      })
+    return result;
+  } catch (error) {
+    console.log("Sign out error: \n", error);
+  }
 };
 
 export const RegisterByEmail = async (input) => {

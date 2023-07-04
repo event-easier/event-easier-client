@@ -11,24 +11,24 @@ import { useParams } from "react-router-dom";
 
 export default function EventPage() {
   let { eid } = useParams();
-  const [eventData, setEventData] = useState('');
+  const [eventData, setEventData] = useState();
   console.log(eid);
 
   const fetchEventData = async () => {
-    
+
     const _event = await findOne({
       _id: eid,
     });
-    setEventData(_event.data);
-    
+    setEventData(_event);
+
   };
-  console.log("event",eventData);
+  console.log("event", eventData);
   useEffect(() => {
     fetchEventData();
-    }, []);
+  }, []);
   return (
     <>
-      <div className="theme-root light">
+      <div className="theme-root dark">
         <Navbar />
         <div
           className="jsx-2566509379 page-wrapper wide-page-wrapper"
@@ -37,7 +37,8 @@ export default function EventPage() {
           }}
         >
           <div className="jsx-2566509379 page-content">
-            <EventMain event={eventData.data }/>
+            {eventData && (<EventMain event={eventData} />
+            )}
           </div>
         </div>
       </div>
