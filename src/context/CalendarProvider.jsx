@@ -1,14 +1,22 @@
-import { useDisclosure } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  useDisclosure,
+} from "@chakra-ui/react";
 import axios from "axios";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 export const CalendarContext = React.createContext("");
+import { Link as ReactLink, useNavigate } from "react-router-dom";
 
 export default function CalendarProvider({ children }) {
   let a = JSON.parse(localStorage.getItem("profile-data"));
-  console.log(a);
+
   const client = axios.create({
-    baseURL: `http://localhost:8081/api/v1/calendar/`,
+    // baseURL: `http://localhost:8081/api/v1/calendar/`,
+    baseURL: "https://event-easier-staging.onrender.com/api/v1/calendar/",
   });
 
   client.interceptors.request.use((config) => {
@@ -39,7 +47,7 @@ export default function CalendarProvider({ children }) {
     { value: "#FF9641", bgColor: "#FF9641" },
     { value: "#FF5965", bgColor: "#FF5965" },
   ];
-
+  const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState("#000000");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [valueColor, setValueColor] = useState("#D2D4D7");
@@ -48,10 +56,10 @@ export default function CalendarProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isInvalid, setIsInvalid] = useState(false);
   const [upLoadCover, setUpLoadCover] = useState(false);
+  const [error, setError] = useState(null);
   const [background, setBackground] = useState(
     "https://images.lumacdn.com/cdn-cgi/image/fit=cover,dpr=2,quality=80,width=716.8/calendar-defaults/patterns/diamonds-100.png"
   );
-
   const [avatar, setAvatar] = useState(
     "https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=80,width=34,height=34/avatars-default/community_avatar_5.png"
   );
@@ -125,18 +133,28 @@ export default function CalendarProvider({ children }) {
       setBackground(URL.createObjectURL(file));
     }
   };
+  useEffect(() => {
+    if (error) {
+      const timeout = setTimeout(() => {
+        setError(false);
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [error]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault("");
     console.log("formData", formData);
     try {
       await client
         .post("/create", formData)
         .then((response) => {
-          console.log(response);
+          navigate(`/calendars-manager/${response.data.data._id}`);
         })
         .catch((error) => {
           console.error(error);
+          setError(true);
         });
     } catch (error) {
       console.log(error);
@@ -146,6 +164,7 @@ export default function CalendarProvider({ children }) {
   return (
     <CalendarContext.Provider
       value={{
+        error,
         handleUploadImage,
         setUpLoadCover,
         upLoadCover,

@@ -12,6 +12,7 @@ import {
   Grid,
   Center,
   Box,
+  cookieStorageManagerSSR,
 } from "@chakra-ui/react";
 import { Link as ReactLink } from "react-router-dom";
 
@@ -21,8 +22,11 @@ import { AuthContext } from "../context/AuthProvider";
 export default function Calendars() {
   const [calendars, setCalendars] = useState([]);
   let a = JSON.parse(localStorage.getItem("profile-data"));
+  const [lastEvent, setLastEvent] = useState({});
+
   const client = axios.create({
-    baseURL: `http://localhost:8081/api/v1/calendar/`,
+    // baseURL: `http://localhost:8081/api/v1/`,
+    baseURL: "https://event-easier-staging.onrender.com/api/v1",
   });
 
   client.interceptors.request.use((config) => {
@@ -32,7 +36,7 @@ export default function Calendars() {
 
   useEffect(() => {
     try {
-      client.post("/").then((response) => {
+      client.post("/calendar/").then((response) => {
         setCalendars(response.data.data);
       });
     } catch (error) {
@@ -45,6 +49,118 @@ export default function Calendars() {
   const subCalendars = calendars.filter((item) =>
     item.people.some((p) => p.user_id === a._id)
   );
+  useEffect(() => {
+    subCalendars.forEach((subCalendar) => {
+      if (subCalendar.events.length > 0) {
+        try {
+          client
+            .get(`/event/${subCalendar.events[subCalendar.events.length - 1]}`)
+            .then((response) => {
+              const newLastEvent = {
+                id: subCalendar._id,
+                data: response.data.data,
+              };
+              setLastEvent((prevState) => ({
+                ...prevState,
+                [subCalendar._id]: newLastEvent,
+              }));
+            });
+        } catch (error) {
+          console.log("error in calendar: \n", error);
+        }
+      }
+    });
+  }, [subCalendars.length]);
+
+  const renderCalendars = (calendar) => {
+    const b = lastEvent[calendar._id];
+    console.log("b", b);
+    return (
+      <Box
+        w={"100%"}
+        h={"170px"}
+        backgroundColor={"#1C1E20"}
+        borderRadius={"10px"}
+        p={"16px"}
+        mt={"30px"}
+      >
+        <HStack spacing="24px">
+          <Box w={"190px"}>
+            <Image
+              boxSize="48px"
+              objectFit="cover"
+              src={calendar.avatar}
+              borderRadius={"5px"}
+            />
+            <Heading
+              mt={"16px"}
+              style={{
+                textTransform: "capitalize",
+                fontSize: "18px",
+              }}
+              color={"#FFFFFF"}
+              as="h2"
+            >
+              {" "}
+              {calendar.calendarName}
+            </Heading>
+            <ReactLink
+              to={`/calendars/${calendar._id}`}
+              // to={"/calendars-manager"}
+            >
+              <Button
+                mt={"16px"}
+                size="sm"
+                color="#ffffffa3"
+                p="7px 10px"
+                bgColor={"#ffffff14"}
+                _hover={{
+                  background: "#ffffffa3",
+                  color: "#131517",
+                }}
+              >
+                View Calendar
+              </Button>
+            </ReactLink>
+          </Box>
+
+          <Box h={"137px"}>
+            <Text color={"#828384"}>{b ? "Up Comming" : ""}</Text>
+
+            <Heading
+              mt={"16px"}
+              style={{
+                textTransform: "capitalize",
+                fontSize: "16px",
+              }}
+              color={"#FFFFFF"}
+              as="h2"
+              _hover={{ color: "#e6658a", transitionDuration: "0.5s" }}
+            >
+              {" "}
+              {b
+                ? new Date(b.data.start_time).toLocaleDateString("en-EN", {
+                    weekday: "long",
+                  })
+                : ""}
+            </Heading>
+            <Text color={"#828384"}>
+              {b
+                ? new Date(b.data.start_time).toLocaleTimeString("en-EN", {
+                    month: "numeric",
+                    weekday: "long",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
+                  })
+                : ""}
+            </Text>
+          </Box>
+        </HStack>
+      </Box>
+    );
+  };
+
   const calendarManager = () => {};
   return (
     <div
@@ -55,7 +171,6 @@ export default function Calendars() {
         paddingBottom: "64px",
       }}
     >
-      {console.log(subCalendars)}
       <Navbar />
       <div
         style={{
@@ -142,9 +257,7 @@ export default function Calendars() {
 
           {myCalendars.map((calendar) => (
             <ReactLink
-              to={`/calendars-manager/${
-                calendar.url ? calendar.url : calendar._id
-              }`}
+              to={`/calendars-manager/${calendar._id}`}
               // to={"/calendars-manager"}
             >
               <Box
@@ -430,68 +543,7 @@ export default function Calendars() {
             </Box>
           </Grid>
         ) : (
-          subCalendars.map((calendar) => (
-            <Box
-              w={"100%"}
-              h={"170px"}
-              backgroundColor={"#1C1E20"}
-              borderRadius={"10px"}
-              p={"16px"}
-            >
-              <HStack spacing="24px">
-                <Box w={"190px"}>
-                  <Image
-                    boxSize="48px"
-                    objectFit="cover"
-                    src={calendar.avatar}
-                    borderRadius={"5px"}
-                  />
-                  <Heading
-                    mt={"16px"}
-                    style={{
-                      textTransform: "capitalize",
-                      fontSize: "18px",
-                    }}
-                    color={"#FFFFFF"}
-                    as="h2"
-                  >
-                    {" "}
-                    {calendar.calendarName}
-                  </Heading>
-                  <Button
-                    mt={"16px"}
-                    size="sm"
-                    color="#ffffffa3"
-                    p="7px 10px"
-                    bgColor={"#ffffff14"}
-                    _hover={{
-                      background: "#ffffffa3",
-                      color: "#131517",
-                    }}
-                  >
-                    View Calendar
-                  </Button>
-                </Box>
-                <Box h={"137px"}>
-                  <Text color={"#828384"}>Upcoming Events</Text>
-                  <Heading
-                    mt={"16px"}
-                    style={{
-                      textTransform: "capitalize",
-                      fontSize: "16px",
-                    }}
-                    color={"#FFFFFF"}
-                    as="h2"
-                    _hover={{ color: "#e6658a", transitionDuration: "0.5s" }}
-                  >
-                    {" "}
-                    Friday
-                  </Heading>
-                  <Text color={"#828384"}>19:30 Th 3, 13 thg 6</Text>
-                </Box>
-              </HStack>
-            </Box>
-          ))
+          subCalendars.map((calendar) => renderCalendars(calendar))
         )}
 
         {/* hết Subscribed*/}
