@@ -31,7 +31,8 @@ export default function CalendarsDetail() {
   const { imgBackground } = useContext(CalendarContext);
   const roleRef = useRef({ role: "GUEST", subscribed: false });
   const { id } = useParams();
-  let a = JSON.parse(localStorage.getItem("profile-data"));
+  let a = JSON.parse(localStorage.getItem("data_user"));
+  console.log(a);
   const userCalendar = a.calendars;
   const [calendars, setCalendars] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,13 +71,13 @@ export default function CalendarsDetail() {
     const role = userCalendar.some(
       (obj) => obj.id === id && obj.role === "ADMIN"
     );
+    console.log(userCalendar);
     if (role) {
       roleRef.current = { role: "ADMIN", subscribed: false };
     }
   }, [userCalendar, id]);
 
   console.log(roleRef.current);
-  console.log(calendars);
   return (
     <Box
       style={{
