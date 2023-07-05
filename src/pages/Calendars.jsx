@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Container,
   Heading,
@@ -18,30 +18,16 @@ import { Link as ReactLink } from "react-router-dom";
 
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
+import { getCalendarUser } from "../services/calendar";
 
 export default function Calendars() {
   const [calendars, setCalendars] = useState([]);
-  let a = JSON.parse(localStorage.getItem("profile-data"));
+  let a = JSON.parse(localStorage.getItem("user"));
   const [lastEvent, setLastEvent] = useState({});
-
-  const client = axios.create({
-    // baseURL: `http://localhost:8081/api/v1/`,
-    baseURL: "https://event-easier-staging.onrender.com/api/v1",
-  });
-
-  client.interceptors.request.use((config) => {
-    config.headers.Authorization = `bearer ${a.token}`;
-    return config;
-  });
+  console.log("aaaaaaaaa", a);
 
   useEffect(() => {
-    try {
-      client.post("/calendar/").then((response) => {
-        setCalendars(response.data.data);
-      });
-    } catch (error) {
-      console.log("error in callendar: \n", error);
-    }
+    console.log(getCalendarUser);
   }, []);
   const myCalendars = calendars.filter(
     (item) => !item.people.some((p) => p.user_id === a._id)
