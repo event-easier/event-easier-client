@@ -54,7 +54,9 @@ export default function EventRegistration({ event }) {
         <>
             <div
                 className="jsx-85398371 flex-1 flex-column gap-3 min-width-0"
-
+                style={{
+                    width: "100%"
+                }}
             >
                 {guestData?.length !== 0 ? (
 

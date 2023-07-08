@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Avatar, Box, Button, Heading, Text } from "@chakra-ui/react";
 import ProfileEventCard from "../components/ProfileEventCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppContext } from "../context/AppProvider";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,12 +10,14 @@ import { AuthContext } from "../context/AuthProvider";
 export default function UserProfile() {
   const navigate = useNavigate()
   let { uid } = useParams;
-  const { events, upcomingEvents, pastEvents } = useContext(AppContext);
+  const { upcomingEvents, pastEvents, fetchEventsData } = useContext(AppContext);
   const { profileData } = useContext(AuthContext);
   console.log("profileData", profileData);
   const [openPast, setOpenPast] = useState(false);
   console.log(upcomingEvents);
-
+  useEffect(() => {
+    fetchEventsData()
+  }, [])
   return (
     <div
       style={{
@@ -96,12 +98,39 @@ export default function UserProfile() {
             </Button>
           </div>
         </Box>
-        {upcomingEvents.map((event, index) => {
-          return <ProfileEventCard key={index} event={event} />;
-        })}
+        {
+          (upcomingEvents.length == 0) ? (
+            <div>
+              <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
+                No Upcoming Events
+              </Heading>
+              <Text
+                fontSize="2xl"
+                fontWeight="light"
+                m="24px 0 0"
+                p="0 48px"
+              >
+                You have no upcoming events. Why not host one?
+              </Text>
+              {/* <Button
+                colorScheme="blue"
+                variant="outline"
+                m="24px 48px 0"
+                p="0 48px"
+              >
+                <Text fontWeight="bold">Create Event</Text>
+              </Button> */}
+            </div>
+          ) : (
+            upcomingEvents.map((event, index) => {
+              return <ProfileEventCard key={index} event={event} />;
+            })
+          )
+        }
         {openPast ? (
           <div>
             <Button
+              paddingTop={"50px"}
               variant="ghost"
               color={"#DFAC00"}
               _hover={{ color: "#ffcd23" }}
@@ -112,9 +141,35 @@ export default function UserProfile() {
             >
               View less
             </Button>
-            {pastEvents?.map((event, index) => {
-              return <ProfileEventCard key={index} event={event} />;
-            })}
+            {
+              (pastEvents.length == 0) ? (
+                <div>
+                  <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
+                    No Past Events
+                  </Heading>
+                  <Text
+                    fontSize="2xl"
+                    fontWeight="light"
+                    m="24px 0 0"
+                    p="0 48px"
+                  >
+                    You have no past events. Why not host one now?
+                  </Text>
+                  {/* <Button
+                    colorScheme="blue"
+                    variant="outline"
+                    m="24px 48px 0"
+                    p="0 48px"
+                  >
+                    <Text fontWeight="bold">Create Event</Text>
+                  </Button> */}
+                </div>
+              ) : (
+                pastEvents?.map((event, index) => {
+                  return <ProfileEventCard key={index} event={event} />;
+                })
+              )
+            }
           </div>
         ) : (
           <div>

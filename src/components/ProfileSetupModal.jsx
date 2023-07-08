@@ -11,6 +11,7 @@ import {
   FormLabel,
   Input,
   Button,
+  useToast
 } from "@chakra-ui/react";
 import { RegisterByEmail } from "../services/firebase/authentication";
 import { AuthContext } from "../context/AuthProvider";
@@ -26,6 +27,8 @@ export default function ProfileSetup({ isOpen, onOpen, onClose, email }) {
     email: email,
     avatar: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
   })
+  const toast = useToast()
+
   const navigate = useNavigate()
   const handleNameInput = (e) => {
     setUserSignUp({
@@ -33,7 +36,6 @@ export default function ProfileSetup({ isOpen, onOpen, onClose, email }) {
       name: e.target.value,
       email: email
     })
-    console.log(userSignUp)
   }
   return (
     <Modal
@@ -63,16 +65,31 @@ export default function ProfileSetup({ isOpen, onOpen, onClose, email }) {
             onClick={async () => {
               console.log("register: ");
               const res = await RegisterByEmail(userSignUp);
-              // setProfileData(res.data.data);
-              // localStorage.setItem(
-              //   "profile-data",
-              //   JSON.stringify({
-              //     ...res.data.data,
-              //     token: res.data.token,
-              //   })
-              // );
-              // navigate("/home")
-            }}
+              if (typeof res === "string" && res.slice(0, 29) == "User already exists with this") {
+                toast({
+                  title: "User already exists with this email.",
+                  status: "error",
+                  isClosable: true
+                })
+              } else {
+                toast({
+                  title: "Your account has been created, please sign in again to use our services.",
+                  variant: "subtle",
+                  status: "success",
+                  isClosable: true
+                })
+                // setProfileData(res.data.data);
+                // localStorage.setItem(
+                //   "profile-data",
+                //   JSON.stringify({
+                //     ...res.data.data,
+                //     token: res.data.token,
+                //   })
+                // );
+                navigate("/signin")
+              }
+            }
+            }
           >
             Continue
           </Button>

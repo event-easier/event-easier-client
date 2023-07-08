@@ -14,7 +14,7 @@ import {
   Wrap,
   Box,
   WrapItem,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import ProfileSetupModal from "../components/ProfileSetupModal";
@@ -27,7 +27,6 @@ export default function SignUp() {
   const handleInputChange = (e) => {
     setEmail(e.target.value);
   };
-
   return (
     <Flex
       w="100vm"

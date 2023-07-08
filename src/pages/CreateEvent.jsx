@@ -10,6 +10,7 @@ import { createEvent } from '../services/events'
 import EventBackgroundDrawer from '../components/EventBackgroundDrawer'
 import { useDisclosure } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
+import Editor from '../components/Editor/Editor'
 
 export default function CreateEvent() {
   const { profileData } = useContext(AuthContext);
@@ -21,6 +22,7 @@ export default function CreateEvent() {
   const [eventCreated, setEventCreated] = useState(
     {
       name: "",
+      description: "",
       type: {
         event_type: "",
         location: "",
@@ -53,6 +55,14 @@ export default function CreateEvent() {
       ...eventCreated,
       name: e.target.value,
     })
+  }
+
+  const handleDescriptionChange = (value) => {
+    setEventCreated({
+      ...eventCreated,
+      description: value,
+    })
+    console.log(eventCreated)
   }
 
   const handleTypePropsChange = (type) => {
@@ -162,7 +172,7 @@ export default function CreateEvent() {
                   as="b"
                   size={"1.2rem"}
                   color={"#3787ff"}
-                  fontSize={"14px"}
+                  fontSize={"1.2rem"}
                   fontStyle={"bold"}> Event Name </Heading>
                 <Input
                   id="input-name"
@@ -176,6 +186,25 @@ export default function CreateEvent() {
                   fontSize={"38px"}
                   onChange={handleNameChange}
                 />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  flexDirection: "column",
+                  paddingTop: "1.5rem !important",
+                  paddingBottom: "1.5rem !important"
+                }}>
+                <Heading
+                  as="b"
+                  fontSize={"1.2rem"}
+                  color={"#3787ff"}
+                  fontStyle={"bold"}
+                  paddingTop={"2rem"}
+                >
+                  Description
+                </Heading>
+                <Editor handleDescriptionChange={handleDescriptionChange} />
               </div>
               <div
                 style={{
@@ -599,6 +628,7 @@ export default function CreateEvent() {
                       console.log(eventCreated)
                       await createEvent({
                         name: eventCreated.name,
+                        description: eventCreated.description,
                         type: eventCreated.type,
                         cover: eventCreated.cover,
                         start_time: eventCreated.start_time,

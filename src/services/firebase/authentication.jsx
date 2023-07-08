@@ -57,6 +57,7 @@ export const SignOut = async () => {
 };
 
 export const RegisterByEmail = async (input) => {
+  let errorLog = "";
   try {
     const result = await client
       .post("/register", {
@@ -71,8 +72,10 @@ export const RegisterByEmail = async (input) => {
       });
     return result;
   } catch (error) {
-    console.log("error: \n", error);
+    console.log("Register error: \n", error.response.data.message);
+    errorLog = error.response.data.message;
   }
+  return errorLog;
 };
 
 export const LoginByEmail = async (input) => {
@@ -89,6 +92,7 @@ export const LoginByEmail = async (input) => {
     return result;
   } catch (error) {
     console.log("error: \n", error);
+    return error;
   }
 };
 
