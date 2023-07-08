@@ -11,10 +11,15 @@ import {
   PinInput,
   PinInputField,
   HStack,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 import { VerifyUserByCode } from "../services/firebase/authentication";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
+
 
 export default function CodeAlertDialog({
   isOpen,
@@ -70,20 +75,20 @@ export default function CodeAlertDialog({
               onClick={async () => {
                 console.log("verify code:", verifyCode);
                 const res = await VerifyUserByCode(email, verifyCode);
-                if (!res) {
+                if (res.data === "wrong code") {
                   console.log("Something is wrong.");
-                  return;
+                
+                } else {
+                  setProfileData(res.data.data);
+                  localStorage.setItem(
+                    "profile-data",
+                    JSON.stringify({
+                      ...res.data.data,
+                      token: res.data.token,
+                    })
+                  );
+                  navigate("/home")
                 }
-
-                setProfileData(res.data.data);
-                localStorage.setItem(
-                  "profile-data",
-                  JSON.stringify({
-                    ...res.data.data,
-                    token: res.data.token,
-                  })
-                );
-                navigate("/home");
               }}
             >
               Verify

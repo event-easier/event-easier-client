@@ -2,11 +2,9 @@ import React from "react";
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
   Button,
   Image,
   Card,
@@ -17,10 +15,10 @@ import {
   Divider,
   Text,
   CardHeader,
-  StackDivider,
   Box,
   Flex,
   Avatar,
+  Link,
 } from "@chakra-ui/react";
 import { CalendarIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import "../index.css";
@@ -30,7 +28,7 @@ export default function EventCardDrawer({
   onOpen,
   onClose,
   finalFocusRef,
-  event
+  event,
 }) {
   return (
     <Box className="box-disable-overflow">
@@ -104,6 +102,9 @@ export default function EventCardDrawer({
                     bg: "hsla(0,0%,100%,.64)",
                     color: "rgb(19,21,23)",
                   }}
+                  onClick={() => {navigator.clipboard.writeText(
+                    `${import.meta.env.VITE_BASE_URL}/event/${event._id}`
+                  )}}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +140,13 @@ export default function EventCardDrawer({
                     color: "rgb(19,21,23)",
                   }}
                 >
-                  Open Event Page
+                  <Link
+                    href={`/event/${event._id}`}
+                    target="_blank"
+                    textDecoration="none"
+                  >
+                    Open Event Page
+                  </Link>
                 </Button>
               </div>
             </div>
@@ -152,11 +159,7 @@ export default function EventCardDrawer({
               marginTop="4rem"
             >
               <CardBody>
-                <Image
-                  src={event.cover}
-                  alt={event.name}
-                  borderRadius="lg"
-                />
+                <Image src={event.cover} alt={event.name} borderRadius="lg" />
                 <Stack mt="6" spacing="3">
                   <Heading>{event.name}</Heading>
                   <Box display={"flex"} flexDirection={"row"}>
@@ -177,14 +180,18 @@ export default function EventCardDrawer({
                       <CalendarIcon boxSize={6} m="0.5rem" />
                       <Box m="0.5rem">
                         <Text>
-                          {new Date(event.start_time).toLocaleDateString('en-GB')}
-                          {" "} to {" "}
-                          {new Date(event.end_time).toLocaleDateString('en-GB')}
+                          {new Date(event.start_time).toLocaleDateString(
+                            "en-GB"
+                          )}{" "}
+                          to{" "}
+                          {new Date(event.end_time).toLocaleDateString("en-GB")}
                         </Text>
                         <Text>
-                          {new Date(event.start_time).toLocaleTimeString('en-US')}
-                          {" "} to {" "}
-                          {new Date(event.end_time).toLocaleTimeString('en-US')}
+                          {new Date(event.start_time).toLocaleTimeString(
+                            "en-US"
+                          )}{" "}
+                          to{" "}
+                          {new Date(event.end_time).toLocaleTimeString("en-US")}
                         </Text>
                       </Box>
                     </Flex>
@@ -224,32 +231,6 @@ export default function EventCardDrawer({
                 </Flex>
               </CardFooter>
             </Card>
-            {/* <Card
-              w="100%"
-              backgroundColor={"#212325"}
-              color="white"
-              // margin="0.75rem"
-              marginTop="1rem"
-            >
-              <CardHeader>
-                <Heading size="lg">Registration</Heading>
-              </CardHeader>
-              <Divider />
-              <CardBody>
-                <Stack divider={<StackDivider />} spacing="4">
-                  <Box>
-                    <Heading size="md" textTransform="uppercase">
-                      <CalendarIcon mr="1rem" />
-                      No Upcoming Session
-                    </Heading>
-                    <Text pt="2" fontSize="sm">
-                      This series has no upcoming sessions scheduled. Heard
-                      something is coming? Check back later!{" "}
-                    </Text>
-                  </Box>
-                </Stack>
-              </CardBody>
-            </Card> */}
             <Card
               w="100%"
               backgroundColor={"#212325"}
@@ -262,11 +243,6 @@ export default function EventCardDrawer({
               </CardHeader>
               <Divider />
               <CardBody>
-                {/* <Text>
-                  With Chakra UI, I wanted to sync the speed of development with
-                  the speed of design. I wanted the developer to be just as
-                  excited as the designer to create a screen.
-                </Text> */}
               </CardBody>
               <Image
                 objectFit="cover"
@@ -298,9 +274,8 @@ export default function EventCardDrawer({
                         />
                         <Text size="sm">{host.name}</Text>
                       </Box>
-                    )
+                    );
                   })}
-
                 </Stack>
               </CardBody>
             </Card>

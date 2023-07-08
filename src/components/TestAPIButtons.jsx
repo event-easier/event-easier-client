@@ -9,7 +9,6 @@ import {
 
 export default function TestAPIButtons({
   events,
-  checkEventTime,
   upcoming_events,
   past_events,
 }) {
@@ -28,7 +27,6 @@ export default function TestAPIButtons({
         {" "}
         Call API getAllEvents
       </Button>
-
       <Button
         color={"black"}
         onClick={() => {
@@ -45,6 +43,10 @@ export default function TestAPIButtons({
             type: {
               event_type: "IN_PERSON",
               location: "Ho Chi Minh, Vietnam",
+              zoom_id: "",
+              zoom_password: "",
+              zoom_url: "",
+              event_url: ""
             },
             cover:
               "https://cdn.lu.ma/cdn-cgi/image/format=auto,fit=cover,dpr=2,quality=85,width=960,height=480/event-defaults/b3.jpg",
@@ -52,7 +54,7 @@ export default function TestAPIButtons({
             end_time: 3804848514123,
             require_approve: false,
             hosts: [creator_host],
-            guests: [creator_host],
+            guests: [],
           });
         }}
       >

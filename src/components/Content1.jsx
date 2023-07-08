@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 export default function Content1() {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -26,7 +28,7 @@ export default function Content1() {
           </div>
           <a
             className="jsx-3325839890 jsx-4002731451 btn cta-btn"
-            href="https://lu.ma/signin"
+            href="/signin"
 
           >
             Get Started

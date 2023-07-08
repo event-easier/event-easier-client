@@ -5,19 +5,16 @@ import ProfileEventCard from "../components/ProfileEventCard";
 import { useState } from "react";
 import { AppContext } from "../context/AppProvider";
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 export default function UserProfile() {
+  const navigate = useNavigate()
   let { uid } = useParams;
   const { events, upcomingEvents, pastEvents } = useContext(AppContext);
   const { profileData } = useContext(AuthContext);
   console.log("profileData", profileData);
   const [openPast, setOpenPast] = useState(false);
   console.log(upcomingEvents);
-  // const EditBioModal = () => {
-
-  // }
-
 
   return (
     <div
@@ -47,7 +44,7 @@ export default function UserProfile() {
           <Avatar size={"xxl"} src={profileData.avatar} />
           <Heading m="16px 0px">{profileData.name}</Heading>
           <Text mb="0.5rem">{profileData.bio}</Text>
-          <Button
+          {/* <Button
             color="hsla(0,0%,100%,.64)"
             p="7px 10px"
             w={170}
@@ -56,7 +53,7 @@ export default function UserProfile() {
             _hover={{ bgColor: "#1234" }}
           >
             Edit Bio
-          </Button>
+          </Button> */}
         </Box>
       </Box>
       <div
@@ -66,7 +63,7 @@ export default function UserProfile() {
           minHeight: "100vh",
           flexDirection: "column",
           margin: "0px auto 0px auto",
-          alignItems: "center",
+          // alignItems: "center",
           blockSize: "border-box",
           alignContent: "center",
         }}
@@ -91,15 +88,14 @@ export default function UserProfile() {
               color={"#DFAC00"}
               _hover={{ color: "#ffcd23" }}
               _focus={{ color: "#ffcd99", backgroundColor: "rgb(19,21,23)" }}
+              onClick={() => {
+                navigate("/create-event")
+              }}
             >
               Create Event
             </Button>
           </div>
         </Box>
-        {/* <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} />
-        <ProfileEventCard title={"Morning Exercises"} date={"Sat, Jun 24, 12:30 PM - 1:30 PM GMT+7"} /> */}
         {upcomingEvents.map((event, index) => {
           return <ProfileEventCard key={index} event={event} />;
         })}
