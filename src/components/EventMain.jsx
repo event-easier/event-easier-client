@@ -242,50 +242,103 @@ export default function EventMain({ event }) {
                                                     className="jsx-2825744342 flex-1 min-width-0"
 
                                                 >
-                                                    <div
-                                                        className="jsx-3672980428 icon-row flex-center gap-3"
-
-                                                    >
-                                                        <div
-                                                            className="jsx-3672980428 icon-container flex-center-center rounded overflow-hidden flex-shrink-0"
-
-                                                        >
-                                                            <svg
-                                                                viewBox="0 0 16 16"
-                                                                xmlns="http://www.w3.org/2000/svg"
+                                                    {
+                                                        (event.type.event_type == "ZOOM")
+                                                            ?
+                                                            <div
+                                                                className="jsx-3672980428 icon-row flex-center gap-3"
 
                                                             >
-                                                                <g
-                                                                    fill="none"
-                                                                    fillRule="evenodd"
-                                                                    stroke="currentColor"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                    strokeWidth="1.5"
+                                                                <div
+                                                                    className="jsx-3672980428 icon-container flex-center-center rounded overflow-hidden flex-shrink-0"
 
                                                                 >
-                                                                    <path
-                                                                        d="M2 6.854C2 11.02 7.04 15 8 15s6-3.98 6-8.146C14 3.621 11.314 1 8 1S2 3.62 2 6.854Z"
+                                                                    {/* <svg
+                                                                        viewBox="0 0 16 16"
+                                                                        xmlns="http://www.w3.org/2000/svg"
 
-                                                                    />
-                                                                    <path
-                                                                        d="M9.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                                                                    >
+                                                                        <g
+                                                                            fill="none"
+                                                                            fillRule="evenodd"
+                                                                            stroke="currentColor"
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            strokeWidth="1.5"
 
-                                                                    />
-                                                                </g>
-                                                            </svg>
-                                                        </div>
-                                                        <div
-                                                            className="jsx-3672980428 flex-1 min-width-0"
+                                                                        >
+                                                                            <path
+                                                                                d="M2 6.854C2 11.02 7.04 15 8 15s6-3.98 6-8.146C14 3.621 11.314 1 8 1S2 3.62 2 6.854Z"
 
-                                                        >
-                                                            <div
-                                                                className="jsx-3672980428 title text-ellipses"
-                                                            >
-                                                                Register to See Address
+                                                                            />
+                                                                            <path
+                                                                                d="M9.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+
+                                                                            />
+                                                                        </g>
+                                                                    </svg> */}
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path fill="currentColor" d="M48 13.208v22.704c0 1.504-.828 1.332-1.533.783L36.5 29.25v-9.38l9.967-7.446c.87-.725 1.533-.556 1.533.784ZM27.553 12c3.768-.017 6.837 3.071 6.856 6.9v16.936a1.252 1.252 0 0 1-1.246 1.255H8.856c-3.768.017-6.837-3.071-6.856-6.9V13.255A1.252 1.252 0 0 1 3.246 12Z"></path></svg>
+                                                                </div>
+                                                                <div
+                                                                    className="jsx-3672980428 flex-1 min-width-0"
+                                                                >
+                                                                    <div
+                                                                        className="jsx-3672980428 title text-ellipses"
+                                                                    >
+                                                                        <a href={`${event.type?.zoom_url}`}>
+                                                                            Zoom
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
+                                                            :
+                                                            <div
+                                                                className="jsx-3672980428 icon-row flex-center gap-3"
+
+                                                            >
+                                                                <div
+                                                                    className="jsx-3672980428 icon-container flex-center-center rounded overflow-hidden flex-shrink-0"
+
+                                                                >
+                                                                    <svg
+                                                                        viewBox="0 0 16 16"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+
+                                                                    >
+                                                                        <g
+                                                                            fill="none"
+                                                                            fillRule="evenodd"
+                                                                            stroke="currentColor"
+                                                                            strokeLinecap="round"
+                                                                            strokeLinejoin="round"
+                                                                            strokeWidth="1.5"
+
+                                                                        >
+                                                                            <path
+                                                                                d="M2 6.854C2 11.02 7.04 15 8 15s6-3.98 6-8.146C14 3.621 11.314 1 8 1S2 3.62 2 6.854Z"
+
+                                                                            />
+                                                                            <path
+                                                                                d="M9.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+
+                                                                            />
+                                                                        </g>
+                                                                    </svg>
+                                                                </div>
+                                                                <div
+                                                                    className="jsx-3672980428 flex-1 min-width-0"
+
+                                                                >
+
+                                                                    <div
+                                                                        className="jsx-3672980428 title text-ellipses"
+                                                                    >
+                                                                        {event.type?.location}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                    }
+
                                                 </div>
                                             </div>
                                         </div>

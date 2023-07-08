@@ -102,9 +102,11 @@ export default function EventCardDrawer({
                     bg: "hsla(0,0%,100%,.64)",
                     color: "rgb(19,21,23)",
                   }}
-                  onClick={() => {navigator.clipboard.writeText(
-                    `${import.meta.env.VITE_BASE_URL}/event/${event._id}`
-                  )}}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${import.meta.env.VITE_BASE_URL}/event/${event._id}`
+                    )
+                  }}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +206,15 @@ export default function EventCardDrawer({
                     >
                       <InfoOutlineIcon boxSize={6} m="0.5rem" />
                       <Box m="0.5rem">
-                        <Text>{event.type.location}</Text>
+                        {
+                          (event.type.event_type == "IN_PERSON") && <Text>{event.type.location}</Text>
+                        }
+                        {
+                          (event.type.event_type == "VIRTUAL") && <Text>Virtual Link</Text>
+                        }
+                        {
+                          (event.type.event_type == "ZOOM") && <Text>Zoom</Text>
+                        }
                       </Box>
                     </Flex>
                   </Box>
@@ -247,7 +257,7 @@ export default function EventCardDrawer({
                   <div dangerouslySetInnerHTML={{
                     __html: event.description
                   }} />
-                  
+
                 ) : (<div>
                   This event has no description.
                 </div>)}
