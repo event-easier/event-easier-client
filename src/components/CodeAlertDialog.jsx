@@ -11,10 +11,7 @@ import {
   PinInput,
   PinInputField,
   HStack,
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
+  useToast
 } from "@chakra-ui/react";
 import { VerifyUserByCode } from "../services/firebase/authentication";
 import { useNavigate } from "react-router";
@@ -30,7 +27,7 @@ export default function CodeAlertDialog({
 }) {
   const { setProfileData } = useContext(AuthContext);
   const [verifyCode, setVerifyCode] = useState(null);
-
+  const toast = useToast()
   const navigate = useNavigate();
   return (
     <div>
@@ -76,9 +73,18 @@ export default function CodeAlertDialog({
                 console.log("verify code:", verifyCode);
                 const res = await VerifyUserByCode(email, verifyCode);
                 if (res.data === "wrong code") {
-                  console.log("Something is wrong.");
-                
+                  toast({
+                    title: "Wrong code, please check your email.",
+                    status: "error",
+                    isClosable: true
+                  })
                 } else {
+                  toast({
+                    title: "Signed In!",
+                    variant: "subtle",
+                    status: "success",
+                    isClosable: true
+                  })
                   setProfileData(res.data.data);
                   localStorage.setItem(
                     "profile-data",

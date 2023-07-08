@@ -25,7 +25,7 @@ export default function Home() {
     fetchEventsData()
   }, [])
   // console.log(events)
-  console.log(upcomingEvents)
+  // console.log(upcomingEvents)
 
   return (
       <div
@@ -129,7 +129,7 @@ export default function Home() {
               </TabPanel>
               <TabPanel>
                 <Container maxWidth="4xl" p={{ base: 2, sm: 10 }}>
-                  {(pastEvents == []) ? (
+                  {(pastEvents.length == 0) ? (
                     <div>
                       <Heading as="h5" fontSize="3xl" m="24px 0 0" p="0 48px">
                         No Past Events

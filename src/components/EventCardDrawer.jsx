@@ -239,6 +239,28 @@ export default function EventCardDrawer({
               marginTop="1rem"
             >
               <CardHeader>
+                <Heading size="lg">Description</Heading>
+              </CardHeader>
+              <Divider />
+              <CardBody>
+                {event.description ? (
+                  <div dangerouslySetInnerHTML={{
+                    __html: event.description
+                  }} />
+                  
+                ) : (<div>
+                  This event has no description.
+                </div>)}
+              </CardBody>
+            </Card>
+            <Card
+              w="100%"
+              backgroundColor={"#212325"}
+              color="white"
+              // margin="0.75rem"
+              marginTop="1rem"
+            >
+              <CardHeader>
                 <Heading size="lg">Location</Heading>
               </CardHeader>
               <Divider />

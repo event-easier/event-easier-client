@@ -21,24 +21,24 @@ export default function EventManage() {
       >
         <div
           className="jsx-1798263030 prompt"
-        
+
         >
           You are a manager of this event.
         </div>
         <a
           className="btn luma-button flex-center small light solid no-icon"
           href="https://lu.ma/event/manage/evt-ZFWs1j4OJfgocmS"
-          
+
         >
           <div
             className="label"
-           
+
           >
             Manage Event
           </div>
         </a>
       </div>
-      
+
     </>
   );
 }

@@ -14,20 +14,19 @@ import {
   Wrap,
   Box,
   WrapItem,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import ProfileSetupModal from "../components/ProfileSetupModal";
 
 export default function SignUp() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [input, setInput] = useState("");
+  const [email, setEmail] = useState("");
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const isErrorEmail = !emailRegex.test(input);
+  const isErrorEmail = !emailRegex.test(email);
   const handleInputChange = (e) => {
-    setInput(e.target.value);
+    setEmail(e.target.value);
   };
-
   return (
     <Flex
       w="100vm"
@@ -53,14 +52,14 @@ export default function SignUp() {
             margin: "16px 0px 0px",
           }}
         >
-          <FormControl isInvalid={isErrorEmail && input}>
+          <FormControl isInvalid={isErrorEmail && email}>
             <FormLabel>Insert your Email</FormLabel>
             <Input
               id="input-email"
               w="400px"
               mb="10px"
               type="email"
-              value={input}
+              value={email}
               onChange={handleInputChange}
               placeholder="abc@gmail.com"
             />
@@ -82,7 +81,7 @@ export default function SignUp() {
         >
           Continue
         </Button>
-        <ProfileSetupModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
+        <ProfileSetupModal isOpen={isOpen} onClose={onClose} onOpen={onOpen} email={email} />
         <Text mt="16px">
           Already a user?{" "}
           <Link to="/signin">

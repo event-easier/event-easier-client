@@ -7,7 +7,7 @@ const unAuthPage = [
   "/",
   "/signin",
   "/signup",
-  "/event",
+  "/event/",
   // "/user-info",
 ];
 
@@ -28,7 +28,12 @@ export default function AuthProvider({ children }) {
     const unsubscribed = auth.onAuthStateChanged((userInfo) => {
       if (userInfo || localStorage.getItem("profile-data")) {
         if (unAuthPage.includes(location.pathname)) {
-          navigate("/home");
+          if (location.pathname == "/signin") {
+            navigate("/home");
+          } else {
+            navigate(location.pathname)
+          }
+
         }
         return;
       }
