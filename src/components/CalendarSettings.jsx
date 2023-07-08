@@ -370,7 +370,7 @@ export default function CalendarSettings(calendars) {
                 padding: "20px 10px",
                 marginTop: "30px",
                 width: "100%",
-                backgroundColor: "red",
+               
                 backgroundColor: "#1C1E20",
                 borderRadius: "10px",
               }}

@@ -281,7 +281,6 @@ export default function CreateCalendar() {
                 marginTop: "30px",
                 width: "100%",
                 height: "300px",
-                backgroundColor: "red",
                 backgroundColor: "#1C1E20",
                 borderRadius: "10px",
               }}
