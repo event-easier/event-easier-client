@@ -87,7 +87,7 @@ export default function CalendarsManager() {
     if (listEvent.length > 0) {
       listEvent.forEach((envnt) => {
         try {
-          client.get(`/event/${envnt}`).then((response) => {
+          client.get(`/event/detail/${envnt}`).then((response) => {
             setEvents((prevEvents) => [...prevEvents, response.data]);
           });
         } catch (error) {

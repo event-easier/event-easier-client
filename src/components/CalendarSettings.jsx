@@ -215,7 +215,7 @@ export default function CalendarSettings(calendars) {
                 borderRadius: "10px",
               }}
             >
-              {upLoadCover ? (
+              {!upLoadCover ? (
                 <Box
                   className="567"
                   bg={"#333537"}

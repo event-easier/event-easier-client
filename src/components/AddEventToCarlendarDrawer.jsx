@@ -11,6 +11,7 @@ import {
   Button,
   Card,
   FormControl,
+  Image,
   FormLabel,
   FormErrorMessage,
   FormHelperText,
@@ -20,10 +21,15 @@ import {
   Collapse,
   Avatar,
   Flex,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { findOne } from "../services/events";
+import axios from "axios";
+import { useEffect } from "react";
 export default function AddEventToCarlendarDrawer({
   isOpen,
   onOpen,
@@ -32,8 +38,68 @@ export default function AddEventToCarlendarDrawer({
 }) {
   const { isOpen: Open1, onToggle: onToggle1 } = useDisclosure();
   const { isOpen: Open2, onToggle: onToggle2 } = useDisclosure();
+  const [value, setValue] = useState("");
+  const [event, setEvent] = useState("");
+  const [submit, setSubmit] = useState(true);
+  const [calendar, setCalendars] = useState([]);
+  const { id } = useParams();
+  const client = axios.create({
+    // baseURL: `http://localhost:8081/api/v1/calendar/`,
+    baseURL: "https://event-easier-staging.onrender.com/api/v1/",
+    // baseURL: `https://event-easier-client-934bfbbxs-x-career.vercel.app/`,
+  });
+
+  client.interceptors.request.use((config) => {
+    config.headers.Authorization = `bearer ${a.token}`;
+    return config;
+  });
+  let a = JSON.parse(localStorage.getItem("profile-data"));
+  useEffect(() => {
+    try {
+      client
+        .post(`/calendar/${id}`)
+        .then((response) => {
+          setCalendars(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          setError(true);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   const navigate = useNavigate();
-  const handleOnClick = () => {};
+
+  const handleOnChange = async (e) => {
+    setValue(e.target.value);
+    const eventId = e.target.value.split("/").at(-1);
+    const evntsss = await findOne({ _id: eventId });
+    if (evntsss) {
+      setEvent(evntsss);
+      setSubmit(false);
+    } else {
+      setEvent("");
+      setSubmit(true);
+    }
+  };
+  const addEvent = () => {
+    console.log(event._id);
+    calendar.events.push(event._id);
+    try {
+      client
+        .post(`/calendar/update/${id}`, calendar)
+        .then((response) => {
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error(error);
+          setError(true);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Drawer
       isOpen={isOpen}
@@ -119,13 +185,40 @@ export default function AddEventToCarlendarDrawer({
             <Collapse in={Open1}>
               <Box p="0px" color="white" rounded="md" shadow="md" mb={"30px"}>
                 <Heading fontSize={"14px"}> Event Link</Heading>
-                <Input placeholder="https://event-easier-client-934bfbbxs-x-career.vercel.app/" />
+                <Input
+                  value={value}
+                  placeholder="https://event-easier-client-934bfbbxs-x-career.vercel.app/"
+                  onChange={handleOnChange}
+                />
+                {event != "" ? (
+                  <Box
+                    bg={"#212325"}
+                    p={"10px"}
+                    mt={"20px"}
+                    borderRadius={"10px"}
+                  >
+                    <Grid templateColumns="repeat(6, 1fr)" gap={6}>
+                      <GridItem w="100%" colSpan={2}>
+                        <Image src={event.cover} />
+                      </GridItem>
+                      <GridItem w="100%" colSpan={4} p={"10px"}>
+                        <Heading fontSize={"14px"}> {event.name}</Heading>
+                        <p>{event.start_time}</p>
+                      </GridItem>
+                    </Grid>
+                  </Box>
+                ) : (
+                  ""
+                )}
                 <Button
                   bg="#FFFFFF"
                   mt={"20px"}
                   mb={"20px"}
                   w={"100%"}
+                  style={{}}
+                  isDisabled={submit}
                   color={"#131517"}
+                  onClick={addEvent}
                 >
                   Add Event
                 </Button>
