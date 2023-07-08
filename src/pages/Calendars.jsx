@@ -18,29 +18,56 @@ import { Link as ReactLink } from "react-router-dom";
 
 import axios from "axios";
 import { AuthContext } from "../context/AuthProvider";
-import { getCalendarUser } from "../services/calendar";
-
 export default function Calendars() {
   const [calendars, setCalendars] = useState([]);
-  let a = JSON.parse(localStorage.getItem("user"));
-  const [lastEvent, setLastEvent] = useState({});
-  console.log("aaaaaaaaa", a);
+  let a = JSON.parse(localStorage.getItem("profile-data"));
+  const client = axios.create({
+    baseURL: `https://event-easier-staging.onrender.com/api/v1/`,
+    // baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/calendar`,
+    // baseURL: `http://localhost:8081/api/v1/`,
+    // baseURL: `https://event-easier-client-934bfbbxs-x-career.vercel.app/`,
+  });
+  client.interceptors.request.use((config) => {
+    config.headers.Authorization = `bearer ${a.token}`;
+    return config;
+  });
+  useEffect(() => {
+    try {
+      client
+        .post("/calendar/")
+        .then((response) => {
+          setCalendars(response.data.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+  const [lastEvent, setLastEvent] = useState([]);
+  const [myCalendars, setMyCalendars] = useState([]);
+  const [subCalendars, setSubCalendars] = useState([]);
 
   useEffect(() => {
-    console.log(getCalendarUser);
-  }, []);
-  const myCalendars = calendars.filter(
-    (item) => !item.people.some((p) => p.user_id === a._id)
-  );
-  const subCalendars = calendars.filter((item) =>
-    item.people.some((p) => p.user_id === a._id)
-  );
+    console.log("calendar", calendars);
+    setMyCalendars(
+      calendars.filter((item) => !item.people.some((p) => p.user_id === a._id))
+    );
+    setSubCalendars(
+      calendars.filter((item) => item.people.some((p) => p.user_id === a._id))
+    );
+  }, [calendars]);
   useEffect(() => {
     subCalendars.forEach((subCalendar) => {
       if (subCalendar.events.length > 0) {
         try {
           client
-            .get(`/event/${subCalendar.events[subCalendar.events.length - 1]}`)
+            .get(
+              `event/detail/${
+                subCalendar.events[subCalendar.events.length - 1]
+              }`
+            )
             .then((response) => {
               const newLastEvent = {
                 id: subCalendar._id,

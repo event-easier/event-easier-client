@@ -10,6 +10,8 @@ import {
   TabPanels,
   Input,
   TabPanel,
+  Text,
+  Flex,
   TabList,
   Tabs,
   Tab,
@@ -26,20 +28,26 @@ import { CalendarContext } from "../context/CalendarProvider";
 import { useRef } from "react";
 import { Link as ReactLink } from "react-router-dom";
 import AddEventToCarlendarDrawer from "../components/AddEventToCarlendarDrawer";
+import EventCard from "../components/EventCard";
+import LineWithDot from "../components/LineWithDot";
 export default function CalendarsDetail() {
   window.scrollTo(0, 0);
   const { imgBackground } = useContext(CalendarContext);
   const roleRef = useRef({ role: "GUEST", subscribed: false });
+  const [role, setRole] = useState("subscribe");
   const { id } = useParams();
-  let a = JSON.parse(localStorage.getItem("data_user"));
+  let a = JSON.parse(localStorage.getItem("profile-data"));
   console.log(a);
   const userCalendar = a.calendars;
   const [calendars, setCalendars] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const addCarlendarRef = React.useRef();
+  const [events, setEvents] = useState([]);
+  const [event, setEvent] = useState([]);
   const client = axios.create({
     // baseURL: `http://localhost:8081/api/v1/`,
     baseURL: "https://event-easier-staging.onrender.com/api/v1",
+    // baseURL: `https://event-easier-client-934bfbbxs-x-career.vercel.app/`,
   });
 
   client.interceptors.request.use((config) => {
@@ -50,6 +58,7 @@ export default function CalendarsDetail() {
     try {
       client.post(`/calendar/${id}`).then((response) => {
         setCalendars(response.data);
+        setEvents(response.data.events);
       });
     } catch (error) {
       console.log("error in callendar: \n", error);
@@ -65,18 +74,62 @@ export default function CalendarsDetail() {
       roleRef.current = { role: "GUEST", subscribed: true };
     }
   }
+  useEffect(() => {
+    events.forEach((event) => {
+      if (event) {
+        try {
+          client.get(`event/detail/${event}`).then((response) => {
+            const newEvent = {
+              id: event,
+              data: response.data.data,
+            };
+            setEvent((prevState) => ({
+              ...prevState,
+              [event]: newEvent,
+            }));
+          });
+        } catch (error) {
+          console.log("error in calendar: \n", error);
+        }
+      }
+    });
+  }, [events.length]);
 
   const isInArray = imgBackground.includes(calendars.cover);
   useEffect(() => {
     const role = userCalendar.some(
       (obj) => obj.id === id && obj.role === "ADMIN"
     );
-    console.log(userCalendar);
     if (role) {
       roleRef.current = { role: "ADMIN", subscribed: false };
     }
   }, [userCalendar, id]);
 
+  const eventArray = Object.values(event);
+  const submit = roleRef.current.role === "ADMIN";
+
+  const handleSubscribed = (sub) => {
+    if (sub.subscribed === false) {
+      try {
+        client.post(`/calendar/subscribe/${id}`).then((response) => {
+          console.log("subscribe");
+          roleRef.current = { role: "GUEST", subscribed: true };
+          window.location.reload();
+        });
+      } catch (error) {
+        console.log("error in callendar: \n", error);
+      }
+    } else
+      try {
+        client.post(`/calendar/unsubscribe/${id}`).then((response) => {
+          console.log("unsubscribe");
+          roleRef.current = { role: "GUEST", subscribed: false };
+          window.location.reload();
+        });
+      } catch (error) {
+        console.log("error in callendar: \n", error);
+      }
+  };
   console.log(roleRef.current);
   return (
     <Box
@@ -169,6 +222,7 @@ export default function CalendarsDetail() {
                   color: "white",
                   border: `2px solid ${calendars.color}`,
                 }}
+                onClick={() => handleSubscribed(roleRef.current)}
               >
                 Subscribed
               </Button>
@@ -178,6 +232,7 @@ export default function CalendarsDetail() {
                 color={calendars.color}
                 variant="outline"
                 float={"right"}
+                onClick={() => handleSubscribed(roleRef.current)}
                 _hover={{
                   bg: calendars.color,
                   color: "white",
@@ -273,10 +328,11 @@ export default function CalendarsDetail() {
 
               <Button
                 color="#ffffffa3"
+                isDisabled={!submit}
                 ref={addCarlendarRef}
                 onClick={onOpen}
                 p="0px"
-                w={"110px"}
+                w={"120px"}
                 m="0px"
                 size="sm"
                 bgColor={"#ffffff14"}
@@ -328,8 +384,29 @@ export default function CalendarsDetail() {
                     : "Submit Event"}
                 </div>
               </Button>
-              <CalendarNoUpComing />
+
+              {eventArray.length > 0 ? (
+                eventArray.map((event) => (
+                  <Flex mb="20px" mt={"30px"}>
+                    <div>
+                      <Text w="100px">
+                        {" "}
+                        {new Date(event.data.start_time).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </Text>
+                    </div>
+                    <Flex w={"80%"}>
+                      <LineWithDot />
+                      <EventCard event={event.data} />
+                    </Flex>
+                  </Flex>
+                ))
+              ) : (
+                <CalendarNoUpComing />
+              )}
             </GridItem>
+
             <AddEventToCarlendarDrawer
               isOpen={isOpen}
               placement="left"
@@ -377,7 +454,7 @@ export default function CalendarsDetail() {
                 color={"#C0C0C0"}
                 mt={"10px"}
               >
-                <Calendar></Calendar>
+                <Calendar color={calendars.color}></Calendar>
                 <Tabs variant="soft-rounded">
                   <TabList>
                     <Box

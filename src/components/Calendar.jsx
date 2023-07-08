@@ -8,7 +8,8 @@ const weekDays = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 const todayObj = dayjs();
 const specialDay = [todayObj.add(3, "day")];
 
-const Calendar = () => {
+const Calendar = (p) => {
+  const { color } = p;
   const [dayObj, setDayObj] = useState(dayjs());
 
   const thisYear = dayObj.year();
@@ -110,9 +111,11 @@ const Calendar = () => {
           i === todayObj.date() - 1 && thisMonth === todayObj.month() ? (
             <Box
               key={i}
-              color={specialDay.some((i) => i === todayObj) ? "white" : "red"}
+              color={specialDay.some((i) => i === todayObj) ? "white" : color}
               bg={
-                specialDay.some((i) => i === todayObj) ? "red" : "transparent"
+                specialDay.some((i) => i === todayObj)
+                  ? "yellow"
+                  : "transparent"
               }
             >
               {i + 1}

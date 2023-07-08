@@ -10,19 +10,30 @@ import {
   DrawerCloseButton,
   Button,
   Card,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
   CardBody,
   Stack,
+  Collapse,
   Avatar,
   Flex,
 } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function AddEventToCarlendarDrawer({
   isOpen,
   onOpen,
   onClose,
   finalFocusRef,
 }) {
+  const { isOpen: Open1, onToggle: onToggle1 } = useDisclosure();
+  const { isOpen: Open2, onToggle: onToggle2 } = useDisclosure();
+  const navigate = useNavigate();
+  const handleOnClick = () => {};
   return (
     <Drawer
       isOpen={isOpen}
@@ -84,17 +95,87 @@ export default function AddEventToCarlendarDrawer({
             color="white"
             marginTop="4rem"
           >
-            <Heading fontSize={"18px"}>I'm a Heading</Heading>
-            <Button bg="#303131" mt={"20px"} mb={"20px"}>
-              Create
+            <Heading fontSize={"18px"}>Add Event to Calendar</Heading>
+            <Button
+              bg="#303131"
+              mt={"20px"}
+              mb={"20px"}
+              _hover={{ bg: "#AAABAB", color: "#131517" }}
+              onClick={() => navigate("/create-event-calendar/")}
+            >
+              Create New Event
             </Button>
             <hr style={{ border: "1px solid #303131" }} />
-            <Button bg="#303131" mt={"20px"} mb={"20px"}>
-              Create
+            <Button
+              onClick={(onToggle2, onToggle1)}
+              bg="#303131"
+              mt={"20px"}
+              mb={"20px"}
+              _hover={{ bg: "#AAABAB", color: "#131517" }}
+            >
+              {Open1 ? "✔ " : ""}
+              Add Existing Event
             </Button>
-            <Button bg="#303131" mt={"0px"} mb={"20px"}>
-              Create
+            <Collapse in={Open1}>
+              <Box p="0px" color="white" rounded="md" shadow="md" mb={"30px"}>
+                <Heading fontSize={"14px"}> Event Link</Heading>
+                <Input placeholder="https://event-easier-client-934bfbbxs-x-career.vercel.app/" />
+                <Button
+                  bg="#FFFFFF"
+                  mt={"20px"}
+                  mb={"20px"}
+                  w={"100%"}
+                  color={"#131517"}
+                >
+                  Add Event
+                </Button>
+              </Box>
+            </Collapse>
+            <Button
+              onClick={(onToggle1, onToggle2)}
+              bg="#303131"
+              mt={"0px"}
+              mb={"20px"}
+              _hover={{ bg: "#AAABAB", color: "#131517" }}
+            >
+              {Open2 ? "✔ " : ""}
+              Add Event on External Platform
             </Button>
+            <Collapse in={Open2}>
+              <Box p="0px" color="white" rounded="md" shadow="md" mb={"30px"}>
+                <FormControl>
+                  <FormLabel>Event Page URL *</FormLabel>
+                  <Input type="link" placeholder="https://www.youtube.com/" />
+                  <FormLabel>Event Name *</FormLabel>
+                  <Input type="link" placeholder="https://www.youtube.com/" />
+                  <FormLabel mt={"20px"}>Event Location</FormLabel>
+                  <Box
+                    m={"0px"}
+                    position={"relative"}
+                    bottom={"-30px"}
+                    left={"5px"}
+                    zIndex={12}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                      <g
+                        fill="none"
+                        fill-rule="evenodd"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                      >
+                        <path d="M2 6.854C2 11.02 7.04 15 8 15s6-3.98 6-8.146C14 3.621 11.314 1 8 1S2 3.62 2 6.854Z"></path>
+                        <path d="M9.5 6.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"></path>
+                      </g>
+                    </svg>
+                  </Box>
+                  <Input pl={"30px"} placeholder="enter your country"></Input>
+                  <FormLabel>Host</FormLabel>
+                  <Input type="link" placeholder="https://www.youtube.com/" />
+                </FormControl>
+              </Box>
+            </Collapse>
           </Card>{" "}
         </DrawerBody>
       </DrawerContent>

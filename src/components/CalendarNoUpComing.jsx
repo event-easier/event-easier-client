@@ -9,12 +9,16 @@ export default function CalendarNoUpComing() {
         mb={"0px"}
         w={"300px"}
         h={"300px"}
-        textAlign={"center"}
+        transform={"scale:2"}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 420 380"
+          style={{
+            width: "300px",
+            height: "300px",
+          }}
         >
           <g filter="url(#CalendarDark_svg__a)">
             <rect
@@ -363,7 +367,7 @@ export default function CalendarNoUpComing() {
       </Box>
       <Box>
         <Heading as="h4" align={"center"} fontSize={"24px"}>
-          No Upcoming Events
+          No Events
         </Heading>
         <Heading as="h4" align={"center"} fontSize={"16px"} mt={"10px"}>
           The calendar is empty. Why not add a new event now?

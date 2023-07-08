@@ -13,10 +13,13 @@ import {
   Input,
   RadioGroup,
   Radio,
+  Flex,
   InputGroup,
+  GridItem,
   InputLeftAddon,
   Grid,
   Circle,
+  Text,
   Modal,
   Spinner,
   Tabs,
@@ -37,12 +40,67 @@ import {
 import CalendarCardDrawer from "../components/CalendarCardDrawer";
 import { useContext } from "react";
 import { BlockPicker, ChromePicker } from "react-color";
-import { useState } from "react";
-import { Navigate, Link as ReactLink, useParams } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { Link as ReactLink, useParams } from "react-router-dom";
 import CalendarNoUpComing from "../components/CalendarNoUpComing";
+import AddEventToCarlendarDrawer from "../components/AddEventToCarlendarDrawer";
+import LineWithDot from "../components/LineWithDot";
+import EventCard from "../components/EventCard";
+import { CalendarContext } from "../context/CalendarProvider";
+import CalendarSettings from "../components/CalendarSettings";
+import CalendarOptions from "../components/CalendarOptions";
+import CalendarPluss from "../components/CalendarPluss";
+import CalendarAdmin from "../components/CalendarAdmin";
 export default function CalendarsManager() {
   const { id } = useParams();
+  const [calendars, setCalendars] = useState([]);
+  const [listEvent, setListEvent] = useState([]);
+  const [events, setEvents] = useState([]);
+  let a = JSON.parse(localStorage.getItem("profile-data"));
+  const addCarlendarRef = React.useRef();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedItem, setSelectedItem] = useState("Display");
 
+  const { imgBackground } = useContext(CalendarContext);
+  const client = axios.create({
+    // baseURL: `http://localhost:8081/api/v1/`,
+    baseURL: "https://event-easier-staging.onrender.com/api/v1",
+    // baseURL: `https://event-easier-client-934bfbbxs-x-career.vercel.app/`,
+  });
+
+  client.interceptors.request.use((config) => {
+    config.headers.Authorization = `bearer ${a.token}`;
+    return config;
+  });
+  useEffect(() => {
+    try {
+      client.post(`/calendar/${id}`).then((response) => {
+        setCalendars(response.data);
+        setListEvent(response.data.events);
+      });
+    } catch (error) {
+      console.log("error in callendar: \n", error);
+    }
+  }, []);
+  useEffect(() => {
+    if (listEvent.length > 0) {
+      listEvent.forEach((envnt) => {
+        try {
+          client.get(`/event/${envnt}`).then((response) => {
+            setEvents((prevEvents) => [...prevEvents, response.data]);
+          });
+        } catch (error) {
+          console.log("error in callendar: \n", error);
+        }
+      });
+    }
+  }, [listEvent.length]);
+
+  const isInArray = imgBackground.includes(calendars.cover);
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
+  };
   return (
     <div
       style={{
@@ -65,13 +123,19 @@ export default function CalendarsManager() {
       >
         <Box>
           <Image
-            src="https://bit.ly/dan-abramov"
+            src={calendars.avatar}
             alt="Dan Abramov"
             w={"28px"}
             h={"28px"}
             display={"inline-block"}
           />
         </Box>
+        <AddEventToCarlendarDrawer
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          finalFocusRef={addCarlendarRef}
+        />
         <Box mt={"10px"}>
           <Tabs variant={"unstyled"} borderBottom={"1px soild red"}>
             <TabList>
@@ -97,6 +161,8 @@ export default function CalendarsManager() {
                 </Heading>
                 <Button
                   size="xs"
+                  ref={addCarlendarRef}
+                  onClick={onOpen}
                   borderRadius={"50%"}
                   color="#ffffffa3"
                   display={"inline-block"}
@@ -142,13 +208,92 @@ export default function CalendarsManager() {
                     </Box>
                   </TabList>
                 </Tabs>
-                <CalendarNoUpComing></CalendarNoUpComing>
+
+                {listEvent.length < 1 ? (
+                  <CalendarNoUpComing />
+                ) : (
+                  events.map((event) => (
+                    <Flex mb="20px" mt={"30px"}>
+                      <div>
+                        <Text w="100px">
+                          {" "}
+                          {new Date(event.data.start_time).toLocaleDateString(
+                            "en-GB"
+                          )}
+                        </Text>
+                      </div>
+                      <Flex w={"80%"}>
+                        <LineWithDot />
+                        <EventCard event={event.data} />
+                      </Flex>
+                    </Flex>
+                  ))
+                )}
               </TabPanel>
+              <TabPanel>two</TabPanel>
+              {/* seting nằm đây */}
               <TabPanel>
-                <p>two!</p>
-              </TabPanel>
-              <TabPanel>
-                <p>three!</p>
+                <Grid templateColumns="repeat(9, 1fr)" gap={6}>
+                  <GridItem w="100%" colSpan={2}>
+                    <Box position={"fixed"}>
+                      <Heading
+                        fontSize={"16px"}
+                        onClick={() => handleItemClick("Display")}
+                        style={{
+                          color:
+                            selectedItem === "Display" ? "white" : "#848990",
+                        }}
+                      >
+                        Display
+                      </Heading>
+                      <Heading
+                        fontSize={"16px"}
+                        onClick={() => handleItemClick("Options")}
+                        style={{
+                          color:
+                            selectedItem === "Options" ? "white" : "#848990",
+                        }}
+                      >
+                        Options
+                      </Heading>
+                      <Heading
+                        fontSize={"16px"}
+                        onClick={() => handleItemClick("Admins")}
+                        style={{
+                          color:
+                            selectedItem === "Admins" ? "white" : "#848990",
+                        }}
+                      >
+                        Admins
+                      </Heading>
+                      <Heading
+                        fontSize={"16px"}
+                        onClick={() => handleItemClick("Pluss")}
+                        style={{
+                          color: selectedItem === "Pluss" ? "white" : "#848990",
+                        }}
+                      >
+                        Event Easier Pluss
+                      </Heading>
+                    </Box>
+                  </GridItem>
+                  <GridItem w="100%" colSpan={7}>
+                    {" "}
+                    {selectedItem && (
+                      <div>
+                        {selectedItem === "Display" && isInArray && (
+                          <CalendarSettings calendars={calendars} />
+                        )}
+
+                        {selectedItem === "Options" && (
+                          <CalendarOptions></CalendarOptions>
+                        )}
+                        {selectedItem === "Admins" && <CalendarAdmin />}
+                        {selectedItem === "Pluss" && <CalendarPluss />}
+                      </div>
+                    )}
+                  </GridItem>
+                </Grid>
               </TabPanel>
             </TabPanels>
           </Tabs>

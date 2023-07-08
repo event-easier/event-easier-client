@@ -375,7 +375,7 @@ export default function CreateCalendar() {
                   <FormControl isInvalid={isInvalid}>
                     <InputGroup mt={"10px"}>
                       <InputLeftAddon
-                        children="lu.ma/"
+                        children="event easier/"
                         bg={"#2E3031"}
                         border={"1px none"}
                       />
