@@ -5,6 +5,11 @@ import EventRegistration from "./EventRegistration";
 import EventDescription from "./EventDescription";
 
 export default function EventMain({ event }) {
+    const isHost = event.hosts.some((user) => {
+        return user.user_id == JSON.parse(localStorage.getItem("profile-data"))._id
+    });
+    // console.log(event)
+    // console.log(localStorage.getItem("profile-data")._id)
     const month = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
     const weekday = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"];
     const getMonthFromData = (e) => {
@@ -284,7 +289,10 @@ export default function EventMain({ event }) {
                                                 </div>
                                             </div>
                                         </div>
-                                        <EventManage />
+                                        {
+                                            isHost && <EventManage />
+                                        }
+
                                     </div>
                                     <div
                                         className="jsx-85398371 bottom-section flex-start gap-3"
@@ -293,7 +301,7 @@ export default function EventMain({ event }) {
                                         <div
                                             className="jsx-85398371 flex-column flex-start gap-3"
                                         >
-                                            <EventRegistration event={event} />
+                                            <EventRegistration event={event} isHost={isHost} />
                                             <EventDescription event={event} />
                                         </div>
                                         <EventHosts event={event} />

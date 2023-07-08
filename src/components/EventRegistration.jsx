@@ -4,7 +4,7 @@ import {
     newRegistration,
 } from "../services/events";
 
-export default function EventRegistration({ event }) {
+export default function EventRegistration({ event, isHost }) {
     const [eventData, setEventData] = useState(event);
     const userId = JSON.parse(localStorage.getItem("profile-data"))._id
     const [guestData, setGuestData] = useState(eventData?.guests);
@@ -23,7 +23,7 @@ export default function EventRegistration({ event }) {
             _id: eventData?._id,
         });
         setEventData(_event);
-    
+
     };
 
     const fetchGuestsData = () => {
@@ -39,7 +39,7 @@ export default function EventRegistration({ event }) {
         });
         fetchEventData();
         //fetchGuestsData();
-        
+
     };
 
     useEffect(() => {
@@ -236,14 +236,19 @@ export default function EventRegistration({ event }) {
                                                     className="jsx-4058773777 desc text-tinted"
 
                                                 >
-                                                    This event ended {dayPast()} ngày trước.
+                                                    This event ended {dayPast()} days ago.
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 ) : (<></>)}
                                 <div style={{ boxSizing: "border-box" }}>
-                                    Hello! To join the event, please register below.
+                                    {isHost ? <div>
+                                        You are the host of this event.
+                                    </div> : <div>
+                                        Hello! To join the event, please register below.
+
+                                    </div>}
                                 </div>
                                 <div
                                     className="jsx-3788553937 mt-2 flex-column content"
@@ -326,53 +331,61 @@ export default function EventRegistration({ event }) {
                                         className="jsx-3788553937 cta-wrapper"
 
                                     >
-                                        <div
-                                            className="jsx-3788553937 cta flex-center gap-2 mb-1"
-
-                                        >
-
-                                            <button
-                                                className="btn luma-button flex-center medium primary solid full-width no-icon"
-                                                type="button"
-                                                onClick={handelnewRegistration}
-                                            // disabled
-                                            >
+                                        {
+                                            !isHost &&
+                                            <div>
                                                 <div
-                                                    className="label"
+                                                    className="jsx-3788553937 cta flex-center gap-2 mb-1"
 
                                                 >
-                                                    One-Click Register
+
+                                                    <button
+                                                        className="btn luma-button flex-center medium primary solid full-width no-icon"
+                                                        type="button"
+                                                        onClick={handelnewRegistration}
+                                                    // disabled
+                                                    >
+                                                        <div
+                                                            className="label"
+
+                                                        >
+                                                            One-Click Register
+                                                        </div>
+                                                    </button>
                                                 </div>
-                                            </button>
-                                        </div>
-                                        <div
-                                            className="lux-collapse"
-
-                                        >
-                                            <div
-                                                className="jsx-3788553937 pt-2 pb-1 text-tinted flex-center gap-2 crypto-footer"
-
-                                            >
-                                                <svg
-                                                    viewBox="0 0 80 80"
-                                                    xmlns="http://www.w3.org/2000/svg"
-
-                                                >
-                                                    <path
-                                                        d="M63.984 40.75 40 55.25l-24-14.5L40 0l23.984 40.75ZM40 59.906l-24-14.5L40 80l24-34.594-24 14.5Z"
-                                                        fill="currentColor"
-                                                        style={{ boxSizing: "border-box" }}
-                                                    />
-                                                </svg>
                                                 <div
-                                                    className="jsx-3788553937 fs-xs"
+                                                    className="lux-collapse"
 
                                                 >
-                                                    You will be asked to verify token ownership with your
-                                                    wallet.
+                                                    <div
+                                                        className="jsx-3788553937 pt-2 pb-1 text-tinted flex-center gap-2 crypto-footer"
+
+                                                    >
+                                                        <svg
+                                                            viewBox="0 0 80 80"
+                                                            xmlns="http://www.w3.org/2000/svg"
+
+                                                        >
+                                                            <path
+                                                                d="M63.984 40.75 40 55.25l-24-14.5L40 0l23.984 40.75ZM40 59.906l-24-14.5L40 80l24-34.594-24 14.5Z"
+                                                                fill="currentColor"
+                                                                style={{ boxSizing: "border-box" }}
+                                                            />
+                                                        </svg>
+                                                        <div
+                                                            className="jsx-3788553937 fs-xs"
+
+                                                        >
+                                                            You will be asked to verify token ownership with your
+                                                            wallet.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+
+
+                                        }
+
                                     </div>
                                 </div>
                             </div>

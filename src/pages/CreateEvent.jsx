@@ -34,6 +34,7 @@ export default function CreateEvent() {
       require_approve: false,
       hosts: [
         {
+          gmail: profileData.email,
           user_id: profileData._id,
           name: profileData.name,
           avatar: profileData.avatar
