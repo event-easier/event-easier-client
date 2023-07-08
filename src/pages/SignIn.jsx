@@ -125,10 +125,7 @@ export default function SignIn() {
                 isDisabled={isErrorEmail}
                 onClick={async () => {
                   const res = await LoginByEmail(input);
-                  !res ? 
-                  <div>
-                    There's something wrong.
-                  </div> : onOpen();
+                  !res ? <div>There's something wrong.</div> : onOpen();
                 }}
               >
                 {" "}
